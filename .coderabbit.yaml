@@ -1,0 +1,49 @@
+# yaml-language-server: $schema=https://coderabbit.ai/integrations/schema.v2.json
+language: ko-KR
+tone_instructions: >-
+  명확하고 간결한 한국어로 리뷰하세요. 실제 문제가 발생하는 조건, 원인, 개선 방법을 설명하고
+  필요한 경우 짧은 예시를 제시하세요. 취향에 따른 변경이나 과도한 추상화보다 동작 오류와 유지보수에 집중하세요.
+
+reviews:
+  profile: chill
+  request_changes_workflow: false
+  high_level_summary: true
+  changed_files_summary: false
+  sequence_diagrams: false
+  related_issues: false
+  related_prs: false
+  suggested_labels: false
+  auto_apply_labels: false
+  suggested_reviewers: false
+  auto_assign_reviewers: false
+  poem: false
+
+  path_instructions:
+    - path: 'src/**/*.{ts,tsx}'
+      instructions: |
+        React 19와 TypeScript 기반 프론트엔드입니다. 기존 코드와 ESLint 설정을 기준으로 리뷰하세요.
+        Hooks 호출 규칙, Effect 의존성과 정리, 오래된 상태 참조, 불필요한 Effect를 확인하세요.
+        타입 안전성, null/undefined 처리, 비동기 경쟁 상태와 로딩·오류 처리를 확인하세요.
+        React Router 사용 시 경로와 내비게이션 동작을 확인하세요.
+        폼 레이블, 시맨틱 HTML, 키보드 조작과 포커스 등 접근성을 확인하세요.
+        실제 성능 문제가 뒷받침되지 않는 메모이제이션이나 새로운 라이브러리 도입은 요구하지 마세요.
+        테스트 제안은 구체적인 오류나 중요한 사용자 동작을 검증할 때에 집중하세요.
+    - path: 'src/**/*.css'
+      instructions: |
+        기존 스타일과 Tailwind CSS 4 구성을 존중하세요.
+        반응형 레이아웃, 넘침, 가독성, 포커스 표시와 스타일 충돌을 확인하세요.
+        취향에 따른 스타일 변경이나 근거 없는 CSS 구조 재편은 요구하지 마세요.
+    - path: '**/*.{json,js,ts,yaml,yml}'
+      instructions: |
+        기존 ESLint와 Prettier 설정을 존중하고 포맷 관련 지적을 중복하지 마세요.
+        설정 변경 시 npm run build와 npm run lint에 미치는 영향, 환경 변수 노출,
+        의존성 호환성과 개발·배포 동작의 차이를 확인하세요.
+
+  auto_review:
+    enabled: true
+    auto_incremental_review: true
+    drafts: false
+    # 기본 브랜치는 자동으로 포함됩니다. main 대상 PR도 리뷰합니다.
+    base_branches:
+      - '^dev$'
+      - '^main$'
