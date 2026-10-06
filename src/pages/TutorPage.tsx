@@ -13,8 +13,7 @@ function TutorPage() {
   const { tutorId } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
   const requestedTab = searchParams.get('tab')
-  const tab: TutorTab =
-    requestedTab === '전체' || requestedTab === '북마크' ? requestedTab : '추천'
+  const tab: TutorTab = requestedTab === '전체' ? '전체' : '추천'
   function setTab(value: string) {
     setSearchParams(value === '추천' ? {} : { tab: value })
   }
@@ -49,7 +48,6 @@ function TutorPage() {
       `${t.name} ${t.major} ${t.university}`
         .toLowerCase()
         .includes(query.toLowerCase()) &&
-      (tab !== '북마크' || saved.includes(t.name)) &&
       (!filter || t.category === filter),
   )
   function bookmark(name: string) {
@@ -124,7 +122,7 @@ function TutorPage() {
         <h1>튜터</h1>
         <div className="tab-row">
           <div className="tabs">
-            {['추천', '전체', '북마크'].map((name) => (
+            {['추천', '전체'].map((name) => (
               <button
                 key={name}
                 className={tab === name ? 'selected' : ''}
@@ -134,9 +132,6 @@ function TutorPage() {
                 }}
               >
                 {name}
-                {name === '북마크' && saved.length > 0 && (
-                  <small>{saved.length}</small>
-                )}
               </button>
             ))}
           </div>
@@ -166,11 +161,7 @@ function TutorPage() {
         <section className="recommendations">
           <div className="section-heading">
             <h2>
-              {tab === '북마크'
-                ? '내가 저장한 튜터'
-                : tab === '전체'
-                  ? '전체 튜터'
-                  : '링글이 추천하는'}{' '}
+              {tab === '전체' ? '전체 튜터' : '링글이 추천하는'}{' '}
               <span className="hint" tabIndex={0} aria-label="추천 안내">
                 ?
                 <span className="tooltip">
@@ -236,16 +227,8 @@ function TutorPage() {
           {!loading && !error && visible.length === 0 && (
             <div className="empty">
               <Icon name="search" />
-              <h3>
-                {tab === '북마크'
-                  ? '저장한 튜터가 없어요'
-                  : '검색 결과가 없어요'}
-              </h3>
-              <p>
-                {tab === '북마크'
-                  ? '마음에 드는 튜터의 북마크를 눌러보세요.'
-                  : '다른 이름이나 전공으로 검색해 보세요.'}
-              </p>
+              <h3>검색 결과가 없어요</h3>
+              <p>다른 이름이나 전공으로 검색해 보세요.</p>
               <button
                 onClick={() => {
                   setQuery('')
@@ -276,17 +259,7 @@ function TutorPage() {
           <p role="status" aria-live="polite">
             찜한 튜터에 추가했어요.
           </p>
-          <button
-            onClick={() => {
-              setTab('북마크')
-              setQuery('')
-              setFilter('')
-              setSelected(null)
-              setRecommend(false)
-              setBookmarkNotice(null)
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
-          >
+          <button onClick={() => navigate('/tutors/favorites?saved=1')}>
             찜한 목록 바로가기 <Icon name="arrow" />
           </button>
         </div>

@@ -816,3 +816,140 @@ h2 {
   background: #211b3655;
   backdrop-filter: blur(3px);
 }
+
+.favorite-layout {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: 225px minmax(0, 1fr);
+  gap: 32px;
+  align-items: start;
+}
+
+.favorite-layout > section {
+  min-width: 0;
+}
+
+.favorite-filter-panel {
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: #fbfafc;
+}
+
+.favorite-filter-types {
+  display: grid;
+  gap: 14px;
+  padding: 22px 18px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.favorite-filter-types label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-weight: 600;
+}
+
+.favorite-filter-types label svg {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.favorite-filter-types input {
+  width: 17px;
+  height: 17px;
+  margin: 0;
+  accent-color: var(--color-primary);
+}
+
+.favorite-availability {
+  min-width: 0;
+  margin: 0;
+  padding: 20px 18px;
+  border: 0;
+}
+
+.favorite-availability legend {
+  font-size: 17px;
+  font-weight: 700;
+}
+
+.favorite-days {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+  margin: 14px 0 22px;
+}
+
+.favorite-times {
+  display: grid;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.favorite-days button,
+.favorite-times button {
+  min-height: 30px;
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: white;
+  font-size: 12px;
+}
+
+.favorite-times button {
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.favorite-tutor-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 32px 16px;
+}
+
+.favorite-tutor-count {
+  margin: 0 0 20px;
+  font-size: 14px;
+}
+
+.favorite-page .portrait {
+  height: 220px;
+}
+
+@media (max-width: 1200px) {
+  .favorite-tutor-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 900px) {
+  .favorite-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .favorite-tutor-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  main.favorite-page {
+    width: 100%;
+    padding: 28px 20px 80px;
+  }
+
+  .favorite-page .portrait {
+    height: 190px;
+  }
+}
+.favorite-filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  padding: 7px 9px;
+  border-radius: 5px;
+  background: #41426b;
+  color: white;
+  font-size: 12px;
+}
