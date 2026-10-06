@@ -1,4 +1,13 @@
 @import 'tailwindcss';
+@theme {
+  --color-primary: #663db8;
+  --color-primary-hover: #54309b;
+  --color-ink: #292830;
+  --color-muted: #929198;
+  --color-surface: #f8f7fc;
+  --color-border: #e8e7ed;
+}
+
 :root {
   font-family: Arial, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
   color: #292830;

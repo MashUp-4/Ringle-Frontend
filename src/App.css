@@ -1,24 +1,23 @@
+@reference "./index.css";
+
 .sidebar {
-  position: fixed;
+  @apply fixed;
   left: 0;
   top: 0;
   bottom: 0;
   width: 100px;
   background: #fcfbff;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
+  @apply flex items-center flex-col;
   z-index: 5;
 }
 .logo {
-  display: grid;
-  place-items: center;
+  @apply grid place-items-center;
   margin: 28px 0 34px;
   width: 46px;
   height: 46px;
-  border-radius: 50%;
+  @apply rounded-full;
   background: linear-gradient(135deg, #8974f2, #543bd0);
-  color: white;
+  @apply text-white;
   text-decoration: none;
   font-family: cursive;
   font-style: italic;
@@ -26,12 +25,10 @@
   transform: rotate(-12deg);
 }
 .sidebar nav {
-  width: 100%;
+  @apply w-full;
 }
 .nav-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  @apply flex flex-col items-center;
   gap: 8px;
   color: #96959d;
   padding: 14px 0;
@@ -44,7 +41,7 @@
   height: 25px;
 }
 .nav-item.active {
-  color: #663db8;
+  @apply text-primary;
 }
 .nav-item.active svg {
   box-shadow: 0 0 0 12px #f8f5fd;
@@ -53,8 +50,7 @@
 .sidebar-bottom {
   margin-top: auto;
   padding-bottom: 20px;
-  width: 100%;
-  text-align: center;
+  @apply w-full text-center;
 }
 .support {
   border: 1px solid #eee;
@@ -66,9 +62,7 @@
 .topbar {
   height: 80px;
   border-bottom: 1px solid #f1f1f3;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  @apply flex items-center justify-end;
   gap: 36px;
   padding-right: max(7%, 40px);
   margin-left: 100px;
@@ -84,7 +78,7 @@
   height: 38px;
   border: 1px solid #b5a8d5;
   background: #f0eef4;
-  border-radius: 50%;
+  @apply rounded-full;
 }
 main {
   max-width: 1340px;
@@ -94,18 +88,16 @@ main {
 }
 .lesson-tabs {
   height: 70px;
-  display: flex;
+  @apply flex;
   gap: 48px;
   border-bottom: 1px solid #eee;
-  align-items: center;
+  @apply items-center;
   color: #ceced1;
-  font-weight: 600;
+  @apply font-semibold;
   padding: 0 20px;
 }
 .lesson-tabs span {
-  height: 100%;
-  display: flex;
-  align-items: center;
+  @apply h-full flex items-center;
 }
 .lesson-tabs .current {
   color: #292830;
@@ -116,30 +108,27 @@ h1 {
   font-size: 36px;
   letter-spacing: -1.3px;
   margin: 60px 0 55px;
-  font-weight: 700;
+  @apply font-bold;
 }
 .tab-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @apply flex items-center justify-between;
   border-bottom: 1px solid #e8e8eb;
   height: 70px;
 }
 .tabs {
-  height: 100%;
-  display: flex;
+  @apply h-full flex;
   gap: 28px;
 }
 .tabs > button {
   font-size: 20px;
-  font-weight: 600;
+  @apply font-semibold;
   color: #bcbcc2;
   padding: 0 0 17px;
   margin-top: 15px;
   transition: color 0.2s;
 }
 .tabs > button:hover {
-  color: #663db8;
+  @apply text-primary;
 }
 .tabs > button.selected {
   border-bottom: 3px solid #44424c;
@@ -148,7 +137,7 @@ h1 {
 .tabs small {
   font-size: 12px;
   background: #f0eafa;
-  color: #663db8;
+  @apply text-primary;
   padding: 2px 6px;
   border-radius: 10px;
   margin-left: 5px;
@@ -158,8 +147,7 @@ h1 {
   background: #f8f8fb;
   border: 1px solid #eeeef2;
   border-radius: 8px;
-  display: flex;
-  align-items: center;
+  @apply flex items-center;
   padding: 14px;
   gap: 10px;
   color: #9b9ba4;
@@ -172,9 +160,8 @@ h1 {
 .search input {
   background: none;
   border: 0;
-  outline: none !important;
-  width: 100%;
-  min-width: 0;
+
+  @apply w-full min-w-0;
   font: inherit;
   color: #333;
 }
@@ -182,15 +169,12 @@ h1 {
   color: #9999a1;
 }
 .recommend-banner {
-  width: 100%;
-  display: flex;
-  align-items: center;
+  @apply w-full flex items-center;
   gap: 16px;
   padding: 16px 20px;
   margin: 54px 0 56px;
   border-radius: 10px;
-  background: #f8f7fc;
-  text-align: left;
+  @apply bg-surface text-left;
   transition: background 0.2s;
 }
 .recommend-banner:hover {
@@ -199,34 +183,27 @@ h1 {
 .sparkle {
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  background: white;
-  color: #663db8;
-  display: grid;
-  place-items: center;
+  @apply rounded-full bg-white text-primary grid place-items-center;
   font-size: 28px;
 }
 .recommend-banner strong {
   margin-left: auto;
-  font-weight: 600;
+  @apply font-semibold;
   font-size: 14px;
 }
 .recommend-banner strong span {
   padding-left: 12px;
 }
 .section-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @apply flex items-center justify-between;
   margin-bottom: 30px;
 }
 h2 {
   font-size: 20px;
   letter-spacing: -0.6px;
-  font-weight: 700;
-  display: flex;
+  @apply font-bold flex;
   gap: 8px;
-  align-items: center;
+  @apply items-center;
 }
 .hint {
   font-size: 11px;
@@ -234,35 +211,33 @@ h2 {
   color: #999;
   width: 16px;
   height: 16px;
-  border-radius: 50%;
+  @apply rounded-full;
   display: inline-grid;
-  place-items: center;
-  position: relative;
+  @apply place-items-center relative;
   font-weight: 400;
-  cursor: help;
+  @apply cursor-help;
 }
 .tooltip {
-  display: none;
-  position: absolute;
+  @apply hidden absolute;
   bottom: 25px;
   left: -20px;
   width: 220px;
   padding: 12px;
   border-radius: 6px;
   background: #333;
-  color: white;
+  @apply text-white;
   font-size: 12px;
   line-height: 1.6;
   z-index: 6;
 }
 .hint:hover .tooltip,
 .hint:focus .tooltip {
-  display: block;
+  @apply block;
 }
 .view-all {
-  display: flex;
+  @apply flex;
   gap: 4px;
-  align-items: center;
+  @apply items-center;
   color: #97969e;
   font-size: 13px;
 }
@@ -271,44 +246,37 @@ h2 {
   height: 12px;
 }
 .tutor-grid {
-  display: grid;
+  @apply grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 20px;
 }
 .tutor-card {
-  min-width: 0;
+  @apply min-w-0;
   border-radius: 10px;
   transition:
     box-shadow 0.22s,
     transform 0.22s;
-  position: relative;
+  @apply relative;
 }
 .portrait {
-  position: relative;
+  @apply relative;
   height: 235px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply flex items-center justify-center;
   border-radius: 10px;
-  overflow: hidden;
+  @apply overflow-hidden;
 }
 .portrait > img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  @apply w-full h-full object-contain;
   padding: 10px;
   transition: transform 0.3s;
 }
 .bookmark {
-  position: absolute;
+  @apply absolute;
   right: 10px;
   top: 10px;
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-  background: white;
+  @apply rounded-full grid place-items-center bg-white;
   color: #d7d7dc;
   box-shadow: 0 1px 10px #00000013;
   z-index: 2;
@@ -327,26 +295,25 @@ h2 {
   color: #9874d8;
 }
 .bookmark.saved {
-  color: #663db8;
+  @apply text-primary;
   background: #f3edfc;
 }
 .hover-panel {
-  position: absolute;
+  @apply absolute;
   inset: 0;
   background: #f6f2fcf5;
   padding: 58px 16px 16px;
-  display: flex;
-  flex-direction: column;
+  @apply flex flex-col overflow-y-auto;
   opacity: 0;
   transform: translateY(10px);
-  pointer-events: none;
+  @apply pointer-events-none;
   transition:
     opacity 0.2s,
     transform 0.2s;
 }
 .hover-label {
   font-size: 9px;
-  font-weight: 700;
+  @apply font-bold;
   letter-spacing: 1.4px;
   color: #794dd0;
 }
@@ -357,15 +324,14 @@ h2 {
   word-break: keep-all;
 }
 .hover-panel button {
+  @apply shrink-0;
+  min-height: 36px;
   margin-top: auto;
-  background: #663db8;
-  color: white;
+  @apply bg-primary text-white;
   border-radius: 6px;
   padding: 10px;
   font-size: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  @apply flex justify-center items-center;
   gap: 6px;
 }
 .hover-panel svg {
@@ -376,31 +342,29 @@ h2 {
 .tutor-card:focus-within .hover-panel {
   opacity: 1;
   transform: none;
-  pointer-events: auto;
+  @apply pointer-events-auto;
 }
 .tutor-card:hover .portrait,
 .tutor-card:focus-within .portrait {
   box-shadow: 0 6px 24px #663db818;
 }
 .card-title {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @apply flex items-center justify-between;
   gap: 3px;
   margin-top: 20px;
   font-size: 14px;
 }
 .card-title > button {
-  font-weight: 700;
+  @apply font-bold;
   padding: 0;
   font-size: 16px;
 }
 .card-title > span {
-  white-space: nowrap;
+  @apply whitespace-nowrap;
   font-size: 12px;
 }
 .card-title b {
-  color: #663db8;
+  @apply text-primary;
 }
 .card-title em {
   font-style: normal;
@@ -413,14 +377,14 @@ h2 {
 }
 .university {
   font-size: 12px;
-  color: #929198;
+  @apply text-muted;
   margin-top: 6px;
-  overflow: hidden;
+  @apply overflow-hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  @apply whitespace-nowrap;
 }
 .category {
-  display: inline-block;
+  @apply inline-block;
   margin-top: 10px;
   padding: 3px 6px;
   border-radius: 3px;
@@ -428,16 +392,14 @@ h2 {
   font-size: 10px;
 }
 .trial {
-  position: fixed;
+  @apply fixed;
   bottom: 65px;
   right: 8%;
-  display: flex;
-  align-items: center;
+  @apply flex items-center;
   gap: 10px;
   padding: 17px 22px;
   border-radius: 30px;
-  background: #663db8;
-  color: white;
+  @apply bg-primary text-white;
   box-shadow: 0 4px 12px #663db820;
   z-index: 3;
 }
@@ -450,11 +412,11 @@ h2 {
   height: 20px;
 }
 .floating-chat {
-  position: fixed;
+  @apply fixed;
   right: 24px;
   bottom: 24px;
   background: #9869f4;
-  color: white;
+  @apply text-white;
   padding: 14px;
   border-radius: 18px;
   box-shadow: 0 2px 10px #0003;
@@ -465,27 +427,26 @@ h2 {
   height: 10px;
   background: #ef7761;
   border: 2px solid white;
-  border-radius: 50%;
-  position: absolute;
+  @apply rounded-full absolute;
   top: 0;
   right: 0;
 }
 .toast {
-  position: fixed;
+  @apply fixed;
   bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
   padding: 15px 24px;
   border-radius: 10px;
   background: #30243d;
-  color: white;
+  @apply text-white;
   z-index: 20;
   box-shadow: 0 5px 20px #0002;
 }
 .empty {
-  text-align: center;
+  @apply text-center;
   padding: 70px 0;
-  color: #929198;
+  @apply text-muted;
 }
 .empty svg {
   margin-bottom: 20px;
@@ -495,39 +456,29 @@ h2 {
   margin-bottom: 10px;
 }
 .empty button {
-  color: #663db8;
+  @apply text-primary;
   margin-top: 20px;
 }
 .filter-chip {
-  color: #663db8;
+  @apply text-primary;
   background: #f2ecfa;
   border-radius: 20px;
   padding: 8px 14px;
   margin-bottom: 15px;
 }
-.modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 15;
-  background: #211b3655;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  backdrop-filter: blur(3px);
-}
 .modal {
-  position: relative;
-  background: white;
+  @apply fixed bg-white;
+  inset: 0;
+  height: fit-content;
   border-radius: 18px;
   padding: 36px;
   width: 440px;
   max-height: 90vh;
-  overflow: auto;
+  @apply overflow-auto;
   box-shadow: 0 20px 80px #0002;
 }
 .close {
-  position: absolute;
+  @apply absolute;
   right: 16px;
   top: 12px;
   font-size: 27px;
@@ -536,8 +487,7 @@ h2 {
 .modal > img {
   width: 150px;
   height: 150px;
-  object-fit: contain;
-  display: block;
+  @apply object-contain block;
   margin: auto;
 }
 .modal h2 {
@@ -558,9 +508,7 @@ h2 {
   margin: 20px 0;
 }
 .primary {
-  background: #663db8;
-  color: white;
-  width: 100%;
+  @apply bg-primary text-white w-full;
   padding: 14px;
   border-radius: 8px;
   margin-top: 24px;
@@ -570,7 +518,7 @@ h2 {
   font-size: 40px;
 }
 .interest-options {
-  display: grid;
+  @apply grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   margin-top: 24px;
@@ -583,7 +531,7 @@ h2 {
 .interest-options .chosen {
   background: #f2ecfa;
   border-color: #794dd0;
-  color: #663db8;
+  @apply text-primary;
 }
 @media (min-width: 1700px) {
   main {
@@ -605,7 +553,7 @@ h2 {
     height: 200px;
   }
   .card-title {
-    flex-wrap: wrap;
+    @apply flex-wrap;
   }
   .hover-panel {
     padding: 45px 12px 12px;
@@ -628,7 +576,7 @@ h2 {
     padding-right: 24px;
   }
   main {
-    width: 100%;
+    @apply w-full;
     padding: 0 28px 120px 104px;
   }
   .lesson-tabs {
@@ -673,7 +621,7 @@ h2 {
 }
 @media (max-width: 600px) {
   .sidebar {
-    display: none;
+    @apply hidden;
   }
   .topbar {
     margin-left: 0;
@@ -687,11 +635,11 @@ h2 {
     margin-right: auto;
     font-size: 20px;
     font-style: italic;
-    color: #663db8;
+    @apply text-primary;
   }
   .topbar > span:first-child,
   .topbar i {
-    display: none;
+    @apply hidden;
   }
   .avatar {
     width: 28px;
@@ -713,7 +661,7 @@ h2 {
   }
   .tab-row {
     height: auto;
-    flex-wrap: wrap;
+    @apply flex-wrap;
     gap: 15px;
   }
   .tabs {
@@ -724,14 +672,14 @@ h2 {
     padding: 12px 0;
   }
   .search {
-    width: 100%;
+    @apply w-full;
     margin-bottom: 14px;
     padding: 12px;
   }
   .recommend-banner {
     padding: 12px;
     gap: 10px;
-    flex-wrap: wrap;
+    @apply flex-wrap;
   }
   .sparkle {
     width: 34px;
@@ -741,7 +689,7 @@ h2 {
   .recommend-banner strong {
     margin-left: 44px;
     margin-top: -3px;
-    width: 100%;
+    @apply w-full;
   }
   h2 {
     font-size: 18px;
@@ -781,7 +729,7 @@ h2 {
   }
   .toast {
     bottom: 85px;
-    white-space: nowrap;
+    @apply whitespace-nowrap;
     font-size: 12px;
   }
   .modal {
@@ -804,7 +752,7 @@ h2 {
 }
 
 .bookmark-notice {
-  position: fixed;
+  @apply fixed;
   left: 50%;
   bottom: 40px;
   transform: translateX(-50%);
@@ -812,11 +760,9 @@ h2 {
   max-width: calc(100% - 40px);
   min-height: 88px;
   padding: 24px 32px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  @apply flex items-center justify-between;
   gap: 24px;
-  background: #f8f7fc;
+  @apply bg-surface;
   border-radius: 5px;
   box-shadow: 0 5px 15px #0000001a;
   z-index: 20;
@@ -824,19 +770,18 @@ h2 {
 .bookmark-notice p {
   color: #0d0615;
   font-size: 16px;
-  font-weight: 600;
+  @apply font-semibold;
 }
 .bookmark-notice button {
-  display: flex;
-  align-items: center;
+  @apply flex items-center;
   gap: 10px;
-  color: #929198;
+  @apply text-muted;
   font-size: 14px;
   padding: 8px 0;
-  white-space: nowrap;
+  @apply whitespace-nowrap;
 }
 .bookmark-notice button:hover {
-  color: #663db8;
+  @apply text-primary;
 }
 .bookmark-notice svg {
   width: 16px;
@@ -860,4 +805,14 @@ h2 {
     width: 12px;
     height: 12px;
   }
+}
+
+.modal {
+  margin: auto;
+  border: 0;
+  color: var(--color-ink);
+}
+.modal::backdrop {
+  background: #211b3655;
+  backdrop-filter: blur(3px);
 }
