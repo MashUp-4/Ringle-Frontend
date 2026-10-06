@@ -1,32 +1,79 @@
-# React + TypeScript + Vite
+# Ringle Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Mashup 4팀의 React·TypeScript 프론트엔드입니다. 현재 작업 범위는 튜터 추천 화면, 카드 상세 보기, 검색, 찜하기와 알림 배너입니다.
 
-Currently, two official plugins are available:
+## 실행
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Node.js와 npm을 사용합니다. 팀의 정확한 버전 고정은 합의가 필요합니다.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```sh
+npm ci
+npm run dev
+npm run build
+npm run lint
+npm run format:check
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+패키지 설치에는 커밋된 `package-lock.json`을 사용하며, 의존성 변경 시 `package.json`과 함께 갱신합니다. npm은 기존 저장소의 패키지 매니저를 유지한 선택입니다.
+
+## 화면과 라우팅
+
+- `/`: `/tutors`로 이동
+- `/tutors`: 추천 튜터
+- `/tutors?tab=전체`: 전체 튜터
+- `/tutors?tab=북마크`: 찜한 튜터
+- `/tutors/:tutorId`: 튜터 상세 팝업. 현재 데모의 ID는 튜터 이름이며 실제 API 연동 시 서버 ID로 교체해야 합니다.
+- 등록되지 않은 경로: 404 안내
+
+튜터 이름·전공·학교로 검색할 수 있습니다. 검색어는 최대 100자입니다. 추천 팝업에서는 관심 분야 선택 전 제출 버튼을 비활성화합니다. 찜하기는 하단 배너를 표시하며 바로가기로 저장 목록을 확인할 수 있습니다.
+
+## 코드 구조
+
+```text
+src/
+  components/ui/          공통 Icon, Modal
+  pages/TutorPage.tsx      페이지 구성과 URL 상태
+  features/tutors/
+    api/tutors.ts         튜터 데이터 제공 경계
+    components/           페이지 전용 TutorCard
+    data/                 데모 데이터
+    hooks/                목록 조회, 브라우저 북마크 상태
+    types/                명시적인 Tutor 타입
+  App.tsx                 Route 구성
+  App.css                 Tailwind @apply와 화면별 스타일
+  index.css               Tailwind 테마 토큰과 전역 스타일
+```
+
+컴포넌트·페이지 파일은 PascalCase, 훅은 `use` 접두사, 데이터·타입 파일은 camelCase를 사용합니다. 현재 화면에 종속된 코드는 `features/tutors`, 재사용 가능한 UI는 `components/ui`에 둡니다.
+
+## 상태와 데이터 처리
+
+검색어·팝업·알림은 페이지 로컬 상태이고, 탭·상세 튜터는 React Router의 URL 상태입니다. 목록 데이터는 `useTutors`에서 로딩·에러·재시도 상태를 관리합니다. 진행 중인 조회 Promise를 공유해 같은 시점의 중복 호출을 줄이고, 언마운트된 화면에는 결과를 반영하지 않습니다. 현재 데이터 제공 함수는 로컬 데모를 반환하며 네트워크 요청은 발생하지 않습니다.
+
+찜하기는 로그인 계정과 연결되지 않은 브라우저 로컬 기능입니다. 저장된 값은 문자열 배열인지 확인하고, 저장 실패 시 현재 화면의 상태를 유지하면서 사용자에게 알립니다. 서버 북마크로 전환하려면 인증 및 API 계약이 필요합니다. 지금은 전역 공유 상태가 없어 Zustand나 서버 캐시 라이브러리를 추가하지 않았습니다.
+
+## 디자인과 접근성
+
+Tailwind CSS 4의 테마 토큰과 `@apply`로 공통 레이아웃·색상·타이포그래피를 적용합니다. 첨부 디자인의 크기와 hover 전환 등은 화면 CSS에서 관리합니다. 5열·3열·2열 반응형 구성을 사용합니다. 카드 소개는 넘치면 스크롤할 수 있고, 검색창과 버튼은 키보드 포커스를 표시합니다.
+
+공통 Modal은 네이티브 `dialog`로 배경을 비활성화합니다. Escape·닫기 버튼·배경 클릭으로 닫으며, 닫을 때 이전 포커스를 복원합니다.
+
+## Git 협업
+
+현재 PR 브랜치는 `feat/tutor-recommendation`, 대상은 `dev`입니다. 기능 브랜치에서 작업하고 PR 리뷰 후 병합합니다. 커밋은 `feat:`, `fix:`, `refactor:`, `docs:`, `chore:` 접두사를 사용합니다. 커밋 훅은 린트와 포맷을 확인합니다. 병합 방식, `dev`에서 기본 브랜치로 반영하는 절차와 팀원별 역할은 팀 합의가 필요합니다. 자동 병합은 수행하지 않습니다.
+
+## 과제 완료를 위해 남은 사항
+
+현재 버전은 UI 데모입니다. 아래 항목은 완료되지 않았으며 백엔드·팀 합의 후 구현해야 합니다.
+
+- 역기획 요구사항과 담당 화면 범위 확인
+- 실제 튜터 목록·상세·추천·찜하기 API 연동 및 요청·응답 타입 확정
+- 인증·권한에 따른 UI, 인증 오류와 중복 변경 요청 처리
+- 합의된 API Base URL의 개발·배포 환경변수 설정
+- 실제 서버에서 로딩·빈 응답·실패·입력 검증 시나리오 확인
+- 예약·고객 지원 등 담당 범위 밖 버튼의 실제 목적지 연결
+- 팀 역할·일정·API 선택·병합 정책 등 실제 협업 내용 기록
+- 리뷰 반영 후 기본 브랜치 병합, 원격 저장소 제출
+- 과제 제출 담당자와 발표 담당자를 서로 다르게 지정
+
+API 주소나 인증 규약은 임의로 만들지 않았습니다. 클라이언트 환경변수는 공개되므로 비밀키를 넣지 않습니다.

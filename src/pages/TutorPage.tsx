@@ -1,0 +1,365 @@
+import { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { Icon } from '../components/ui/Icon'
+import { Modal } from '../components/ui/Modal'
+import { TutorCard } from '../features/tutors/components/TutorCard'
+import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
+import { useTutors } from '../features/tutors/hooks/useTutors'
+import type { Tutor, TutorTab } from '../features/tutors/types/tutor'
+
+function TutorPage() {
+  const [query, setQuery] = useState('')
+  const navigate = useNavigate()
+  const { tutorId } = useParams()
+  const [searchParams, setSearchParams] = useSearchParams()
+  const requestedTab = searchParams.get('tab')
+  const tab: TutorTab =
+    requestedTab === '전체' || requestedTab === '북마크' ? requestedTab : '추천'
+  function setTab(value: string) {
+    setSearchParams(value === '추천' ? {} : { tab: value })
+  }
+  const { saved, toggleBookmark, storageError } = useBookmarks()
+  const { tutors, loading, error, reload } = useTutors()
+  const selected = tutors.find((t) => t.name === tutorId) ?? null
+  function setSelected(tutor: Tutor | null) {
+    navigate({
+      pathname: tutor ? `/tutors/${encodeURIComponent(tutor.name)}` : '/tutors',
+      search: searchParams.toString(),
+    })
+  }
+  const [toast, setToast] = useState('')
+  const [bookmarkNotice, setBookmarkNotice] = useState<{ name: string } | null>(
+    null,
+  )
+  const [recommend, setRecommend] = useState(false)
+  const [interest, setInterest] = useState('')
+  const [filter, setFilter] = useState('')
+  useEffect(() => {
+    if (!toast) return
+    const timer = setTimeout(() => setToast(''), 2500)
+    return () => clearTimeout(timer)
+  }, [toast])
+  useEffect(() => {
+    if (!bookmarkNotice) return
+    const timer = setTimeout(() => setBookmarkNotice(null), 5000)
+    return () => clearTimeout(timer)
+  }, [bookmarkNotice])
+  const visible = tutors.filter(
+    (t) =>
+      `${t.name} ${t.major} ${t.university}`
+        .toLowerCase()
+        .includes(query.toLowerCase()) &&
+      (tab !== '북마크' || saved.includes(t.name)) &&
+      (!filter || t.category === filter),
+  )
+  function bookmark(name: string) {
+    const exists = saved.includes(name)
+    toggleBookmark(name)
+    setToast('')
+    setBookmarkNotice(exists ? null : { name })
+    if (exists) setToast('찜한 튜터에서 삭제했어요.')
+  }
+  return (
+    <>
+      <aside className="sidebar">
+        <Link className="logo" to="/tutors" aria-label="Ringle 홈">
+          Ringle
+        </Link>
+        <nav>
+          {[
+            ['home', '홈'],
+            ['lesson', '수업'],
+            ['calendar', '이벤트'],
+            ['user', '마이링글'],
+            ['chat', 'AI 스피킹'],
+            ['chart', '성취'],
+          ].map(([icon, label]) => (
+            <div
+              className={`nav-item ${label === '수업' ? 'active' : ''}`}
+              key={label}
+            >
+              <Icon name={icon} />
+              <span>{label}</span>
+            </div>
+          ))}
+        </nav>
+        <div className="sidebar-bottom">
+          <div className="nav-item">
+            <Icon name="help" />
+            FAQ
+          </div>
+          <div className="nav-item">
+            <Icon name="lesson" />
+            링글 가이드
+          </div>
+          <button
+            className="support"
+            onClick={() => setToast('문의: help@ringleplus.com')}
+            aria-label="고객 지원"
+          >
+            <Icon name="chat" />
+          </button>
+        </div>
+      </aside>
+      <header className="topbar">
+        <span>9회말 역전 이벤트</span>
+        <span>구매</span>
+        <span>기업 제휴</span>
+        <i />
+        <button
+          className="avatar"
+          aria-label="내 프로필"
+          onClick={() =>
+            setToast('튜터 추천을 살펴보고 첫 수업을 준비해 보세요.')
+          }
+        />
+      </header>
+      <main>
+        <nav className="lesson-tabs">
+          <span>예정된 수업 (0)</span>
+          <span>지난 수업</span>
+          <span className="current">튜터</span>
+          <span>교재</span>
+        </nav>
+        <h1>튜터</h1>
+        <div className="tab-row">
+          <div className="tabs">
+            {['추천', '전체', '북마크'].map((name) => (
+              <button
+                key={name}
+                className={tab === name ? 'selected' : ''}
+                onClick={() => {
+                  setTab(name)
+                  setFilter('')
+                }}
+              >
+                {name}
+                {name === '북마크' && saved.length > 0 && (
+                  <small>{saved.length}</small>
+                )}
+              </button>
+            ))}
+          </div>
+          <label className="search">
+            <Icon name="search" />
+            <input
+              aria-label="튜터 검색"
+              placeholder="튜터 이름 또는 전공으로 검색하세요."
+              value={query}
+              maxLength={100}
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query && (
+              <button onClick={() => setQuery('')} aria-label="검색 지우기">
+                ×
+              </button>
+            )}
+          </label>
+        </div>
+        <button className="recommend-banner" onClick={() => setRecommend(true)}>
+          <span className="sparkle">✦</span>
+          <span>나에게 맞는 튜터가 궁금하다면?</span>
+          <strong>
+            링글 팀에게 추천받기 <span>›</span>
+          </strong>
+        </button>
+        <section className="recommendations">
+          <div className="section-heading">
+            <h2>
+              {tab === '북마크'
+                ? '내가 저장한 튜터'
+                : tab === '전체'
+                  ? '전체 튜터'
+                  : '링글이 추천하는'}{' '}
+              <span className="hint" tabIndex={0} aria-label="추천 안내">
+                ?
+                <span className="tooltip">
+                  다양한 전공과 관심사를 가진 튜터를 만나보세요.
+                </span>
+              </span>
+            </h2>
+            <button
+              className="view-all"
+              onClick={() => {
+                setTab(tab === '전체' ? '추천' : '전체')
+                setFilter('')
+              }}
+            >
+              {tab === '전체' ? '추천보기' : '전체보기'} <Icon name="arrow" />
+            </button>
+          </div>
+          {filter && (
+            <button className="filter-chip" onClick={() => setFilter('')}>
+              {filter} ×
+            </button>
+          )}
+          {storageError && (
+            <p
+              role="status"
+              className="rounded-lg bg-amber-50 p-3 text-sm text-amber-900 mb-4"
+            >
+              {storageError}
+            </p>
+          )}
+          {loading && (
+            <p role="status" className="py-12 text-center text-muted">
+              튜터를 불러오고 있어요.
+            </p>
+          )}
+          {error && (
+            <div role="alert" className="rounded-lg bg-red-50 p-5 text-center">
+              <p>{error}</p>
+              <button className="mt-3 text-primary" onClick={reload}>
+                다시 시도
+              </button>
+            </div>
+          )}
+          {!loading && !error && tutorId && !selected && (
+            <p role="alert" className="p-4 text-center">
+              해당 튜터를 찾을 수 없어요.{' '}
+              <Link to="/tutors" className="text-primary">
+                목록으로 돌아가기
+              </Link>
+            </p>
+          )}
+          <div className="tutor-grid">
+            {visible.map((t) => (
+              <TutorCard
+                key={t.name}
+                tutor={t}
+                bookmarked={saved.includes(t.name)}
+                onBookmark={() => bookmark(t.name)}
+                onDetails={() => setSelected(t)}
+              />
+            ))}
+          </div>
+          {!loading && !error && visible.length === 0 && (
+            <div className="empty">
+              <Icon name="search" />
+              <h3>
+                {tab === '북마크'
+                  ? '저장한 튜터가 없어요'
+                  : '검색 결과가 없어요'}
+              </h3>
+              <p>
+                {tab === '북마크'
+                  ? '마음에 드는 튜터의 북마크를 눌러보세요.'
+                  : '다른 이름이나 전공으로 검색해 보세요.'}
+              </p>
+              <button
+                onClick={() => {
+                  setQuery('')
+                  setTab('전체')
+                  setFilter('')
+                }}
+              >
+                전체 튜터 보기
+              </button>
+            </div>
+          )}
+        </section>
+      </main>
+      <button className="trial" onClick={() => setRecommend(true)}>
+        <Icon name="calendar" />
+        체험 수업 예약
+      </button>
+      <button
+        className="floating-chat"
+        aria-label="문의하기"
+        onClick={() => setToast('문의: help@ringleplus.com')}
+      >
+        <Icon name="chat" />
+        <i />
+      </button>
+      {bookmarkNotice && (
+        <div className="bookmark-notice">
+          <p role="status" aria-live="polite">
+            찜한 튜터에 추가했어요.
+          </p>
+          <button
+            onClick={() => {
+              setTab('북마크')
+              setQuery('')
+              setFilter('')
+              setSelected(null)
+              setRecommend(false)
+              setBookmarkNotice(null)
+              window.scrollTo({ top: 0, behavior: 'smooth' })
+            }}
+          >
+            찜한 목록 바로가기 <Icon name="arrow" />
+          </button>
+        </div>
+      )}
+      {toast && (
+        <div className="toast" role="status">
+          ✓ {toast}
+        </div>
+      )}
+      {(selected || recommend) && (
+        <Modal
+          onClose={() => {
+            if (selected) setSelected(null)
+            setRecommend(false)
+          }}
+          labelledBy="dialog-title"
+        >
+          {selected ? (
+            <>
+              <img src={`/tutor-${selected.image}.png`} alt="" />
+              <h2 id="dialog-title">{selected.name}</h2>
+              <p className="modal-school">
+                {selected.major} · {selected.university}
+              </p>
+              <p>{selected.intro}</p>
+              <p className="modal-rating">
+                ★ {selected.rating} · 수업 후기 {selected.reviews}개
+              </p>
+              <button
+                className="primary"
+                onClick={() => bookmark(selected.name)}
+              >
+                {saved.includes(selected.name)
+                  ? '북마크 해제'
+                  : '튜터 북마크하기'}
+              </button>
+            </>
+          ) : (
+            <>
+              <span className="modal-sparkle">✦</span>
+              <h2 id="dialog-title">나에게 맞는 튜터 찾기</h2>
+              <p>관심 있는 분야를 선택하면 어울리는 튜터를 보여드려요.</p>
+              <div className="interest-options">
+                {['Medical / Bio', 'Service', 'Education', 'Art / Media'].map(
+                  (item) => (
+                    <button
+                      className={interest === item ? 'chosen' : ''}
+                      aria-pressed={interest === item}
+                      key={item}
+                      onClick={() => setInterest(item)}
+                    >
+                      {item}
+                    </button>
+                  ),
+                )}
+              </div>
+              <button
+                className="primary"
+                disabled={!interest}
+                onClick={() => {
+                  setFilter(interest)
+                  setTab('추천')
+                  setQuery('')
+                  setRecommend(false)
+                }}
+              >
+                추천 튜터 보기
+              </button>
+            </>
+          )}
+        </Modal>
+      )}
+    </>
+  )
+}
+export default TutorPage
