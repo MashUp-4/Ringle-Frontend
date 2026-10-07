@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { Icon } from '../components/ui/Icon'
+import * as figmaAssets from '../components/ui/iconAssets'
 import { TutorCard } from '../features/tutors/components/TutorCard'
 import { TutorFilterPanel } from '../features/tutors/components/TutorFilterPanel'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
@@ -26,7 +27,7 @@ export default function FavoriteTutorsPage() {
     <>
       <aside className="sidebar">
         <Link className="logo" to="/tutors" aria-label="Ringle 홈">
-          Ringle
+          <img src={figmaAssets.ringleLogo} alt="" width="44" height="44" />
         </Link>
 
         <nav>
@@ -54,7 +55,7 @@ export default function FavoriteTutorsPage() {
             FAQ
           </div>
           <div className="nav-item">
-            <Icon name="lesson" />
+            <Icon name="guide" />
             링글 가이드
           </div>
         </div>

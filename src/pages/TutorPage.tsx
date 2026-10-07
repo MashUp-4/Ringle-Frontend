@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Icon } from '../components/ui/Icon'
+import * as figmaAssets from '../components/ui/iconAssets'
 import { Modal } from '../components/ui/Modal'
 import { TutorCard } from '../features/tutors/components/TutorCard'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
@@ -61,7 +62,7 @@ function TutorPage() {
     <>
       <aside className="sidebar">
         <Link className="logo" to="/tutors" aria-label="Ringle 홈">
-          Ringle
+          <img src={figmaAssets.ringleLogo} alt="" width="44" height="44" />
         </Link>
         <nav>
           {[
@@ -87,7 +88,7 @@ function TutorPage() {
             FAQ
           </div>
           <div className="nav-item">
-            <Icon name="lesson" />
+            <Icon name="guide" />
             링글 가이드
           </div>
           <button
@@ -95,7 +96,7 @@ function TutorPage() {
             onClick={() => setToast('문의: help@ringleplus.com')}
             aria-label="고객 지원"
           >
-            <Icon name="chat" />
+            <img src={figmaAssets.chatSidebar} alt="" width="56" height="56" />
           </button>
         </div>
       </aside>
@@ -152,7 +153,7 @@ function TutorPage() {
           </label>
         </div>
         <button className="recommend-banner" onClick={() => setRecommend(true)}>
-          <span className="sparkle">✦</span>
+          <Icon name="twinkle" />
           <span>나에게 맞는 튜터가 궁금하다면?</span>
           <strong>
             링글 팀에게 추천받기 <span>›</span>
@@ -163,7 +164,7 @@ function TutorPage() {
             <h2>
               {tab === '전체' ? '전체 튜터' : '링글이 추천하는'}{' '}
               <span className="hint" tabIndex={0} aria-label="추천 안내">
-                ?
+                <Icon name="question" />
                 <span className="tooltip">
                   다양한 전공과 관심사를 가진 튜터를 만나보세요.
                 </span>
@@ -243,7 +244,7 @@ function TutorPage() {
         </section>
       </main>
       <button className="trial" onClick={() => setRecommend(true)}>
-        <Icon name="calendar" />
+        <Icon name="trial" />
         체험 수업 예약
       </button>
       <button
@@ -251,8 +252,7 @@ function TutorPage() {
         aria-label="문의하기"
         onClick={() => setToast('문의: help@ringleplus.com')}
       >
-        <Icon name="chat" />
-        <i />
+        <img src={figmaAssets.chatbot} alt="" width="72" height="72" />
       </button>
       {bookmarkNotice && (
         <div className="bookmark-notice">
