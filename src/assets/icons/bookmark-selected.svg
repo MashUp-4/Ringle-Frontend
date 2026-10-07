@@ -1,0 +1,20 @@
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_290_5596)">
+<circle cx="32" cy="32" r="24" fill="#FFE9E1" fill-opacity="0.64" shape-rendering="crispEdges"/>
+<circle cx="32" cy="32" r="23.5" stroke="white" shape-rendering="crispEdges"/>
+</g>
+<path d="M23.1431 22.5426C23.1431 21.2171 24.2176 20.1426 25.5431 20.1426H38.7431C40.0686 20.1426 41.1431 21.2171 41.1431 22.5426V42.7419C41.1431 43.9592 39.7694 44.6696 38.776 43.9659L32.4899 39.5132C32.2821 39.3661 32.004 39.3661 31.7963 39.5132L25.5101 43.9659C24.5167 44.6696 23.1431 43.9592 23.1431 42.7419V22.5426Z" fill="#F87170"/>
+<defs>
+<filter id="filter0_d_290_5596" x="0" y="0" width="64" height="64" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset/>
+<feGaussianBlur stdDeviation="4"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.0509804 0 0 0 0 0.0235294 0 0 0 0 0.0823529 0 0 0 0.1 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_290_5596"/>
+<feBlend mode="normal" in="BackgroundImageFix" in2="effect1_dropShadow_290_5596" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+</filter>
+</defs>
+</svg>

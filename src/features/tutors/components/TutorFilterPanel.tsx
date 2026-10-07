@@ -1,4 +1,4 @@
-import { Icon } from '../../../components/ui/Icon'
+import * as figmaAssets from '../../../components/ui/iconAssets'
 const days = ['일', '월', '화', '수', '목', '금', '토']
 const times = ['새벽 0:00 ~ 3:00', '오전 5:00 ~ 7:00', '오전 7:00 ~ 9:00']
 
@@ -17,13 +17,27 @@ function TutorTypeFilter({
           checked={savedOnly}
           onChange={(event) => onSavedOnlyChange(event.target.checked)}
         />
-        <Icon name="bookmark" />
+        <span className="filter-icon-slot" aria-hidden="true">
+          <img
+            src={figmaAssets.tutorFilterBookmark}
+            alt=""
+            width="14"
+            height="18"
+          />
+        </span>
         찜한 튜터
       </label>
 
-      {['수업한 튜터', '링글 추천 튜터', '50% 포인트백'].map((label) => (
+      {[
+        { label: '수업한 튜터', icon: figmaAssets.tutorFilterTaught },
+        { label: '링글 추천 튜터', icon: figmaAssets.tutorFilterRecommended },
+        { label: '50% 포인트백', icon: figmaAssets.tutorFilterPointback },
+      ].map(({ label, icon }) => (
         <label key={label}>
           <input type="checkbox" disabled />
+          <span className="filter-icon-slot" aria-hidden="true">
+            <img src={icon} alt="" width="28" height="28" />
+          </span>
           {label}
         </label>
       ))}

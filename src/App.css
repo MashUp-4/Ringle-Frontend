@@ -1,5 +1,34 @@
 @reference "./index.css";
 
+.icon-slot {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+.icon-art {
+  display: block;
+  flex-shrink: 0;
+  max-width: none;
+}
+.icon-mask {
+  background-color: currentColor;
+  mask-position: center;
+  mask-repeat: no-repeat;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+}
+.icon-chevron {
+  width: 8px;
+  height: 8px;
+  border-top: 1.5px solid currentColor;
+  border-right: 1.5px solid currentColor;
+  transform: rotate(45deg);
+}
+
 .sidebar {
   @apply fixed;
   left: 0;
@@ -13,16 +42,14 @@
 .logo {
   @apply grid place-items-center;
   margin: 28px 0 34px;
-  width: 46px;
-  height: 46px;
-  @apply rounded-full;
-  background: linear-gradient(135deg, #8974f2, #543bd0);
-  @apply text-white;
+  width: 44px;
+  height: 44px;
   text-decoration: none;
-  font-family: cursive;
-  font-style: italic;
-  font-size: 18px;
-  transform: rotate(-12deg);
+}
+.logo img {
+  display: block;
+  width: 44px;
+  height: 44px;
 }
 .sidebar nav {
   @apply w-full;
@@ -34,18 +61,17 @@
   padding: 14px 0;
   font-size: 14px;
 }
-.nav-item svg {
-  fill: currentColor;
-  stroke-width: 1;
-  width: 25px;
-  height: 25px;
+.nav-item .icon-slot {
+  width: 64px;
+  height: 40px;
+  border-radius: 20px;
 }
 .nav-item.active {
   @apply text-primary;
 }
-.nav-item.active svg {
-  box-shadow: 0 0 0 12px #f8f5fd;
-  border-radius: 3px;
+.nav-item:hover .icon-slot,
+.nav-item.active .icon-slot {
+  background: #f7f8fb;
 }
 .sidebar-bottom {
   margin-top: auto;
@@ -53,11 +79,16 @@
   @apply w-full text-center;
 }
 .support {
-  border: 1px solid #eee;
-  border-radius: 18px;
-  padding: 10px;
-  color: #9869f4;
-  margin-top: 15px;
+  display: block;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  margin: 10px auto 0;
+}
+.support img {
+  display: block;
+  width: 56px;
+  height: 56px;
 }
 .topbar {
   height: 80px;
@@ -153,9 +184,9 @@ h1 {
   color: #9b9ba4;
   margin-bottom: 12px;
 }
-.search svg {
-  width: 19px;
-  height: 19px;
+.search .icon-slot {
+  width: 21px;
+  height: 21px;
 }
 .search input {
   background: none;
@@ -180,11 +211,9 @@ h1 {
 .recommend-banner:hover {
   background: #eee8fa;
 }
-.sparkle {
-  width: 44px;
-  height: 44px;
-  @apply rounded-full bg-white text-primary grid place-items-center;
-  font-size: 28px;
+.recommend-banner .icon-twinkle {
+  width: 48px;
+  height: 48px;
 }
 .recommend-banner strong {
   margin-left: auto;
@@ -206,16 +235,16 @@ h2 {
   @apply items-center;
 }
 .hint {
-  font-size: 11px;
-  border: 1px solid #999;
-  color: #999;
-  width: 16px;
-  height: 16px;
+  width: 20px;
+  height: 20px;
   @apply rounded-full;
   display: inline-grid;
   @apply place-items-center relative;
-  font-weight: 400;
   @apply cursor-help;
+}
+.hint .icon-slot {
+  width: 20px;
+  height: 20px;
 }
 .tooltip {
   @apply hidden absolute;
@@ -241,7 +270,7 @@ h2 {
   color: #97969e;
   font-size: 13px;
 }
-.view-all svg {
+.view-all .icon-slot {
   width: 12px;
   height: 12px;
 }
@@ -274,29 +303,23 @@ h2 {
   @apply absolute;
   right: 10px;
   top: 10px;
-  width: 40px;
-  height: 40px;
-  @apply rounded-full grid place-items-center bg-white;
-  color: #d7d7dc;
-  box-shadow: 0 1px 10px #00000013;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  @apply rounded-full;
   z-index: 2;
-  transition:
-    color 0.2s,
-    transform 0.2s;
+  transition: transform 0.2s;
 }
-.bookmark svg {
-  width: 20px;
-  height: 23px;
-  fill: currentColor;
-  stroke-width: 0;
+.bookmark img {
+  position: absolute;
+  left: -8px;
+  top: -8px;
+  width: 64px;
+  height: 64px;
+  pointer-events: none;
 }
 .bookmark:hover {
-  transform: scale(1.1);
-  color: #9874d8;
-}
-.bookmark.saved {
-  @apply text-primary;
-  background: #f3edfc;
+  transform: scale(1.05);
 }
 .hover-panel {
   @apply absolute;
@@ -334,7 +357,7 @@ h2 {
   @apply flex justify-center items-center;
   gap: 6px;
 }
-.hover-panel svg {
+.hover-panel .icon-slot {
   width: 14px;
   height: 14px;
 }
@@ -407,29 +430,26 @@ h2 {
 .primary:hover {
   background: #54309b;
 }
-.trial svg {
+.trial .icon-slot {
   width: 20px;
-  height: 20px;
+  height: 21px;
 }
 .floating-chat {
   @apply fixed;
   right: 24px;
   bottom: 24px;
-  background: #9869f4;
-  @apply text-white;
-  padding: 14px;
-  border-radius: 18px;
-  box-shadow: 0 2px 10px #0003;
+  width: 56px;
+  height: 56px;
+  padding: 0;
   z-index: 3;
 }
-.floating-chat i {
-  width: 10px;
-  height: 10px;
-  background: #ef7761;
-  border: 2px solid white;
-  @apply rounded-full absolute;
-  top: 0;
-  right: 0;
+.floating-chat img {
+  position: absolute;
+  left: -8px;
+  top: -4px;
+  width: 72px;
+  height: 72px;
+  pointer-events: none;
 }
 .toast {
   @apply fixed;
@@ -448,7 +468,7 @@ h2 {
   padding: 70px 0;
   @apply text-muted;
 }
-.empty svg {
+.empty .icon-slot {
   margin-bottom: 20px;
 }
 .empty h3 {
@@ -613,10 +633,10 @@ h2 {
   .recommend-banner > span:nth-child(2) {
     font-size: 12px;
   }
-  .sidebar .logo {
+  .sidebar .logo,
+  .sidebar .logo img {
     width: 40px;
     height: 40px;
-    font-size: 15px;
   }
 }
 @media (max-width: 600px) {
@@ -681,10 +701,9 @@ h2 {
     gap: 10px;
     @apply flex-wrap;
   }
-  .sparkle {
-    width: 34px;
-    height: 34px;
-    font-size: 22px;
+  .recommend-banner .icon-twinkle {
+    width: 48px;
+    height: 48px;
   }
   .recommend-banner strong {
     margin-left: 44px;
@@ -723,7 +742,6 @@ h2 {
     font-size: 12px;
   }
   .floating-chat {
-    padding: 11px;
     right: 18px;
     bottom: 18px;
   }
@@ -739,8 +757,6 @@ h2 {
     font-size: 12px;
   }
   .bookmark {
-    width: 34px;
-    height: 34px;
     right: 5px;
     top: 5px;
   }
@@ -783,7 +799,7 @@ h2 {
 .bookmark-notice button:hover {
   @apply text-primary;
 }
-.bookmark-notice svg {
+.bookmark-notice .icon-slot {
   width: 16px;
   height: 16px;
 }
@@ -801,7 +817,7 @@ h2 {
     font-size: 11px;
     gap: 4px;
   }
-  .bookmark-notice svg {
+  .bookmark-notice .icon-slot {
     width: 12px;
     height: 12px;
   }
@@ -850,10 +866,16 @@ h2 {
   font-weight: 600;
 }
 
-.favorite-filter-types label svg {
-  width: 14px;
-  height: 14px;
-  fill: currentColor;
+.filter-icon-slot {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+}
+.filter-icon-slot img {
+  display: block;
+  max-width: none;
 }
 
 .favorite-filter-types input {
