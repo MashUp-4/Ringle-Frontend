@@ -6,6 +6,8 @@ export interface Tutor {
   rating: string
   reviews: number
   image: number
+  acceptanceRate: number
+  subjects: string[]
   intro: string
 }
 export type TutorTab = '추천' | '전체'

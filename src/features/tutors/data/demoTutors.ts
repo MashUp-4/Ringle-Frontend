@@ -1,7 +1,10 @@
 import type { Tutor } from '../types/tutor'
+// API 연동 전 화면 확인용 목데이터입니다. 실제 연동 시 이 파일과 import를 제거합니다.
 export const demoTutors: Tutor[] = [
   {
     name: 'Anshi',
+    acceptanceRate: 87,
+    subjects: ['신경과학', '뇌과학'],
     major: 'Neuroscience',
     university: 'New York University',
     category: 'Medical / Bio',
@@ -13,6 +16,8 @@ export const demoTutors: Tutor[] = [
   },
   {
     name: 'Alexander',
+    acceptanceRate: 92,
+    subjects: ['심리학'],
     major: 'Psychology',
     university: 'London School of Economics',
     category: 'Service',
@@ -24,6 +29,8 @@ export const demoTutors: Tutor[] = [
   },
   {
     name: 'Audley',
+    acceptanceRate: 89,
+    subjects: ['역사'],
     major: 'History',
     university: 'New York University',
     category: 'Education',
@@ -35,6 +42,8 @@ export const demoTutors: Tutor[] = [
   },
   {
     name: 'Luigi',
+    acceptanceRate: 90,
+    subjects: ['의공학'],
     major: 'Biomedical Engineering',
     university: 'University of Florida',
     category: 'Education',
@@ -46,6 +55,8 @@ export const demoTutors: Tutor[] = [
   },
   {
     name: 'Tatiana',
+    acceptanceRate: 95,
+    subjects: ['건축'],
     major: 'Architecture',
     university: 'Smith College',
     category: 'Art / Media',

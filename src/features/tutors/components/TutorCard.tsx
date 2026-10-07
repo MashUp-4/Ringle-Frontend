@@ -1,4 +1,3 @@
-import { Icon } from '../../../components/ui/Icon'
 import * as figmaAssets from '../../../components/ui/iconAssets'
 import type { Tutor } from '../types/tutor'
 interface TutorCardProps {
@@ -16,10 +15,16 @@ export function TutorCard({
   return (
     <article className="tutor-card">
       <div className="portrait">
-        <img
-          src={`/tutor-${tutor.image}.png`}
-          alt={`${tutor.name} 튜터 캐릭터`}
-        />
+        <button
+          className="tutor-photo-details"
+          onClick={onDetails}
+          aria-label={`${tutor.name} 튜터 자세히 보기`}
+        >
+          <img
+            src={`/tutor-${tutor.image}.png`}
+            alt={`${tutor.name} 튜터 캐릭터`}
+          />
+        </button>
         <button
           className={`bookmark ${bookmarked ? 'saved' : ''}`}
           aria-label={`${tutor.name} 북마크`}
@@ -37,12 +42,15 @@ export function TutorCard({
             height="64"
           />
         </button>
-        <div className="hover-panel">
-          <span className="hover-label">MEET YOUR TUTOR</span>
-          <p>{tutor.intro}</p>
-          <button onClick={onDetails}>
-            튜터 자세히 보기 <Icon name="arrow" />
-          </button>
+        <div className="tutor-photo-overlay">
+          <span className="tutor-acceptance">
+            수락률 {tutor.acceptanceRate}%
+          </span>
+          <div className="tutor-subjects">
+            {tutor.subjects.map((subject) => (
+              <span key={subject}>{subject}</span>
+            ))}
+          </div>
         </div>
       </div>
       <div className="card-title">
