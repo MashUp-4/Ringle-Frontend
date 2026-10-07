@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Icon } from '../components/ui/Icon'
+import { AppNavigation } from '../components/layout/AppNavigation'
 import * as figmaAssets from '../components/ui/iconAssets'
 import { Modal } from '../components/ui/Modal'
 import { TutorCard } from '../features/tutors/components/TutorCard'
@@ -10,6 +11,9 @@ import type { Tutor, TutorTab } from '../features/tutors/types/tutor'
 
 function TutorPage() {
   const [query, setQuery] = useState('')
+  useEffect(() => {
+    document.title = '튜터 추천 | Ringle'
+  }, [])
   const navigate = useNavigate()
   const { tutorId } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
@@ -60,59 +64,7 @@ function TutorPage() {
   }
   return (
     <>
-      <aside className="sidebar">
-        <Link className="logo" to="/tutors" aria-label="Ringle 홈">
-          <img src={figmaAssets.ringleLogo} alt="" width="44" height="44" />
-        </Link>
-        <nav>
-          {[
-            ['home', '홈'],
-            ['lesson', '수업'],
-            ['calendar', '이벤트'],
-            ['user', '마이링글'],
-            ['chat', 'AI 스피킹'],
-            ['chart', '성취'],
-          ].map(([icon, label]) => (
-            <div
-              className={`nav-item ${label === '수업' ? 'active' : ''}`}
-              key={label}
-            >
-              <Icon name={icon} />
-              <span>{label}</span>
-            </div>
-          ))}
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="nav-item">
-            <Icon name="help" />
-            FAQ
-          </div>
-          <div className="nav-item">
-            <Icon name="guide" />
-            링글 가이드
-          </div>
-          <button
-            className="support"
-            onClick={() => setToast('문의: help@ringleplus.com')}
-            aria-label="고객 지원"
-          >
-            <img src={figmaAssets.chatSidebar} alt="" width="56" height="56" />
-          </button>
-        </div>
-      </aside>
-      <header className="topbar">
-        <span>9회말 역전 이벤트</span>
-        <span>구매</span>
-        <span>기업 제휴</span>
-        <i />
-        <button
-          className="avatar"
-          aria-label="내 프로필"
-          onClick={() =>
-            setToast('튜터 추천을 살펴보고 첫 수업을 준비해 보세요.')
-          }
-        />
-      </header>
+      <AppNavigation onNotice={setToast} />
       <main>
         <nav className="lesson-tabs">
           <span>예정된 수업 (0)</span>
