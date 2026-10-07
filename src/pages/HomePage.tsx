@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { AppNavigation } from '../components/layout/AppNavigation'
 import { Icon } from '../components/ui/Icon'
 import { Modal } from '../components/ui/Modal'
@@ -20,11 +20,16 @@ type HomeDialog =
   | { type: 'information'; title: string; description: string }
   | null
 export default function HomePage() {
+  const [params] = useSearchParams()
   useEffect(() => {
     document.title = '홈 | Ringle'
   }, [])
-  // 예약된 수업과 보유 수업권이 없는 홈 상태입니다.
-  const balance: LessonPassBalance = { fortyMinutes: 0, twentyMinutes: 0 }
+  // 실제 보유 수업권 API 계약 전, 두 디자인 상태를 확인하는 데모 데이터입니다.
+  const balance: LessonPassBalance =
+    params.get('passes') === 'available'
+      ? { fortyMinutes: 1, twentyMinutes: 0 }
+      : { fortyMinutes: 0, twentyMinutes: 0 }
+  const hasPass = balance.fortyMinutes + balance.twentyMinutes > 0
   const [goal, setGoal] = useState<LearningGoal>('career')
   const [profile, setProfile] = useState<HomeProfile>({
     name: '한수지',
@@ -97,7 +102,9 @@ export default function HomePage() {
             >
               <div className="home-section-heading">
                 <h1 id="home-recommendation-title">
-                  예정된 수업이 없어요. 링글이 추천하는 튜터를 만나보세요!
+                  {hasPass
+                    ? '이번 수업, 무엇을 연습할까요?'
+                    : '예정된 수업이 없어요. 링글이 추천하는 튜터를 만나보세요!'}
                 </h1>
                 <Link to="/tutors">추천 튜터 더보기</Link>
               </div>
@@ -186,10 +193,18 @@ export default function HomePage() {
                 )}
               </div>
               <div className="home-reserve">
-                <button className="home-primary-button" onClick={purchase}>
-                  수업권 구매하고 예약하기
-                </button>
-                <p>보유 쿠폰 1장이 자동으로 적용돼요.</p>
+                {hasPass ? (
+                  <Link className="home-primary-button" to="/tutors">
+                    바로 예약하기
+                  </Link>
+                ) : (
+                  <>
+                    <button className="home-primary-button" onClick={purchase}>
+                      수업권 구매하고 예약하기
+                    </button>
+                    <p>보유 쿠폰 1장이 자동으로 적용돼요.</p>
+                  </>
+                )}
               </div>
             </section>
             <section className="home-curriculum">
