@@ -632,3 +632,140 @@
     display: none;
   }
 }
+
+/* Tutor summaries follow the photo-overlay layout used on the home screen. */
+.home-tutor-card {
+  border: 0;
+  border-radius: 0;
+  overflow: visible;
+}
+.home-tutor-card:hover,
+.home-tutor-card:focus-within {
+  box-shadow: none;
+}
+.home-tutor-portrait {
+  aspect-ratio: 1;
+  height: auto;
+  overflow: hidden;
+  border-radius: 18px;
+  background: white;
+  transition: background-color 0.2s;
+}
+.home-tutor-portrait > a {
+  padding: 28px;
+}
+.home-tutor-portrait img {
+  filter: none;
+  transition:
+    filter 0.2s,
+    transform 0.2s;
+}
+.home-tutor-acceptance,
+.home-tutor-topics {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 0.2s,
+    visibility 0.2s;
+}
+.home-tutor-portrait:hover,
+.home-tutor-portrait:focus-within {
+  background: #b3b3b3;
+}
+.home-tutor-portrait:hover img,
+.home-tutor-portrait:focus-within img {
+  filter: blur(2px);
+  mix-blend-mode: multiply;
+}
+.home-tutor-portrait:hover .home-tutor-acceptance,
+.home-tutor-portrait:hover .home-tutor-topics,
+.home-tutor-portrait:focus-within .home-tutor-acceptance,
+.home-tutor-portrait:focus-within .home-tutor-topics {
+  opacity: 1;
+  visibility: visible;
+}
+.home-tutor-acceptance {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  color: white;
+  font-size: 18px;
+  font-weight: 700;
+  pointer-events: none;
+}
+.home-tutor-topics {
+  position: absolute;
+  bottom: 16px;
+  left: 18px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  pointer-events: none;
+}
+.home-tutor-topics span {
+  padding: 5px 9px;
+  border-radius: 4px;
+  background: #494654;
+  color: white;
+  font-size: 12px;
+  font-weight: 700;
+}
+.home-tutor-portrait .bookmark {
+  top: 14px;
+  right: 14px;
+}
+.home-tutor-info {
+  padding: 0;
+}
+.home-tutor-info .card-title {
+  margin-top: 20px;
+}
+.home-tutor-info .card-title a {
+  font-size: 22px;
+}
+.home-tutor-info .major {
+  margin-top: 10px;
+  font-size: 19px;
+  font-weight: 600;
+  color: #5a5769;
+}
+.home-tutor-info .university {
+  font-size: 17px;
+  font-weight: 600;
+}
+.home-tutor-info .category {
+  display: inline-block;
+  margin-top: 12px;
+  font-size: 14px;
+}
+@media (max-width: 600px) {
+  .home-tutor-portrait > a {
+    padding: 16px;
+  }
+  .home-tutor-acceptance {
+    top: 12px;
+    left: 10px;
+    font-size: 13px;
+  }
+  .home-tutor-topics {
+    bottom: 10px;
+    left: 10px;
+    gap: 4px;
+  }
+  .home-tutor-topics span {
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+  .home-tutor-info .card-title a {
+    font-size: 16px;
+  }
+  .home-tutor-info .major {
+    font-size: 14px;
+  }
+  .home-tutor-info .university {
+    font-size: 12px;
+  }
+  .home-tutor-info .category {
+    font-size: 11px;
+  }
+}

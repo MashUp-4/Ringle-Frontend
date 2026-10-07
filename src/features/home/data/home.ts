@@ -30,33 +30,3 @@ export const learningGoals: {
     tutorNames: ['Anshi', 'Audley'],
   },
 ]
-export const tutorHighlights: Record<
-  string,
-  { description: string; tags: string[]; availability: string }
-> = {
-  Anshi: {
-    description: '실제 면접처럼 꼬리 질문',
-    tags: ['미국 영어', '모의 인터뷰'],
-    availability: '오늘 22:00',
-  },
-  Alexander: {
-    description: '이력서 첨삭부터 답변까지',
-    tags: ['캐나다 영어', '영문 이력서 첨삭'],
-    availability: '내일 07:30',
-  },
-  Audley: {
-    description: '생각을 넓히는 깊이 있는 대화',
-    tags: ['일상 대화', '토론'],
-    availability: '내일 09:00',
-  },
-  Luigi: {
-    description: '명확하고 논리적인 영어 표현',
-    tags: ['비즈니스 영어', '프레젠테이션'],
-    availability: '내일 10:00',
-  },
-  Tatiana: {
-    description: '관심사로 시작하는 자연스러운 대화',
-    tags: ['일상 대화', '문화와 예술'],
-    availability: '내일 18:00',
-  },
-}
