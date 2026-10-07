@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Icon } from '../../../components/ui/Icon'
 import type { Tutor } from '../../tutors/types/tutor'
-import { tutorHighlights } from '../data/home'
 interface HomeTutorCardProps {
   tutor: Tutor
   bookmarked: boolean
@@ -12,7 +11,6 @@ export function HomeTutorCard({
   bookmarked,
   onBookmark,
 }: HomeTutorCardProps) {
-  const highlight = tutorHighlights[tutor.name]
   return (
     <article className="home-tutor-card">
       <div className="home-tutor-portrait">
@@ -25,6 +23,16 @@ export function HomeTutorCard({
             alt={`${tutor.name} 튜터 캐릭터`}
           />
         </Link>
+        {tutor.acceptanceRate !== undefined && (
+          <span className="home-tutor-acceptance">
+            수락률 {tutor.acceptanceRate}%
+          </span>
+        )}
+        <div className="home-tutor-topics">
+          {tutor.subjects.map((subject) => (
+            <span key={subject}>{subject}</span>
+          ))}
+        </div>
         <button
           className={`bookmark ${bookmarked ? 'saved' : ''}`}
           aria-label={`${tutor.name} 찜하기`}
@@ -48,17 +56,7 @@ export function HomeTutorCard({
         </div>
         <p className="major">{tutor.major}</p>
         <p className="university">{tutor.university}</p>
-        <p className="home-highlight">{highlight.description}</p>
-        <div className="flex flex-wrap gap-2">
-          {highlight.tags.map((tag) => (
-            <span className="category" key={tag}>
-              {tag}
-            </span>
-          ))}
-        </div>
-        <p className="home-availability">
-          가장 빠른 수업 <strong>{highlight.availability}</strong>
-        </p>
+        <span className="category">{tutor.category}</span>
       </div>
     </article>
   )
