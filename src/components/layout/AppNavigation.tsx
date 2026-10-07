@@ -1,5 +1,6 @@
 import { Link, useLocation } from 'react-router-dom'
 import { Icon } from '../ui/Icon'
+import { ringleLogo, chatSidebar } from '../ui/iconAssets'
 interface AppNavigationProps {
   onNotice: (message: string) => void
 }
@@ -17,7 +18,7 @@ export function AppNavigation({ onNotice }: AppNavigationProps) {
     <>
       <aside className="sidebar">
         <Link className="logo" to="/" aria-label="Ringle 홈">
-          Ringle
+          <img src={ringleLogo} alt="" width="44" height="44" />
         </Link>
         <nav aria-label="주 메뉴">
           {items.map((item) =>
@@ -76,7 +77,7 @@ export function AppNavigation({ onNotice }: AppNavigationProps) {
             onClick={() => onNotice('문의: help@ringleplus.com')}
             aria-label="고객 지원"
           >
-            <Icon name="chat" />
+            <img src={chatSidebar} alt="" width="56" height="56" />
           </button>
         </div>
       </aside>

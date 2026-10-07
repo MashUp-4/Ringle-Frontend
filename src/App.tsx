@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import TutorPage from './pages/TutorPage'
+import FavoriteTutorsPage from './pages/FavoriteTutorsPage'
 import './App.css'
 
 export default function App() {
@@ -8,6 +9,7 @@ export default function App() {
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/tutors" element={<TutorPage />} />
+      <Route path="/tutors/favorites" element={<FavoriteTutorsPage />} />
       <Route path="/tutors/:tutorId" element={<TutorPage />} />
       <Route
         path="*"

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Icon } from '../components/ui/Icon'
 import { AppNavigation } from '../components/layout/AppNavigation'
+import * as figmaAssets from '../components/ui/iconAssets'
 import { Modal } from '../components/ui/Modal'
 import { TutorCard } from '../features/tutors/components/TutorCard'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
@@ -17,8 +18,7 @@ function TutorPage() {
   const { tutorId } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
   const requestedTab = searchParams.get('tab')
-  const tab: TutorTab =
-    requestedTab === '전체' || requestedTab === '북마크' ? requestedTab : '추천'
+  const tab: TutorTab = requestedTab === '전체' ? '전체' : '추천'
   function setTab(value: string) {
     setSearchParams(value === '추천' ? {} : { tab: value })
   }
@@ -53,7 +53,6 @@ function TutorPage() {
       `${t.name} ${t.major} ${t.university}`
         .toLowerCase()
         .includes(query.toLowerCase()) &&
-      (tab !== '북마크' || saved.includes(t.name)) &&
       (!filter || t.category === filter),
   )
   function bookmark(name: string) {
@@ -76,7 +75,7 @@ function TutorPage() {
         <h1>튜터</h1>
         <div className="tab-row">
           <div className="tabs">
-            {['추천', '전체', '북마크'].map((name) => (
+            {['추천', '전체'].map((name) => (
               <button
                 key={name}
                 className={tab === name ? 'selected' : ''}
@@ -86,9 +85,6 @@ function TutorPage() {
                 }}
               >
                 {name}
-                {name === '북마크' && saved.length > 0 && (
-                  <small>{saved.length}</small>
-                )}
               </button>
             ))}
           </div>
@@ -109,7 +105,7 @@ function TutorPage() {
           </label>
         </div>
         <button className="recommend-banner" onClick={() => setRecommend(true)}>
-          <span className="sparkle">✦</span>
+          <Icon name="twinkle" />
           <span>나에게 맞는 튜터가 궁금하다면?</span>
           <strong>
             링글 팀에게 추천받기 <span>›</span>
@@ -118,13 +114,9 @@ function TutorPage() {
         <section className="recommendations">
           <div className="section-heading">
             <h2>
-              {tab === '북마크'
-                ? '내가 저장한 튜터'
-                : tab === '전체'
-                  ? '전체 튜터'
-                  : '링글이 추천하는'}{' '}
+              {tab === '전체' ? '전체 튜터' : '링글이 추천하는'}{' '}
               <span className="hint" tabIndex={0} aria-label="추천 안내">
-                ?
+                <Icon name="question" />
                 <span className="tooltip">
                   다양한 전공과 관심사를 가진 튜터를 만나보세요.
                 </span>
@@ -188,16 +180,8 @@ function TutorPage() {
           {!loading && !error && visible.length === 0 && (
             <div className="empty">
               <Icon name="search" />
-              <h3>
-                {tab === '북마크'
-                  ? '저장한 튜터가 없어요'
-                  : '검색 결과가 없어요'}
-              </h3>
-              <p>
-                {tab === '북마크'
-                  ? '마음에 드는 튜터의 북마크를 눌러보세요.'
-                  : '다른 이름이나 전공으로 검색해 보세요.'}
-              </p>
+              <h3>검색 결과가 없어요</h3>
+              <p>다른 이름이나 전공으로 검색해 보세요.</p>
               <button
                 onClick={() => {
                   setQuery('')
@@ -212,7 +196,7 @@ function TutorPage() {
         </section>
       </main>
       <button className="trial" onClick={() => setRecommend(true)}>
-        <Icon name="calendar" />
+        <Icon name="trial" />
         체험 수업 예약
       </button>
       <button
@@ -220,25 +204,14 @@ function TutorPage() {
         aria-label="문의하기"
         onClick={() => setToast('문의: help@ringleplus.com')}
       >
-        <Icon name="chat" />
-        <i />
+        <img src={figmaAssets.chatbot} alt="" width="72" height="72" />
       </button>
       {bookmarkNotice && (
         <div className="bookmark-notice">
           <p role="status" aria-live="polite">
             찜한 튜터에 추가했어요.
           </p>
-          <button
-            onClick={() => {
-              setTab('북마크')
-              setQuery('')
-              setFilter('')
-              setSelected(null)
-              setRecommend(false)
-              setBookmarkNotice(null)
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
-          >
+          <button onClick={() => navigate('/tutors/favorites?saved=1')}>
             찜한 목록 바로가기 <Icon name="arrow" />
           </button>
         </div>

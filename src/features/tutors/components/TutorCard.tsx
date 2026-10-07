@@ -1,4 +1,5 @@
 import { Icon } from '../../../components/ui/Icon'
+import * as figmaAssets from '../../../components/ui/iconAssets'
 import type { Tutor } from '../types/tutor'
 interface TutorCardProps {
   tutor: Tutor
@@ -25,7 +26,16 @@ export function TutorCard({
           aria-pressed={bookmarked}
           onClick={onBookmark}
         >
-          <Icon name="bookmark" />
+          <img
+            src={
+              bookmarked
+                ? figmaAssets.bookmarkSelected
+                : figmaAssets.bookmarkDefault
+            }
+            alt=""
+            width="64"
+            height="64"
+          />
         </button>
         <div className="hover-panel">
           <span className="hover-label">MEET YOUR TUTOR</span>
