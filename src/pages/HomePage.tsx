@@ -482,7 +482,7 @@ export default function HomePage() {
       {bookmarkNotice && (
         <div className="bookmark-notice">
           <p role="status">찜한 튜터에 추가했어요.</p>
-          <Link to="/tutors?tab=북마크">
+          <Link to="/tutors/favorites?saved=1">
             찜한 목록 바로가기 <Icon name="arrow" />
           </Link>
         </div>

@@ -8,4 +8,4 @@ export interface Tutor {
   image: number
   intro: string
 }
-export type TutorTab = '추천' | '전체' | '북마크'
+export type TutorTab = '추천' | '전체'
