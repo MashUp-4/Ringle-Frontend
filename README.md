@@ -1,6 +1,6 @@
 # Ringle Frontend
 
-Mashup 4팀의 React·TypeScript 프론트엔드입니다. 현재 작업 범위는 튜터 추천 화면, 카드 상세 보기, 검색, 찜하기와 알림 배너입니다.
+Mashup 4팀의 React·TypeScript 프론트엔드입니다. 현재 튜터 추천 화면과 필터가 있는 전체 튜터 화면, 검색, 찜하기, 카드 상세 보기를 구현했습니다.
 
 ## 실행
 
@@ -20,8 +20,9 @@ npm run format:check
 
 - `/`: `/tutors`로 이동
 - `/tutors`: 추천 튜터
-- `/tutors?tab=전체`: 전체 튜터
-- `/tutors?tab=북마크`: 찜한 튜터
+- `/tutors?tab=전체`: 기존 화면의 전체 튜터 탭
+- `/tutors/favorites`: 필터가 있는 전체 튜터 화면
+- `/tutors/favorites?saved=1`: 찜한 튜터만 표시
 - `/tutors/:tutorId`: 튜터 상세 팝업. 현재 데모의 ID는 튜터 이름이며 실제 API 연동 시 서버 ID로 교체해야 합니다.
 - 등록되지 않은 경로: 404 안내
 
@@ -32,10 +33,11 @@ npm run format:check
 ```text
 src/
   components/ui/          공통 Icon, Modal
-  pages/TutorPage.tsx      페이지 구성과 URL 상태
+  pages/TutorPage.tsx     기존 튜터 화면
+  pages/FavoriteTutorsPage.tsx  필터가 있는 튜터 화면
   features/tutors/
     api/tutors.ts         튜터 데이터 제공 경계
-    components/           페이지 전용 TutorCard
+    components/           TutorCard, TutorFilterPanel
     data/                 데모 데이터
     hooks/                목록 조회, 브라우저 북마크 상태
     types/                명시적인 Tutor 타입
@@ -50,17 +52,19 @@ src/
 
 검색어·팝업·알림은 페이지 로컬 상태이고, 탭·상세 튜터는 React Router의 URL 상태입니다. 목록 데이터는 `useTutors`에서 로딩·에러·재시도 상태를 관리합니다. 진행 중인 조회 Promise를 공유해 같은 시점의 중복 호출을 줄이고, 언마운트된 화면에는 결과를 반영하지 않습니다. 현재 데이터 제공 함수는 로컬 데모를 반환하며 네트워크 요청은 발생하지 않습니다.
 
+필터 화면은 기존 데모 튜터 5명과 브라우저에 저장된 찜 상태를 사용합니다. 찜한 튜터 필터는 URL의 `saved=1`로 표시합니다. 수업한 튜터·링글 추천 튜터·50% 포인트백·요일·시간대 필터는 필요한 데이터와 API가 없어 현재 비활성화되어 있습니다.
+
 찜하기는 로그인 계정과 연결되지 않은 브라우저 로컬 기능입니다. 저장된 값은 문자열 배열인지 확인하고, 저장 실패 시 현재 화면의 상태를 유지하면서 사용자에게 알립니다. 서버 북마크로 전환하려면 인증 및 API 계약이 필요합니다. 지금은 전역 공유 상태가 없어 Zustand나 서버 캐시 라이브러리를 추가하지 않았습니다.
 
 ## 디자인과 접근성
 
-Tailwind CSS 4의 테마 토큰과 `@apply`로 공통 레이아웃·색상·타이포그래피를 적용합니다. 첨부 디자인의 크기와 hover 전환 등은 화면 CSS에서 관리합니다. 5열·3열·2열 반응형 구성을 사용합니다. 카드 소개는 넘치면 스크롤할 수 있고, 검색창과 버튼은 키보드 포커스를 표시합니다.
+Tailwind CSS 4의 테마 토큰과 `@apply`로 공통 레이아웃·색상·타이포그래피를 적용합니다. 첨부 디자인의 크기와 hover 전환 등은 화면 CSS에서 관리합니다. 기존 튜터 화면은 5열, 필터 화면은 4열로 표시하며 화면 너비에 따라 열 수가 줄어듭니다. 카드 소개는 넘치면 스크롤할 수 있고, 검색창과 버튼은 키보드 포커스를 표시합니다.
 
 공통 Modal은 네이티브 `dialog`로 배경을 비활성화합니다. Escape·닫기 버튼·배경 클릭으로 닫으며, 닫을 때 이전 포커스를 복원합니다.
 
 ## Git 협업
 
-현재 PR 브랜치는 `feat/tutor-recommendation`, 대상은 `dev`입니다. 기능 브랜치에서 작업하고 PR 리뷰 후 병합합니다. 커밋은 `feat:`, `fix:`, `refactor:`, `docs:`, `chore:` 접두사를 사용합니다. 커밋 훅은 린트와 포맷을 확인합니다. 병합 방식, `dev`에서 기본 브랜치로 반영하는 절차와 팀원별 역할은 팀 합의가 필요합니다. 자동 병합은 수행하지 않습니다.
+현재 필터 화면 작업 브랜치는 `feat/favorite-tutors-page`입니다. 기능 브랜치는 `dev`에서 만들고, 작업 브랜치에서 `dev`로 PR을 보냅니다. 팀원 리뷰 후 `dev`에서 통합 검증하고, 이후 `dev`에서 `main`으로 PR을 보냅니다. 커밋은 `feat:`, `fix:`, `refactor:`, `docs:`, `chore:` 접두사를 사용하며 커밋 훅에서 린트와 포맷을 확인합니다.
 
 ## 과제 완료를 위해 남은 사항
 
