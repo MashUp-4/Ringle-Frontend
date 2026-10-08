@@ -124,15 +124,15 @@
   @apply relative;
   height: 276px;
 }
-.home-tutor-portrait > a {
+.home-tutor-portrait > .home-tutor-photo-details {
   @apply block h-full;
   padding: 28px;
 }
-.home-tutor-portrait > a > img {
+.home-tutor-portrait > .home-tutor-photo-details > img {
   @apply w-full h-full object-contain;
   transition: transform 0.2s;
 }
-.home-tutor-portrait > a:hover img {
+.home-tutor-portrait > .home-tutor-photo-details:hover img {
   transform: scale(1.04);
 }
 .home-tutor-portrait .bookmark {
@@ -145,7 +145,7 @@
 .home-tutor-info .card-title {
   margin-top: 14px;
 }
-.home-tutor-info .card-title a {
+.home-tutor-info .card-title > button {
   font-size: 16px;
 }
 .home-highlight {
@@ -526,7 +526,7 @@
   .home-tutor-portrait {
     height: 155px;
   }
-  .home-tutor-portrait > a {
+  .home-tutor-portrait > .home-tutor-photo-details {
     padding: var(--spacing-unit-12);
   }
   .home-tutor-portrait .bookmark {
@@ -539,7 +539,7 @@
   .home-tutor-info .card-title {
     gap: 6px;
   }
-  .home-tutor-info .card-title a {
+  .home-tutor-info .card-title > button {
     font-size: 13px;
   }
   .home-tutor-info .card-title > span {
@@ -648,10 +648,10 @@
   background: var(--color-white);
   transition: background-color 0.2s;
 }
-.home-tutor-portrait > a {
+.home-tutor-portrait > .home-tutor-photo-details {
   padding: 28px;
 }
-.home-tutor-portrait > a > img {
+.home-tutor-portrait > .home-tutor-photo-details > img {
   filter: none;
   transition:
     filter 0.2s,
@@ -717,7 +717,7 @@
 .home-tutor-info .card-title {
   margin-top: var(--spacing-unit-20);
 }
-.home-tutor-info .card-title a {
+.home-tutor-info .card-title > button {
   @apply text-label-20-bold;
 }
 .home-tutor-info .major {
@@ -734,7 +734,7 @@
   font-size: 14px;
 }
 @media (max-width: 600px) {
-  .home-tutor-portrait > a {
+  .home-tutor-portrait > .home-tutor-photo-details {
     padding: var(--spacing-unit-16);
   }
   .home-tutor-acceptance {
@@ -751,7 +751,7 @@
     padding: var(--spacing-unit-4) 6px;
     font-size: 10px;
   }
-  .home-tutor-info .card-title a {
+  .home-tutor-info .card-title > button {
     font-size: 16px;
   }
   .home-tutor-info .major {
@@ -787,4 +787,9 @@
 .home-trial .icon-slot {
   width: 28px;
   height: 28px;
+}
+
+.home-tutor-photo-details {
+  width: 100%;
+  text-align: inherit;
 }
