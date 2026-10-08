@@ -40,16 +40,16 @@
   z-index: 5;
 }
 .logo {
-  @apply grid place-items-center;
-  margin: 28px 0 34px;
-  width: 44px;
-  height: 44px;
-  text-decoration: none;
+  display: grid;
+  place-items: center;
+  width: 100px;
+  height: 100px;
+  margin: 0;
 }
 .logo img {
   display: block;
-  width: 44px;
-  height: 44px;
+  width: 68.44px;
+  height: 22px;
 }
 .sidebar nav {
   @apply w-full;
