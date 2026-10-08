@@ -1,17 +1,136 @@
 @import 'tailwindcss';
-@theme {
+
+@font-face {
+  font-family: 'Pretendard Variable';
+  src: url('/fonts/PretendardVariable.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 45 920;
+  font-display: swap;
+}
+
+/* Figma: Design System / Primitive and Semantic collections. */
+@theme static {
+  --font-sans:
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
+
+  --color-black: #0d0615;
+  --color-white: #ffffff;
+  --color-primary-50: #e4e0ff;
+  --color-primary-100: #dbcbfc;
+  --color-primary-150: #ceb8fb;
+  --color-primary-200: #bea2fa;
+  --color-primary-250: #b18ef6;
+  --color-primary-300: #a279f4;
+  --color-primary-350: #9869f4;
+  --color-primary-400: #885ae3;
+  --color-primary-450: #794dd0;
+  --color-primary-500: #663db8;
+  --color-primary-550: #552da4;
+  --color-primary-600: #422181;
+  --color-primary-650: #230955;
+  --color-ringle-gray-50: #f7f8fb;
+  --color-ringle-gray-100: #e8e7ed;
+  --color-ringle-gray-150: #d7d6dc;
+  --color-ringle-gray-200: #b6b5c0;
+  --color-ringle-gray-250: #a4a3af;
+  --color-ringle-gray-300: #92919d;
+  --color-ringle-gray-350: #858491;
+  --color-ringle-gray-400: #6e6d7d;
+  --color-ringle-gray-450: #585767;
+  --color-ringle-gray-500: #464554;
+  --color-ringle-gray-550: #393846;
+  --color-ringle-gray-600: #2f2d3d;
+  --color-ringle-red-100: #ffe4e4;
+  --color-ringle-red-500: #e2382b;
+  --color-ringle-yellow-100: #fff6d0;
+  --color-ringle-yellow-500: #ffd856;
+  --color-ringle-coral-100: #ffe9e1;
+  --color-ringle-coral-300: #fec3a8;
+  --color-ringle-coral-500: #f87170;
+
   --color-primary: #663db8;
-  --color-primary-hover: #54309b;
-  --color-ink: #292830;
-  --color-muted: #929198;
-  --color-surface: #f8f7fc;
+  --color-primary-hover: #552da4;
+  --color-primary-pressed: #422181;
+  --color-primary-disabled: #b6b5c0;
+  --color-ink: #2f2d3d;
+  --color-muted: #92919d;
+  --color-text-muted: #585767;
+  --color-text-weak: #d7d6dc;
+  --color-surface: #f7f8fb;
+  --color-surface-subtle: #e8e7ed;
+  --color-surface-disabled: #d7d6dc;
+  --color-surface-error: #ffe4e4;
   --color-border: #e8e7ed;
+  --color-border-strong: #a4a3af;
+  --color-border-focus: #794dd0;
+  --color-border-error: #e2382b;
+  --color-border-disabled: #b6b5c0;
+
+  --spacing-unit-4: 4px;
+  --spacing-unit-8: 8px;
+  --spacing-unit-12: 12px;
+  --spacing-unit-16: 16px;
+  --spacing-unit-20: 20px;
+  --spacing-unit-32: 32px;
+  --spacing-unit-40: 40px;
+  --spacing-unit-60: 60px;
+  --spacing-unit-999: 999px;
+  --radius-small: 4px;
+  --radius-medium: 8px;
+  --radius-large: 16px;
+  --radius-full: 999px;
+  --shadow-blur: 0 4px 10px rgb(0 0 0 / 12%);
+  --shadow-card-selected: 0 0 20px rgb(13 6 21 / 10%);
+  --shadow-bookmark-notice: -2px 7px 15px rgb(0 0 0 / 12%);
+
+  --text-heading-40: 40px;
+  --text-heading-40--line-height: 52px;
+  --text-heading-40--letter-spacing: -0.02em;
+  --text-heading-40--font-weight: 700;
+  --text-heading-24: 24px;
+  --text-heading-24--line-height: 32px;
+  --text-heading-24--letter-spacing: -0.01em;
+  --text-heading-24--font-weight: 700;
+  --text-label-20-bold: 20px;
+  --text-label-20-bold--line-height: 28px;
+  --text-label-20-bold--letter-spacing: -0.01em;
+  --text-label-20-bold--font-weight: 700;
+  --text-label-20-medium: 20px;
+  --text-label-20-medium--line-height: 30px;
+  --text-label-20-medium--letter-spacing: -0.01em;
+  --text-label-20-medium--font-weight: 500;
+  --text-label-18: 18px;
+  --text-label-18--line-height: 18px;
+  --text-label-18--letter-spacing: -0.01em;
+  --text-label-18--font-weight: 600;
+  --text-label-16-semibold: 16px;
+  --text-label-16-semibold--line-height: 16px;
+  --text-label-16-semibold--letter-spacing: -0.01em;
+  --text-label-16-semibold--font-weight: 600;
+  --text-label-16-medium: 16px;
+  --text-label-16-medium--line-height: 16px;
+  --text-label-16-medium--letter-spacing: -0.01em;
+  --text-label-16-medium--font-weight: 500;
+  --text-label-14-bold: 14px;
+  --text-label-14-bold--line-height: 14px;
+  --text-label-14-bold--letter-spacing: -0.01em;
+  --text-label-14-bold--font-weight: 700;
 }
 
 :root {
-  font-family: Arial, 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif;
-  color: #292830;
-  background: #fff;
+  /* Paints in the final screens that are not bound to Figma variables. */
+  --color-sidebar: #fcfcff;
+  --color-filter-selected: #3d4066;
+  --color-photo-hover: #b3b3b3;
+  --color-subject-tag: #494654;
+
+  /* Existing modal backdrop, kept separate from the Figma palette. */
+  --color-backdrop: #211b3655;
+
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: var(--color-white);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -26,6 +145,8 @@ body {
 }
 button,
 input,
+select,
+textarea,
 a {
   -webkit-tap-highlight-color: transparent;
 }
@@ -36,11 +157,19 @@ button {
   background: none;
   color: inherit;
 }
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
 button:focus-visible,
 a:focus-visible,
 input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid #794dd0;
+  outline: 2px solid var(--color-border-focus);
   outline-offset: 4px;
 }
 svg {
