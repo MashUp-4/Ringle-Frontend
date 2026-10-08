@@ -1,28 +1,30 @@
-import { Link } from 'react-router-dom'
 import { Icon } from '../../../components/ui/Icon'
 import type { Tutor } from '../../tutors/types/tutor'
 interface HomeTutorCardProps {
   tutor: Tutor
   bookmarked: boolean
   onBookmark: () => void
+  onDetails: () => void
 }
 export function HomeTutorCard({
   tutor,
   bookmarked,
   onBookmark,
+  onDetails,
 }: HomeTutorCardProps) {
   return (
     <article className="home-tutor-card">
       <div className="home-tutor-portrait">
-        <Link
-          to={`/tutors/${encodeURIComponent(tutor.name)}`}
+        <button
+          className="home-tutor-photo-details"
+          onClick={onDetails}
           aria-label={`${tutor.name} 튜터 자세히 보기`}
         >
           <img
             src={`/tutor-${tutor.image}.png`}
             alt={`${tutor.name} 튜터 캐릭터`}
           />
-        </Link>
+        </button>
         {tutor.acceptanceRate !== undefined && (
           <span className="home-tutor-acceptance">
             수락률 {tutor.acceptanceRate}%
@@ -44,12 +46,9 @@ export function HomeTutorCard({
       </div>
       <div className="home-tutor-info">
         <div className="card-title">
-          <Link
-            to={`/tutors/${encodeURIComponent(tutor.name)}`}
-            className="font-bold"
-          >
+          <button onClick={onDetails} className="font-bold">
             {tutor.name}
-          </Link>
+          </button>
           <span>
             <b>★</b> {tutor.rating} <em>({tutor.reviews})</em>
           </span>

@@ -127,7 +127,7 @@
   @apply relative;
   height: 276px;
 }
-.home-tutor-portrait > a {
+.home-tutor-portrait > .home-tutor-photo-details {
   @apply block h-full;
   padding: 28px;
 }
@@ -135,7 +135,7 @@
   @apply w-full h-full object-contain;
   transition: transform 0.2s;
 }
-.home-tutor-portrait > a:hover img {
+.home-tutor-portrait > .home-tutor-photo-details:hover img {
   transform: scale(1.04);
 }
 .home-tutor-portrait .bookmark {
@@ -148,7 +148,7 @@
 .home-tutor-info .card-title {
   margin-top: 14px;
 }
-.home-tutor-info .card-title a {
+.home-tutor-info .card-title > button {
   font-size: 16px;
 }
 .home-highlight {
@@ -529,7 +529,7 @@
   .home-tutor-portrait {
     height: 155px;
   }
-  .home-tutor-portrait > a {
+  .home-tutor-portrait > .home-tutor-photo-details {
     padding: 12px;
   }
   .home-tutor-portrait .bookmark {
@@ -542,7 +542,7 @@
   .home-tutor-info .card-title {
     gap: 6px;
   }
-  .home-tutor-info .card-title a {
+  .home-tutor-info .card-title > button {
     font-size: 13px;
   }
   .home-tutor-info .card-title > span {
@@ -651,7 +651,7 @@
   background: white;
   transition: background-color 0.2s;
 }
-.home-tutor-portrait > a {
+.home-tutor-portrait > .home-tutor-photo-details {
   padding: 28px;
 }
 .home-tutor-portrait img {
@@ -720,7 +720,7 @@
 .home-tutor-info .card-title {
   margin-top: 20px;
 }
-.home-tutor-info .card-title a {
+.home-tutor-info .card-title > button {
   font-size: 22px;
 }
 .home-tutor-info .major {
@@ -739,7 +739,7 @@
   font-size: 14px;
 }
 @media (max-width: 600px) {
-  .home-tutor-portrait > a {
+  .home-tutor-portrait > .home-tutor-photo-details {
     padding: 16px;
   }
   .home-tutor-acceptance {
@@ -756,7 +756,7 @@
     padding: 4px 6px;
     font-size: 10px;
   }
-  .home-tutor-info .card-title a {
+  .home-tutor-info .card-title > button {
     font-size: 16px;
   }
   .home-tutor-info .major {
@@ -768,4 +768,9 @@
   .home-tutor-info .category {
     font-size: 11px;
   }
+}
+
+.home-tutor-photo-details {
+  width: 100%;
+  text-align: inherit;
 }

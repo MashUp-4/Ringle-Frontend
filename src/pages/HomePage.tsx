@@ -13,10 +13,12 @@ import type {
 } from '../features/home/types/home'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
 import { useTutors } from '../features/tutors/hooks/useTutors'
+import type { Tutor } from '../features/tutors/types/tutor'
 import './HomePage.css'
 
 type HomeDialog =
   | { type: 'profile' }
+  | { type: 'tutor'; tutor: Tutor }
   | { type: 'information'; title: string; description: string }
   | null
 export default function HomePage() {
@@ -183,6 +185,7 @@ export default function HomePage() {
                       tutor={tutor}
                       bookmarked={saved.includes(tutor.name)}
                       onBookmark={() => bookmark(tutor.name)}
+                      onDetails={() => setDialog({ type: 'tutor', tutor })}
                     />
                   ))}
                 </div>
@@ -498,6 +501,26 @@ export default function HomePage() {
                 setToast('프로필을 저장했어요.')
               }}
             />
+          ) : dialog.type === 'tutor' ? (
+            <>
+              <img src={`/tutor-${dialog.tutor.image}.png`} alt="" />
+              <h2 id="home-dialog-title">{dialog.tutor.name}</h2>
+              <p className="modal-school">
+                {dialog.tutor.major} · {dialog.tutor.university}
+              </p>
+              <p>{dialog.tutor.intro}</p>
+              <p className="modal-rating">
+                ★ {dialog.tutor.rating} · 수업 후기 {dialog.tutor.reviews}개
+              </p>
+              <button
+                className="primary"
+                onClick={() => bookmark(dialog.tutor.name)}
+              >
+                {saved.includes(dialog.tutor.name)
+                  ? '북마크 해제'
+                  : '튜터 북마크하기'}
+              </button>
+            </>
           ) : (
             <>
               <h2 id="home-dialog-title">{dialog.title}</h2>
