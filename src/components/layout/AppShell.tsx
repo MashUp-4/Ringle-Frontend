@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { AppNavigation } from './AppNavigation'
+import { FloatingActions } from './FloatingActions'
 
 interface AppShellProps {
   children: ReactNode
@@ -11,6 +12,7 @@ export function AppShell({ children, onNotice }: AppShellProps) {
     <>
       <AppNavigation onNotice={onNotice} />
       <div className="app-content">{children}</div>
+      <FloatingActions onNotice={onNotice} />
     </>
   )
 }

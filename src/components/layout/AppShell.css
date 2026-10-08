@@ -225,14 +225,11 @@
 .trial {
   @apply text-label-20-medium;
   position: fixed;
-  right: max(
-    106px,
-    calc(
-      (100vw - var(--shell-sidebar-width) - var(--shell-content-width)) / 2 +
-        7px
-    )
+  right: calc(
+    (100% - var(--shell-sidebar-width) - var(--shell-content-width)) / 2 + 7px
   );
   bottom: 79px;
+  width: 189px;
   display: flex;
   align-items: center;
   gap: var(--spacing-unit-8);
@@ -260,10 +257,11 @@
 }
 .floating-chat img {
   position: absolute;
-  left: -8px;
-  top: -4px;
-  width: 72px;
-  height: 72px;
+  left: -12.7px;
+  top: -8.7px;
+  width: 81.4001px;
+  height: 81.4003px;
+  max-width: none;
   pointer-events: none;
 }
 @media (max-height: 951px) {

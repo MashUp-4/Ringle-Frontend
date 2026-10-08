@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { AppShell } from '../components/layout/AppShell'
 import { Icon } from '../components/ui/Icon'
-import { chatbot } from '../components/ui/iconAssets'
 import { Modal } from '../components/ui/Modal'
 import { HomeTutorCard } from '../features/home/components/HomeTutorCard'
 import { ProfileEditor } from '../features/home/components/ProfileEditor'
@@ -516,19 +515,6 @@ export default function HomePage() {
           </aside>
         </div>
       </main>
-
-      <Link className="trial home-trial" to="/tutors">
-        <Icon name="trial" />
-        체험 수업 예약
-      </Link>
-
-      <button
-        className="floating-chat"
-        aria-label="문의하기"
-        onClick={() => setToast('문의: help@ringleplus.com')}
-      >
-        <img src={chatbot} alt="" width={72} height={72} />
-      </button>
 
       {toast && (
         <div className="toast" role="status">

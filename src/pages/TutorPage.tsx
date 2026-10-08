@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Icon } from '../components/ui/Icon'
-import * as figmaAssets from '../components/ui/iconAssets'
 import { AppShell } from '../components/layout/AppShell'
 import { TutorPageHeader } from '../components/layout/TutorPageHeader'
 import { Modal } from '../components/ui/Modal'
@@ -167,17 +166,6 @@ function TutorPage() {
           )}
         </section>
       </main>
-      <button className="trial" onClick={() => setRecommend(true)}>
-        <Icon name="trial" />
-        체험 수업 예약
-      </button>
-      <button
-        className="floating-chat"
-        aria-label="문의하기"
-        onClick={() => setToast('문의: help@ringleplus.com')}
-      >
-        <img src={figmaAssets.chatbot} alt="" width="72" height="72" />
-      </button>
       {bookmarkNotice && (
         <div className="bookmark-notice">
           <p role="status" aria-live="polite">
