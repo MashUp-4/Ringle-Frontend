@@ -1,6 +1,7 @@
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Icon } from '../ui/Icon'
 import { ringleLogo, chatSidebar } from '../ui/iconAssets'
+import './AppShell.css'
 
 interface AppNavigationProps {
   onNotice: (message: string) => void

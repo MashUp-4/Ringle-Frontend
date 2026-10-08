@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import { AppNavigation } from '../components/layout/AppNavigation'
+import { AppShell } from '../components/layout/AppShell'
 import { TutorPageHeader } from '../components/layout/TutorPageHeader'
 import { TutorCard } from '../features/tutors/components/TutorCard'
 import { TutorFilterPanel } from '../features/tutors/components/TutorFilterPanel'
@@ -33,8 +33,7 @@ export default function FavoriteTutorsPage() {
   )
 
   return (
-    <>
-      <AppNavigation onNotice={setToast} />
+    <AppShell onNotice={setToast}>
       <main className="favorite-page">
         <TutorPageHeader
           tab="전체"
@@ -122,6 +121,6 @@ export default function FavoriteTutorsPage() {
           {toast}
         </div>
       )}
-    </>
+    </AppShell>
   )
 }

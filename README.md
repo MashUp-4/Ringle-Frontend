@@ -34,6 +34,7 @@ npm run format:check
 ```text
 src/
   components/ui/          공통 Icon, Modal
+  components/layout/      AppShell, AppNavigation, TutorPageHeader, FloatingActions
   pages/TutorPage.tsx     기존 튜터 화면
   pages/FavoriteTutorsPage.tsx  필터가 있는 튜터 화면
   features/tutors/
@@ -64,6 +65,8 @@ src/
 찜하기는 로그인 계정과 연결되지 않은 브라우저 로컬 기능입니다. 저장된 값은 문자열 배열인지 확인하고, 저장 실패 시 현재 화면의 상태를 유지하면서 사용자에게 알립니다. 서버 북마크로 전환하려면 인증 및 API 계약이 필요합니다. 지금은 전역 공유 상태가 없어 Zustand나 서버 캐시 라이브러리를 추가하지 않았습니다.
 
 ## 디자인과 접근성
+
+홈·튜터 추천·전체 튜터 화면은 `AppShell`에서 내비게이션과 예약·문의 버튼을 공유합니다. 홈과 튜터 화면의 이벤트 문구는 경로에 따라 구분하고, 수업 메뉴·튜터 탭·검색창은 공통 헤더를 사용합니다. 공통 치수와 반응형 배치는 `components/layout/AppShell.css`에서 관리합니다. 데스크톱 기준 사이드바는 100px, 헤더는 82px, 튜터 콘텐츠 폭은 최대 1340px입니다.
 
 최종 피그마의 Primitive·Semantic 변수와 텍스트 스타일을 `src/index.css`에서 관리합니다. 색상은 `--color-primary-*`, `--color-ringle-gray-*` 및 용도별 별칭을 사용합니다. 간격은 `--spacing-unit-*`, 모서리는 `--radius-*`, 타이포그래피는 `text-heading-40`, `text-heading-24`, `text-label-20-bold` 등의 Tailwind 유틸리티로 적용합니다. 간격 토큰을 별도 이름으로 정의해 기존 Tailwind `p-4` 등의 값은 유지합니다.
 

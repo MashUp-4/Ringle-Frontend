@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Icon } from '../components/ui/Icon'
 import * as figmaAssets from '../components/ui/iconAssets'
-import { AppNavigation } from '../components/layout/AppNavigation'
+import { AppShell } from '../components/layout/AppShell'
 import { TutorPageHeader } from '../components/layout/TutorPageHeader'
 import { Modal } from '../components/ui/Modal'
 import { TutorCard } from '../features/tutors/components/TutorCard'
@@ -64,8 +64,7 @@ function TutorPage() {
     if (exists) setToast('찜한 튜터에서 삭제했어요.')
   }
   return (
-    <>
-      <AppNavigation onNotice={setToast} />
+    <AppShell onNotice={setToast}>
       <main className="tutor-page">
         <TutorPageHeader
           tab={tab}
@@ -257,7 +256,7 @@ function TutorPage() {
           )}
         </Modal>
       )}
-    </>
+    </AppShell>
   )
 }
 export default TutorPage

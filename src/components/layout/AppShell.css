@@ -1,0 +1,405 @@
+@reference '../../index.css';
+
+:root {
+  --shell-sidebar-width: 100px;
+  --shell-header-height: 82px;
+  --shell-content-width: 1340px;
+  --sidebar-nav-gap: 32px;
+  --sidebar-nav-padding: 16px;
+  --sidebar-logo-height: 100px;
+  --sidebar-support-height: 100px;
+}
+
+.sidebar {
+  position: fixed;
+  inset: 0 auto 0 0;
+  width: var(--shell-sidebar-width);
+  background: var(--color-sidebar);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 5;
+}
+.logo,
+.sidebar-support {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  flex-shrink: 0;
+}
+.logo {
+  height: var(--sidebar-logo-height);
+}
+.sidebar-support {
+  height: var(--sidebar-support-height);
+}
+.logo img,
+.mobile-logo img {
+  display: block;
+  width: 69px;
+  height: 22px;
+}
+.sidebar-menu {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.sidebar nav,
+.sidebar-bottom {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sidebar-nav-gap);
+  padding: var(--sidebar-nav-padding);
+  flex-shrink: 0;
+}
+.nav-item {
+  @apply text-label-18;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-unit-4);
+  width: 100%;
+  padding: 0;
+  color: var(--color-muted);
+  white-space: nowrap;
+}
+.nav-item .icon-slot {
+  width: 64px;
+  height: 40px;
+  border-radius: var(--radius-full);
+}
+.nav-item.active {
+  color: var(--color-primary);
+}
+.nav-item:hover .icon-slot,
+.nav-item.active .icon-slot {
+  background: var(--color-surface);
+}
+.support,
+.support img {
+  display: block;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+}
+.topbar {
+  height: var(--shell-header-height);
+  margin-left: var(--shell-sidebar-width);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-white);
+}
+.topbar-inner {
+  @apply text-label-20-bold;
+  font-weight: 600;
+  color: var(--color-ringle-gray-500);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-unit-32);
+  width: min(var(--shell-content-width), calc(100% - 48px));
+  padding-right: var(--spacing-unit-8);
+}
+.topbar-menu {
+  display: flex;
+  align-items: center;
+  gap: 44px;
+  white-space: nowrap;
+}
+.topbar i {
+  width: 1.6px;
+  height: 27px;
+  background: var(--color-border);
+  flex-shrink: 0;
+}
+.avatar {
+  width: 41px;
+  height: 41px;
+  flex-shrink: 0;
+  border: 1.6px solid var(--color-primary-250);
+  background: var(--color-surface-subtle);
+  border-radius: var(--radius-full);
+}
+.mobile-logo {
+  display: none;
+}
+.app-content {
+  margin-left: var(--shell-sidebar-width);
+  min-height: calc(100svh - var(--shell-header-height));
+}
+.tutor-page,
+.favorite-page {
+  width: min(var(--shell-content-width), calc(100% - 48px));
+  margin: 0 auto;
+  padding: 0 0 140px;
+}
+.lesson-tabs {
+  @apply text-label-20-bold;
+  display: flex;
+  align-items: stretch;
+  gap: var(--spacing-unit-20);
+  min-height: 72px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-weak);
+}
+.lesson-tabs > button,
+.lesson-tabs > a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-unit-20);
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+}
+.lesson-tabs .current {
+  color: var(--color-ink);
+  border-bottom-color: var(--color-ink);
+}
+.lesson-tabs > button:hover {
+  color: var(--color-primary);
+}
+.tutor-page > h1,
+.favorite-page > h1 {
+  margin: var(--spacing-unit-60) 0;
+}
+.tab-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--spacing-unit-20);
+  min-height: 77px;
+  border-bottom: 1px solid var(--color-border);
+}
+.tabs {
+  display: flex;
+  gap: 28px;
+}
+.tabs > button {
+  @apply text-heading-24;
+  color: var(--color-text-weak);
+  padding: var(--spacing-unit-20) 0;
+  border-bottom: 4px solid transparent;
+  transition: color 0.2s;
+}
+.tabs > button:hover {
+  color: var(--color-primary);
+}
+.tabs > button.selected {
+  color: var(--color-ink);
+  border-bottom-color: var(--color-ink);
+}
+.search {
+  @apply text-label-20-medium;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 392px;
+  max-width: 100%;
+  min-height: 64px;
+  padding: var(--spacing-unit-12);
+  background: var(--color-surface);
+  border: 0.8px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  color: var(--color-muted);
+}
+.search .icon-slot {
+  width: 32px;
+  height: 32px;
+}
+.search input {
+  width: 100%;
+  min-width: 0;
+  background: none;
+  border: 0;
+  color: var(--color-ink);
+}
+.search input::placeholder {
+  color: var(--color-muted);
+}
+.trial {
+  @apply text-label-20-medium;
+  position: fixed;
+  right: max(
+    106px,
+    calc(
+      (100vw - var(--shell-sidebar-width) - var(--shell-content-width)) / 2 +
+        7px
+    )
+  );
+  bottom: 79px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-8);
+  padding: var(--spacing-unit-16) var(--spacing-unit-20);
+  border-radius: var(--radius-full);
+  color: var(--color-white);
+  background: var(--color-primary);
+  z-index: 3;
+}
+.trial:hover {
+  background: var(--color-primary-hover);
+}
+.trial .icon-slot {
+  width: 28px;
+  height: 28px;
+}
+.floating-chat {
+  position: fixed;
+  right: 30px;
+  bottom: 34px;
+  width: 56px;
+  height: 56px;
+  padding: 0;
+  z-index: 3;
+}
+.floating-chat img {
+  position: absolute;
+  left: -8px;
+  top: -4px;
+  width: 72px;
+  height: 72px;
+  pointer-events: none;
+}
+@media (max-height: 951px) {
+  :root {
+    --sidebar-nav-gap: clamp(4px, calc((100svh - 760px) / 6), 32px);
+  }
+}
+@media (max-height: 800px) {
+  :root {
+    --sidebar-logo-height: 72px;
+    --sidebar-support-height: 72px;
+    --sidebar-nav-padding: 8px;
+    --sidebar-nav-gap: clamp(4px, calc((100svh - 672px) / 6), 16px);
+  }
+}
+@media (max-height: 680px) {
+  :root {
+    --sidebar-logo-height: 56px;
+    --sidebar-nav-gap: clamp(4px, calc((100svh - 576px) / 6), 16px);
+  }
+  .nav-item {
+    font-size: 14px;
+    line-height: 16px;
+  }
+  .nav-item .icon-slot {
+    height: 32px;
+  }
+}
+@media (max-width: 900px) {
+  :root {
+    --shell-sidebar-width: 76px;
+    --shell-header-height: 65px;
+  }
+  .sidebar nav,
+  .sidebar-bottom {
+    padding: var(--spacing-unit-8);
+  }
+  .nav-item {
+    font-size: 14px;
+  }
+  .topbar-inner,
+  .topbar-menu {
+    gap: var(--spacing-unit-20);
+  }
+  .topbar-inner {
+    font-size: 16px;
+  }
+  .lesson-tabs {
+    gap: var(--spacing-unit-8);
+    font-size: 14px;
+  }
+  .lesson-tabs > button,
+  .lesson-tabs > a {
+    padding: var(--spacing-unit-12);
+  }
+  .tutor-page > h1,
+  .favorite-page > h1 {
+    margin: 36px 0 25px;
+  }
+  .tabs > button {
+    font-size: 17px;
+  }
+  .search {
+    width: 300px;
+    font-size: 16px;
+  }
+}
+@media (max-width: 600px) {
+  :root {
+    --shell-sidebar-width: 0px;
+    --shell-header-height: 58px;
+  }
+  .sidebar {
+    display: none;
+  }
+  .topbar-inner {
+    width: calc(100% - 40px);
+    padding: 0;
+    gap: var(--spacing-unit-16);
+    font-size: 12px;
+  }
+  .mobile-logo {
+    display: block;
+    margin-right: auto;
+    flex-shrink: 0;
+  }
+  .topbar-menu {
+    gap: var(--spacing-unit-16);
+  }
+  .topbar-menu > button:first-child,
+  .topbar i {
+    display: none;
+  }
+  .avatar {
+    width: 28px;
+    height: 28px;
+  }
+  .tutor-page,
+  .favorite-page {
+    width: calc(100% - 40px);
+  }
+  .lesson-tabs {
+    min-height: 58px;
+    gap: var(--spacing-unit-4);
+    font-size: 12px;
+    overflow-x: auto;
+  }
+  .lesson-tabs > button,
+  .lesson-tabs > a {
+    padding: var(--spacing-unit-12) var(--spacing-unit-8);
+  }
+  .tutor-page > h1,
+  .favorite-page > h1 {
+    margin: 30px 0 15px;
+  }
+  .tab-row {
+    flex-wrap: wrap;
+    gap: var(--spacing-unit-12);
+  }
+  .tabs > button {
+    padding: var(--spacing-unit-12) 0;
+  }
+  .search {
+    width: 100%;
+    margin-bottom: var(--spacing-unit-12);
+    min-height: 56px;
+  }
+  .trial {
+    right: 98px;
+    bottom: 22px;
+    padding: var(--spacing-unit-12) var(--spacing-unit-16);
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .floating-chat {
+    right: 18px;
+    bottom: 18px;
+  }
+}

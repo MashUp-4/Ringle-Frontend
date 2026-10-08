@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { AppNavigation } from '../components/layout/AppNavigation'
+import { AppShell } from '../components/layout/AppShell'
 import { Icon } from '../components/ui/Icon'
 import { chatbot } from '../components/ui/iconAssets'
 import { Modal } from '../components/ui/Modal'
@@ -103,9 +103,7 @@ export default function HomePage() {
   }
 
   return (
-    <>
-      <AppNavigation onNotice={setToast} />
-
+    <AppShell onNotice={setToast}>
       <main className="home-page">
         <div className="home-columns">
           <div className="home-primary">
@@ -572,6 +570,6 @@ export default function HomePage() {
           )}
         </Modal>
       )}
-    </>
+    </AppShell>
   )
 }

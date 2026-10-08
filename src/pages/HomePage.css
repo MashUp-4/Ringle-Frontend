@@ -1,5 +1,12 @@
 @reference '../index.css';
 .home-page {
+  max-width: 1320px;
+  width: calc(100% - 48px);
+  margin: 0 auto;
+  padding: 122px 0 180px;
+}
+
+.home-page {
   max-width: 1440px;
   width: calc(100% - 160px);
   padding: 120px 80px 180px 180px;
@@ -391,9 +398,6 @@
   white-space: nowrap;
 }
 @media (max-width: 1500px) {
-  .home-page {
-    padding: 100px var(--spacing-unit-60) 160px 160px;
-  }
   .home-columns {
     gap: 34px;
     grid-template-columns: minmax(0, 1fr) 300px;
@@ -420,10 +424,6 @@
   }
 }
 @media (max-width: 1200px) {
-  .home-page {
-    padding: var(--spacing-unit-60) 24px 100px 124px;
-    width: 100%;
-  }
   .home-columns {
     grid-template-columns: minmax(0, 1fr) 280px;
     gap: 24px;
@@ -469,18 +469,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
-  .home-page {
-    padding-left: 104px;
-  }
   .home-tutor-portrait {
     height: 240px;
   }
 }
 @media (max-width: 600px) {
-  .home-page {
-    padding: 24px var(--spacing-unit-20) 110px;
-    width: 100%;
-  }
   .home-columns {
     gap: 24px;
   }
@@ -625,9 +618,6 @@
 }
 
 @media (max-width: 600px) {
-  .home-trial {
-    display: none;
-  }
 }
 
 /* Tutor summaries follow the photo-overlay layout used on the home screen. */
@@ -784,7 +774,14 @@
   box-shadow: none;
 }
 
-.home-trial .icon-slot {
-  width: 28px;
-  height: 28px;
+@media (max-width: 1200px) {
+  .home-page {
+    padding: 60px 0 140px;
+  }
+}
+@media (max-width: 600px) {
+  .home-page {
+    width: calc(100% - 40px);
+    padding: 24px 0 110px;
+  }
 }
