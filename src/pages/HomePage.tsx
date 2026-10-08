@@ -115,7 +115,7 @@ export default function HomePage() {
               <Icon name="home-coupon" />
               <span>[첫 구매 혜택] 수업권 최대 2회 추가</span>
               <strong>
-                혜택 확인하기 <Icon name="arrow" />
+                D-276 <Icon name="arrow" />
               </strong>
             </button>
 
