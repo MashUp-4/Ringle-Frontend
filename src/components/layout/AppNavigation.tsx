@@ -69,7 +69,7 @@ export function AppNavigation({ onNotice }: AppNavigationProps) {
               )
             }
           >
-            <Icon name="lesson" />
+            <Icon name="guide" />
             링글 가이드
           </button>
           <button

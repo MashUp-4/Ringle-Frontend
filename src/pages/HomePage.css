@@ -769,3 +769,27 @@
     font-size: 11px;
   }
 }
+.home-offer .icon-home-coupon {
+  width: 32px;
+  height: 24px;
+}
+
+.home-curriculum .icon-home-curriculum,
+.home-guide-row .icon-home-ringle-guide,
+.home-guide-row .icon-home-ot-application {
+  width: 32px;
+  height: 32px;
+}
+
+.home-shortcuts .icon-slot {
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.home-trial .icon-slot {
+  width: 28px;
+  height: 28px;
+}
