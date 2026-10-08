@@ -1,13 +1,22 @@
-import { useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { Icon } from '../components/ui/Icon'
-import * as figmaAssets from '../components/ui/iconAssets'
+import { useEffect, useState } from 'react'
+import { useNavigate, useSearchParams } from 'react-router-dom'
+import { AppNavigation } from '../components/layout/AppNavigation'
+import { TutorPageHeader } from '../components/layout/TutorPageHeader'
 import { TutorCard } from '../features/tutors/components/TutorCard'
 import { TutorFilterPanel } from '../features/tutors/components/TutorFilterPanel'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
 import { useTutors } from '../features/tutors/hooks/useTutors'
 
 export default function FavoriteTutorsPage() {
+  const [toast, setToast] = useState('')
+  useEffect(() => {
+    document.title = '전체 튜터 | Ringle'
+  }, [])
+  useEffect(() => {
+    if (!toast) return
+    const timer = setTimeout(() => setToast(''), 2500)
+    return () => clearTimeout(timer)
+  }, [toast])
   const navigate = useNavigate()
   const [query, setQuery] = useState('')
   const [searchParams, setSearchParams] = useSearchParams()
@@ -25,95 +34,18 @@ export default function FavoriteTutorsPage() {
 
   return (
     <>
-      <aside className="sidebar">
-        <Link className="logo" to="/tutors" aria-label="Ringle 홈">
-          <img src={figmaAssets.ringleLogo} alt="" width="68.44" height="22" />
-        </Link>
-
-        <nav>
-          {[
-            ['home', '홈'],
-            ['lesson', '수업'],
-            ['calendar', '이벤트'],
-            ['user', '마이링글'],
-            ['chat', 'AI 스피킹'],
-            ['chart', '성취'],
-          ].map(([icon, label]) => (
-            <div
-              className={`nav-item ${label === '수업' ? 'active' : ''}`}
-              key={label}
-            >
-              <Icon name={icon} />
-              <span>{label}</span>
-            </div>
-          ))}
-        </nav>
-
-        <div className="sidebar-bottom">
-          <div className="nav-item">
-            <Icon name="help" />
-            FAQ
-          </div>
-          <div className="nav-item">
-            <Icon name="guide" />
-            링글 가이드
-          </div>
-        </div>
-      </aside>
-
-      <header className="topbar">
-        <span>9회말 역전 이벤트</span>
-        <span>구매</span>
-        <span>기업 제휴</span>
-        <i />
-        <div className="avatar" aria-hidden="true" />
-      </header>
-
+      <AppNavigation onNotice={setToast} />
       <main className="favorite-page">
-        <nav className="lesson-tabs" aria-label="수업 메뉴">
-          <span>예정된 수업 (0)</span>
-          <span>지난 수업</span>
-          <span className="current">튜터</span>
-          <span>교재</span>
-        </nav>
-
-        <h1>튜터</h1>
-
-        <div className="tab-row">
-          <div className="tabs">
-            <button type="button" onClick={() => navigate('/tutors')}>
-              추천
-            </button>
-            <button
-              type="button"
-              className="selected"
-              aria-current="page"
-              onClick={() => setSearchParams({})}
-            >
-              전체
-            </button>
-          </div>
-
-          <label className="search">
-            <Icon name="search" />
-            <input
-              aria-label="튜터 검색"
-              placeholder="튜터 이름 또는 전공으로 검색하세요."
-              value={query}
-              maxLength={100}
-              onChange={(event) => setQuery(event.target.value)}
-            />
-            {query && (
-              <button
-                type="button"
-                aria-label="검색 지우기"
-                onClick={() => setQuery('')}
-              >
-                ×
-              </button>
-            )}
-          </label>
-        </div>
+        <TutorPageHeader
+          tab="전체"
+          onTabChange={(tab) => {
+            if (tab === '추천') navigate('/tutors')
+            else setSearchParams({})
+          }}
+          query={query}
+          onQueryChange={setQuery}
+          onNotice={setToast}
+        />
 
         {storageError && <p role="status">{storageError}</p>}
 
@@ -185,6 +117,11 @@ export default function FavoriteTutorsPage() {
           </section>
         </div>
       </main>
+      {toast && (
+        <div className="toast" role="status">
+          {toast}
+        </div>
+      )}
     </>
   )
 }
