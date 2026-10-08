@@ -641,6 +641,7 @@
   box-shadow: none;
 }
 .home-tutor-portrait {
+  isolation: isolate;
   aspect-ratio: 1;
   height: auto;
   overflow: hidden;
@@ -659,6 +660,7 @@
 }
 .home-tutor-acceptance,
 .home-tutor-topics {
+  z-index: 1;
   opacity: 0;
   visibility: hidden;
   transition:
@@ -669,8 +671,8 @@
 .home-tutor-portrait:focus-within {
   background: var(--color-photo-hover);
 }
-.home-tutor-portrait:hover > a > img,
-.home-tutor-portrait:focus-within > a > img {
+.home-tutor-portrait:hover > .home-tutor-photo-details > img,
+.home-tutor-portrait:focus-within > .home-tutor-photo-details > img {
   filter: blur(2px);
   mix-blend-mode: multiply;
 }
