@@ -1,6 +1,7 @@
 import {
   bookmarkDefault,
   bookmarkSelected,
+  ratingStar,
 } from '../../../components/ui/iconAssets'
 import type { Tutor } from '../../tutors/types/tutor'
 interface HomeTutorCardProps {
@@ -58,7 +59,10 @@ export function HomeTutorCard({
             {tutor.name}
           </button>
           <span>
-            <b>★</b> {tutor.rating} <em>({tutor.reviews})</em>
+            <span className="rating-star" aria-hidden="true">
+              <img src={ratingStar} alt="" width={13.1411} height={12.5474} />
+            </span>
+            {tutor.rating} <em>({tutor.reviews})</em>
           </span>
         </div>
         <p className="major">{tutor.major}</p>

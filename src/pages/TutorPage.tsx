@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Icon } from '../components/ui/Icon'
-import { AppNavigation } from '../components/layout/AppNavigation'
-import * as figmaAssets from '../components/ui/iconAssets'
+import { AppShell } from '../components/layout/AppShell'
+import { TutorPageHeader } from '../components/layout/TutorPageHeader'
 import { Modal } from '../components/ui/Modal'
 import { TutorCard } from '../features/tutors/components/TutorCard'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
@@ -63,53 +63,22 @@ function TutorPage() {
     if (exists) setToast('찜한 튜터에서 삭제했어요.')
   }
   return (
-    <>
-      <AppNavigation onNotice={setToast} />
-      <main>
-        <nav className="lesson-tabs">
-          <span>예정된 수업 (0)</span>
-          <span>지난 수업</span>
-          <span className="current">튜터</span>
-          <span>교재</span>
-        </nav>
-        <h1>튜터</h1>
-        <div className="tab-row">
-          <div className="tabs">
-            {['추천', '전체'].map((name) => (
-              <button
-                key={name}
-                className={tab === name ? 'selected' : ''}
-                onClick={() => {
-                  setTab(name)
-                  setFilter('')
-                }}
-              >
-                {name}
-              </button>
-            ))}
-          </div>
-          <label className="search">
-            <Icon name="search" />
-            <input
-              aria-label="튜터 검색"
-              placeholder="튜터 이름 또는 전공으로 검색하세요."
-              value={query}
-              maxLength={100}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            {query && (
-              <button onClick={() => setQuery('')} aria-label="검색 지우기">
-                ×
-              </button>
-            )}
-          </label>
-        </div>
+    <AppShell onNotice={setToast}>
+      <main className="tutor-page">
+        <TutorPageHeader
+          tab={tab}
+          onTabChange={(value) => {
+            setTab(value)
+            setFilter('')
+          }}
+          query={query}
+          onQueryChange={setQuery}
+          onNotice={setToast}
+        />
         <button className="recommend-banner" onClick={() => setRecommend(true)}>
           <Icon name="twinkle" />
           <span>나에게 맞는 튜터가 궁금하다면?</span>
-          <strong>
-            링글 팀에게 추천받기 <span>›</span>
-          </strong>
+          <strong>링글 팀에게 추천받기</strong>
         </button>
         <section className="recommendations">
           <div className="section-heading">
@@ -195,17 +164,6 @@ function TutorPage() {
           )}
         </section>
       </main>
-      <button className="trial" onClick={() => setRecommend(true)}>
-        <Icon name="trial" />
-        체험 수업 예약
-      </button>
-      <button
-        className="floating-chat"
-        aria-label="문의하기"
-        onClick={() => setToast('문의: help@ringleplus.com')}
-      >
-        <img src={figmaAssets.chatbot} alt="" width="72" height="72" />
-      </button>
       {bookmarkNotice && (
         <div className="bookmark-notice">
           <p role="status" aria-live="polite">
@@ -284,7 +242,7 @@ function TutorPage() {
           )}
         </Modal>
       )}
-    </>
+    </AppShell>
   )
 }
 export default TutorPage

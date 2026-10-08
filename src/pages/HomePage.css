@@ -1,13 +1,14 @@
 @reference '../index.css';
 .home-page {
-  max-width: 1440px;
-  width: calc(100% - 160px);
-  padding: 120px 80px 180px 180px;
+  max-width: 1340px;
+  width: calc(100% - 48px);
+  margin: 0 auto;
+  padding: 122px 6px 180px 14px;
 }
 .home-columns {
   @apply grid items-start;
-  grid-template-columns: minmax(0, 872fr) minmax(280px, 404fr);
-  gap: 44px;
+  grid-template-columns: minmax(0, 872fr) minmax(0, 403fr);
+  gap: 45px;
 }
 .home-primary,
 .home-secondary {
@@ -390,10 +391,7 @@
   font-size: 14px;
   white-space: nowrap;
 }
-@media (max-width: 1500px) {
-  .home-page {
-    padding: 100px var(--spacing-unit-60) 160px 160px;
-  }
+@container app-shell (max-width: 1500px) {
   .home-columns {
     gap: 34px;
     grid-template-columns: minmax(0, 1fr) 300px;
@@ -419,11 +417,7 @@
     font-size: 18px;
   }
 }
-@media (max-width: 1200px) {
-  .home-page {
-    padding: var(--spacing-unit-60) 24px 100px 124px;
-    width: 100%;
-  }
+@container app-shell (max-width: 1200px) {
   .home-columns {
     grid-template-columns: minmax(0, 1fr) 280px;
     gap: 24px;
@@ -453,7 +447,7 @@
     width: 100%;
   }
 }
-@media (max-width: 950px) {
+@container app-shell (max-width: 950px) {
   .home-columns {
     grid-template-columns: 1fr;
   }
@@ -469,18 +463,11 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
   }
-  .home-page {
-    padding-left: 104px;
-  }
   .home-tutor-portrait {
     height: 240px;
   }
 }
-@media (max-width: 600px) {
-  .home-page {
-    padding: 24px var(--spacing-unit-20) 110px;
-    width: 100%;
-  }
+@container app-shell (max-width: 600px) {
   .home-columns {
     gap: 24px;
   }
@@ -618,16 +605,13 @@
 .home-profile-links span {
   gap: 5px;
 }
-@media (max-width: 600px) {
+@container app-shell (max-width: 600px) {
   .home-tutor-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 600px) {
-  .home-trial {
-    display: none;
-  }
+@container app-shell (max-width: 600px) {
 }
 
 /* Tutor summaries follow the photo-overlay layout used on the home screen. */
@@ -735,7 +719,7 @@
   margin-top: var(--spacing-unit-12);
   font-size: 14px;
 }
-@media (max-width: 600px) {
+@container app-shell (max-width: 600px) {
   .home-tutor-portrait > .home-tutor-photo-details {
     padding: var(--spacing-unit-16);
   }
@@ -786,9 +770,16 @@
   box-shadow: none;
 }
 
-.home-trial .icon-slot {
-  width: 28px;
-  height: 28px;
+@container app-shell (max-width: 1200px) {
+  .home-page {
+    padding: 60px 0 140px;
+  }
+}
+@container app-shell (max-width: 600px) {
+  .home-page {
+    width: calc(100% - 40px);
+    padding: 24px 0 110px;
+  }
 }
 
 .home-tutor-photo-details {
