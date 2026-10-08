@@ -3,6 +3,8 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { AppShell } from '../components/layout/AppShell'
 import { Icon } from '../components/ui/Icon'
 import { Modal } from '../components/ui/Modal'
+import { ScheduledLessons } from '../features/home/components/ScheduledLessons'
+import { demoLessons } from '../features/home/data/demoLessons'
 import { HomeTutorCard } from '../features/home/components/HomeTutorCard'
 import { ProfileEditor } from '../features/home/components/ProfileEditor'
 import { learningGoals } from '../features/home/data/home'
@@ -13,10 +15,12 @@ import type {
 } from '../features/home/types/home'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
 import { useTutors } from '../features/tutors/hooks/useTutors'
+import type { Tutor } from '../features/tutors/types/tutor'
 import './HomePage.css'
 
 type HomeDialog =
   | { type: 'profile' }
+  | { type: 'tutor'; tutor: Tutor }
   | { type: 'information'; title: string; description: string }
   | null
 
@@ -30,6 +34,15 @@ const shortcuts = [
 
 export default function HomePage() {
   const [params] = useSearchParams()
+  const lessonCount =
+    params.get('lessons') === '0'
+      ? 0
+      : params.get('lessons') === '2'
+        ? 2
+        : params.get('lessons') === '3'
+          ? 3
+          : 1
+  const scheduledLessons = demoLessons.slice(0, lessonCount)
 
   // 실제 보유 수업권 API 계약 전, 두 디자인 상태를 확인하는 데모 데이터입니다.
   const balance: LessonPassBalance =
@@ -110,7 +123,7 @@ export default function HomePage() {
               <Icon name="home-coupon" />
               <span>[첫 구매 혜택] 수업권 최대 2회 추가</span>
               <strong>
-                혜택 확인하기 <Icon name="arrow" />
+                D-276 <Icon name="arrow" />
               </strong>
             </button>
 
@@ -124,128 +137,145 @@ export default function HomePage() {
               />
             </button>
 
-            <section
-              className="home-recommendations"
-              aria-labelledby="home-recommendation-title"
-            >
-              <div className="home-section-heading">
-                <h1 id="home-recommendation-title">
-                  {hasPass
-                    ? '이번 수업, 무엇을 연습할까요?'
-                    : '예정된 수업이 없어요. 링글이 추천하는 튜터를 만나보세요!'}
-                </h1>
-                <Link to="/tutors">추천 튜터 더보기</Link>
-              </div>
-
-              <div className="home-goals" role="tablist" aria-label="학습 목표">
-                {learningGoals.map((item) => (
-                  <button
-                    key={item.id}
-                    id={`goal-${item.id}`}
-                    role="tab"
-                    aria-selected={goal === item.id}
-                    aria-controls="home-tutor-panel"
-                    tabIndex={goal === item.id ? 0 : -1}
-                    className={goal === item.id ? 'chosen' : ''}
-                    onClick={() => setGoal(item.id)}
-                    onKeyDown={(event) => {
-                      const index = learningGoals.findIndex(
-                        (option) => option.id === goal,
-                      )
-
-                      const next =
-                        event.key === 'ArrowRight'
-                          ? (index + 1) % learningGoals.length
-                          : event.key === 'ArrowLeft'
-                            ? (index + learningGoals.length - 1) %
-                              learningGoals.length
-                            : event.key === 'Home'
-                              ? 0
-                              : event.key === 'End'
-                                ? learningGoals.length - 1
-                                : null
-
-                      if (next === null) return
-
-                      event.preventDefault()
-                      setGoal(learningGoals[next].id)
-                      document
-                        .getElementById(`goal-${learningGoals[next].id}`)
-                        ?.focus()
-                    }}
-                  >
-                    {item.label}
-                    {item.id === 'career' && <small>가입 시 선택</small>}
-                  </button>
-                ))}
-              </div>
-
-              <div
-                role="tabpanel"
-                id="home-tutor-panel"
-                aria-labelledby={`goal-${goal}`}
+            {scheduledLessons.length > 0 ? (
+              <ScheduledLessons
+                lessons={scheduledLessons}
+                tutors={tutors}
+                onDetails={(tutor) => setDialog({ type: 'tutor', tutor })}
+                onInformation={information}
+              />
+            ) : (
+              <section
+                className="home-recommendations"
+                aria-labelledby="home-recommendation-title"
               >
-                <p className="home-goal-description">
-                  {selectedGoal.description}
-                </p>
+                <div className="home-section-heading">
+                  <h1 id="home-recommendation-title">
+                    {hasPass
+                      ? '이번 수업, 무엇을 연습할까요?'
+                      : '예정된 수업이 없어요. 링글이 추천하는 튜터를 만나보세요!'}
+                  </h1>
+                  <Link to="/tutors">추천 튜터 더보기</Link>
+                </div>
 
-                {storageError && (
-                  <p
-                    role="status"
-                    className="rounded-lg bg-amber-50 p-3 mb-4 text-amber-900"
-                  >
-                    {storageError}
-                  </p>
-                )}
+                <div
+                  className="home-goals"
+                  role="tablist"
+                  aria-label="학습 목표"
+                >
+                  {learningGoals.map((item) => (
+                    <button
+                      key={item.id}
+                      id={`goal-${item.id}`}
+                      role="tab"
+                      aria-selected={goal === item.id}
+                      aria-controls="home-tutor-panel"
+                      tabIndex={goal === item.id ? 0 : -1}
+                      className={goal === item.id ? 'chosen' : ''}
+                      onClick={() => setGoal(item.id)}
+                      onKeyDown={(event) => {
+                        const index = learningGoals.findIndex(
+                          (option) => option.id === goal,
+                        )
 
-                {loading && (
-                  <p role="status" className="py-16 text-center text-muted">
-                    추천 튜터를 불러오고 있어요.
-                  </p>
-                )}
+                        const next =
+                          event.key === 'ArrowRight'
+                            ? (index + 1) % learningGoals.length
+                            : event.key === 'ArrowLeft'
+                              ? (index + learningGoals.length - 1) %
+                                learningGoals.length
+                              : event.key === 'Home'
+                                ? 0
+                                : event.key === 'End'
+                                  ? learningGoals.length - 1
+                                  : null
 
-                {error && (
-                  <div role="alert" className="py-12 text-center">
-                    <p>{error}</p>
-                    <button className="mt-3 text-primary" onClick={reload}>
-                      다시 시도
+                        if (next === null) return
+
+                        event.preventDefault()
+                        setGoal(learningGoals[next].id)
+                        document
+                          .getElementById(`goal-${learningGoals[next].id}`)
+                          ?.focus()
+                      }}
+                    >
+                      {item.label}
+                      {item.id === 'career' && <small>가입 시 선택</small>}
                     </button>
-                  </div>
-                )}
-
-                <div className="home-tutor-grid">
-                  {recommended.map((tutor) => (
-                    <HomeTutorCard
-                      key={tutor.name}
-                      tutor={tutor}
-                      bookmarked={saved.includes(tutor.name)}
-                      onBookmark={() => bookmark(tutor.name)}
-                    />
                   ))}
                 </div>
 
-                {!loading && !error && recommended.length === 0 && (
-                  <p className="py-12 text-center text-muted">
-                    추천할 튜터가 없어요. 다른 관심 분야를 선택해 주세요.
+                <div
+                  role="tabpanel"
+                  id="home-tutor-panel"
+                  aria-labelledby={`goal-${goal}`}
+                >
+                  <p className="home-goal-description">
+                    {selectedGoal.description}
                   </p>
-                )}
-              </div>
 
-              <div className="home-reserve">
-                {hasPass ? (
-                  <Link className="home-primary-button" to="/tutors">
-                    바로 예약하기
-                  </Link>
-                ) : (
-                  <>
-                    <button className="home-primary-button" onClick={purchase}>
-                      수업권 구매하고 예약하기
-                    </button>
-                    <p>보유 쿠폰 1장이 자동으로 적용돼요.</p>
-                  </>
-                )}
-              </div>
-            </section>
+                  {storageError && (
+                    <p
+                      role="status"
+                      className="rounded-lg bg-amber-50 p-3 mb-4 text-amber-900"
+                    >
+                      {storageError}
+                    </p>
+                  )}
+
+                  {loading && (
+                    <p role="status" className="py-16 text-center text-muted">
+                      추천 튜터를 불러오고 있어요.
+                    </p>
+                  )}
+
+                  {error && (
+                    <div role="alert" className="py-12 text-center">
+                      <p>{error}</p>
+                      <button className="mt-3 text-primary" onClick={reload}>
+                        다시 시도
+                      </button>
+                    </div>
+                  )}
+
+                  <div className="home-tutor-grid">
+                    {recommended.map((tutor) => (
+                      <HomeTutorCard
+                        key={tutor.name}
+                        tutor={tutor}
+                        bookmarked={saved.includes(tutor.name)}
+                        onBookmark={() => bookmark(tutor.name)}
+                        onDetails={() => setDialog({ type: 'tutor', tutor })}
+                      />
+                    ))}
+                  </div>
+
+                  {!loading && !error && recommended.length === 0 && (
+                    <p className="py-12 text-center text-muted">
+                      추천할 튜터가 없어요. 다른 관심 분야를 선택해 주세요.
+                    </p>
+                  )}
+                </div>
+
+                <div className="home-reserve">
+                  {hasPass ? (
+                    <Link className="home-primary-button" to="/tutors">
+                      바로 예약하기
+                    </Link>
+                  ) : (
+                    <>
+                      <button
+                        className="home-primary-button"
+                        onClick={purchase}
+                      >
+                        수업권 구매하고 예약하기
+                      </button>
+                      <p>보유 쿠폰 1장이 자동으로 적용돼요.</p>
+                    </>
+                  )}
+                </div>
+              </section>
+            )}
 
             <section className="home-curriculum">
               <button
@@ -542,6 +572,26 @@ export default function HomePage() {
                 setToast('프로필을 저장했어요.')
               }}
             />
+          ) : dialog.type === 'tutor' ? (
+            <>
+              <img src={`/tutor-${dialog.tutor.image}.png`} alt="" />
+              <h2 id="home-dialog-title">{dialog.tutor.name}</h2>
+              <p className="modal-school">
+                {dialog.tutor.major} · {dialog.tutor.university}
+              </p>
+              <p>{dialog.tutor.intro}</p>
+              <p className="modal-rating">
+                ★ {dialog.tutor.rating} · 수업 후기 {dialog.tutor.reviews}개
+              </p>
+              <button
+                className="primary"
+                onClick={() => bookmark(dialog.tutor.name)}
+              >
+                {saved.includes(dialog.tutor.name)
+                  ? '북마크 해제'
+                  : '튜터 북마크하기'}
+              </button>
+            </>
           ) : (
             <>
               <h2 id="home-dialog-title">{dialog.title}</h2>
