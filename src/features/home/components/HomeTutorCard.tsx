@@ -1,4 +1,7 @@
-import { Icon } from '../../../components/ui/Icon'
+import {
+  bookmarkDefault,
+  bookmarkSelected,
+} from '../../../components/ui/iconAssets'
 import type { Tutor } from '../../tutors/types/tutor'
 interface HomeTutorCardProps {
   tutor: Tutor
@@ -41,7 +44,12 @@ export function HomeTutorCard({
           aria-pressed={bookmarked}
           onClick={onBookmark}
         >
-          <Icon name="bookmark" />
+          <img
+            src={bookmarked ? bookmarkSelected : bookmarkDefault}
+            alt=""
+            width={64}
+            height={64}
+          />
         </button>
       </div>
       <div className="home-tutor-info">

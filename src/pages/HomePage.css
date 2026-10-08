@@ -15,26 +15,23 @@
 }
 .home-page h1,
 .home-page h2 {
-  @apply font-bold;
-  font-size: 20px;
-  letter-spacing: -0.5px;
-  line-height: 1.5;
+  @apply text-label-20-bold;
   margin: 0;
 }
 .home-offer {
   @apply flex items-center w-full text-left;
-  gap: 12px;
+  gap: var(--spacing-unit-12);
   padding: 18px 22px;
-  background: #fff7d5;
+  background: var(--color-ringle-yellow-100);
   border: 1px solid #e9d78b;
-  border-radius: 8px;
+  border-radius: var(--radius-medium);
   font-size: 14px;
   margin-bottom: 18px;
 }
 .home-offer-icon {
   @apply grid place-items-center font-bold;
-  background: #ffdb7b;
-  color: #fff;
+  background: var(--color-ringle-yellow-500);
+  color: var(--color-white);
   width: 22px;
   height: 20px;
 }
@@ -43,7 +40,7 @@
   margin-left: auto;
   color: #a78933;
   font-size: 13px;
-  gap: 8px;
+  gap: var(--spacing-unit-8);
 }
 .home-offer svg {
   width: 14px;
@@ -52,7 +49,7 @@
 .home-image-banner {
   @apply block w-full overflow-hidden;
   padding: 0;
-  border-radius: 8px;
+  border-radius: var(--radius-medium);
 }
 .home-image-banner img {
   @apply block w-full;
@@ -65,16 +62,16 @@
   margin-bottom: 34px;
 }
 .home-recommendations {
-  border: 1px solid #ededf0;
-  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
   padding: 30px;
 }
 .home-section-heading {
   @apply flex items-center justify-between;
-  gap: 20px;
+  gap: var(--spacing-unit-20);
 }
 .home-section-heading > a {
-  color: #939199;
+  color: var(--color-muted);
   font-size: 13px;
   text-decoration: underline;
   text-underline-offset: 4px;
@@ -87,41 +84,41 @@
 }
 .home-goals button,
 .home-curriculum-options button {
-  border: 1px solid #bdbbc2;
-  border-radius: 7px;
-  padding: 10px 12px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-medium);
+  padding: 10px var(--spacing-unit-12);
   font-size: 13px;
 }
 .home-goals .chosen,
 .home-curriculum-options .chosen {
-  background: #444064;
-  border-color: #444064;
-  color: #fff;
+  background: var(--color-filter-selected);
+  border-color: var(--color-filter-selected);
+  color: var(--color-white);
 }
 .home-goals small {
-  color: #a4a1b8;
+  color: var(--color-ringle-gray-250);
   font-size: 10px;
-  margin-left: 4px;
+  margin-left: var(--spacing-unit-4);
 }
 .home-goal-description {
   @apply text-muted;
   font-size: 12px;
-  margin: 16px 0 28px;
+  margin: var(--spacing-unit-16) 0 28px;
 }
 .home-tutor-grid {
   @apply grid;
   grid-template-columns: repeat(2, minmax(0, 286px));
-  gap: 16px;
+  gap: var(--spacing-unit-16);
 }
 .home-tutor-card {
   @apply overflow-hidden bg-white;
-  border: 1px solid #e8e7ed;
-  border-radius: 18px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
   transition: box-shadow 0.2s;
 }
 .home-tutor-card:hover,
 .home-tutor-card:focus-within {
-  box-shadow: 0 5px 20px #00000013;
+  box-shadow: var(--shadow-card-selected);
 }
 .home-tutor-portrait {
   @apply relative;
@@ -131,7 +128,7 @@
   @apply block h-full;
   padding: 28px;
 }
-.home-tutor-portrait img {
+.home-tutor-portrait > .home-tutor-photo-details > img {
   @apply w-full h-full object-contain;
   transition: transform 0.2s;
 }
@@ -143,7 +140,7 @@
   right: 26px;
 }
 .home-tutor-info {
-  padding: 0 16px 18px;
+  padding: 0 var(--spacing-unit-16) 18px;
 }
 .home-tutor-info .card-title {
   margin-top: 14px;
@@ -159,14 +156,14 @@
   margin-top: 10px;
 }
 .home-availability {
-  border-top: 1px solid #e8e7ed;
+  border-top: 1px solid var(--color-border);
   padding-top: 14px;
   margin-top: 28px;
   font-size: 12px;
-  color: #96939d;
+  color: var(--color-muted);
 }
 .home-availability strong {
-  color: #292830;
+  color: var(--color-ink);
   margin-left: 5px;
 }
 .home-reserve {
@@ -175,8 +172,8 @@
 }
 .home-primary-button {
   @apply inline-block bg-primary text-white;
-  padding: 16px 26px;
-  border-radius: 6px;
+  padding: var(--spacing-unit-16) 26px;
+  border-radius: var(--radius-medium);
   font-size: 14px;
   text-decoration: none;
 }
@@ -186,12 +183,12 @@
 .home-reserve p {
   @apply text-muted;
   font-size: 12px;
-  margin-top: 12px;
+  margin-top: var(--spacing-unit-12);
 }
 .home-curriculum {
   margin-top: 34px;
-  border: 1px solid #ecebf0;
-  border-radius: 7px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
 }
 .home-curriculum-toggle {
   @apply flex items-center justify-between w-full text-muted;
@@ -199,7 +196,7 @@
 }
 .home-curriculum-toggle > span {
   @apply flex items-center;
-  gap: 12px;
+  gap: var(--spacing-unit-12);
 }
 .home-curriculum-toggle > svg {
   width: 16px;
@@ -213,8 +210,8 @@
 .home-guide-row {
   @apply grid;
   grid-template-columns: 1fr 1fr;
-  border: 1px solid #ecebf0;
-  border-radius: 7px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
   padding: 10px 0;
   margin: 48px 0 18px;
   position: relative;
@@ -226,8 +223,8 @@
   right: 0;
   top: -28px;
   height: 16px;
-  background: #f8f7fc;
-  border-top: 1px solid #efedf3;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
 }
 .home-guide-row button {
   @apply flex items-center justify-center;
@@ -235,20 +232,20 @@
   gap: 10px;
 }
 .home-guide-row button + button {
-  border-left: 1px solid #efedf3;
+  border-left: 1px solid var(--color-border);
 }
 .home-guide-row svg {
-  color: #939199;
+  color: var(--color-muted);
   width: 22px;
   height: 22px;
 }
 .home-shortcuts {
   @apply flex items-start;
-  padding: 20px 30px;
-  background: #f8f7fc;
-  border: 1px solid #efedf3;
-  border-radius: 7px;
-  gap: 20px;
+  padding: var(--spacing-unit-20) 30px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  gap: var(--spacing-unit-20);
 }
 .home-shortcuts > div {
   @apply grid;
@@ -267,8 +264,8 @@
   @apply grid place-items-center bg-white text-primary;
   width: 70px;
   height: 70px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px #00000010;
+  border-radius: var(--radius-medium);
+  box-shadow: var(--shadow-blur);
 }
 .home-shortcuts svg {
   width: 32px;
@@ -278,8 +275,8 @@
   margin: 18px 0;
 }
 .home-challenge {
-  border: 1px solid #efedf3;
-  border-radius: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
   padding: 30px;
   scroll-margin-top: 24px;
 }
@@ -293,14 +290,14 @@
   height: 16px;
 }
 .home-challenge-subtitle {
-  margin-top: 8px;
+  margin-top: var(--spacing-unit-8);
   font-size: 13px;
 }
 .home-challenge-invite {
   @apply relative text-center;
-  background: #f8f7fc;
-  border: 1px solid #efedf3;
-  border-radius: 7px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
   padding: 88px 24px 28px;
   margin-top: 34px;
 }
@@ -309,7 +306,7 @@
   line-height: 1.8;
 }
 .home-challenge-invite .home-primary-button {
-  margin-top: 40px;
+  margin-top: var(--spacing-unit-40);
 }
 .home-dismiss {
   @apply absolute text-muted;
@@ -323,12 +320,12 @@
 }
 .home-secondary {
   @apply flex flex-col;
-  gap: 20px;
+  gap: var(--spacing-unit-20);
 }
 .home-profile {
-  border: 1px solid #efedf3;
-  border-radius: 7px;
-  padding: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-medium);
+  padding: var(--spacing-unit-16);
 }
 .home-profile-heading {
   @apply flex items-center justify-between;
@@ -339,19 +336,19 @@
   overflow-wrap: anywhere;
 }
 .home-profile-heading button {
-  border: 1px solid #bab8c1;
-  border-radius: 3px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-small);
   font-size: 12px;
-  padding: 10px 8px;
+  padding: 10px var(--spacing-unit-8);
   white-space: nowrap;
 }
 .home-timezone {
   @apply text-muted;
   font-size: 14px;
-  margin: 8px 0 20px;
+  margin: var(--spacing-unit-8) 0 var(--spacing-unit-20);
 }
 .home-profile-links {
-  border-top: 1px solid #efedf3;
+  border-top: 1px solid var(--color-border);
   padding-top: 26px;
   display: flex;
   flex-direction: column;
@@ -372,20 +369,20 @@
 .home-profile-links svg {
   width: 14px;
   height: 14px;
-  color: #a09ca5;
+  color: var(--color-muted);
 }
 .home-form-label {
   display: block;
-  margin: 20px 0 8px;
+  margin: var(--spacing-unit-20) 0 var(--spacing-unit-8);
   font-weight: 600;
 }
 .home-form-input {
   display: block;
   width: 100%;
-  border: 1px solid #bdbbc2;
-  border-radius: 6px;
-  padding: 12px;
-  background: white;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-medium);
+  padding: var(--spacing-unit-12);
+  background: var(--color-white);
 }
 .bookmark-notice a {
   @apply flex items-center text-muted;
@@ -395,7 +392,7 @@
 }
 @media (max-width: 1500px) {
   .home-page {
-    padding: 100px 60px 160px 160px;
+    padding: 100px var(--spacing-unit-60) 160px 160px;
   }
   .home-columns {
     gap: 34px;
@@ -408,7 +405,7 @@
     height: 240px;
   }
   .home-shortcuts {
-    padding: 20px;
+    padding: var(--spacing-unit-20);
     gap: 15px;
   }
   .home-shortcuts > div {
@@ -424,7 +421,7 @@
 }
 @media (max-width: 1200px) {
   .home-page {
-    padding: 60px 24px 100px 124px;
+    padding: var(--spacing-unit-60) 24px 100px 124px;
     width: 100%;
   }
   .home-columns {
@@ -436,7 +433,7 @@
   }
   .home-section-heading {
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--spacing-unit-8);
   }
   .home-tutor-portrait {
     height: 200px;
@@ -481,7 +478,7 @@
 }
 @media (max-width: 600px) {
   .home-page {
-    padding: 24px 20px 110px;
+    padding: 24px var(--spacing-unit-20) 110px;
     width: 100%;
   }
   .home-columns {
@@ -489,13 +486,13 @@
   }
   .home-offer {
     flex-wrap: wrap;
-    gap: 8px;
+    gap: var(--spacing-unit-8);
   }
   .home-offer strong {
     margin-left: 30px;
   }
   .home-package {
-    margin-bottom: 20px;
+    margin-bottom: var(--spacing-unit-20);
   }
   .home-recommendations {
     padding: 18px 14px;
@@ -509,19 +506,19 @@
     font-size: 11px;
   }
   .home-goals {
-    margin-top: 20px;
+    margin-top: var(--spacing-unit-20);
     gap: 6px;
   }
   .home-goals button {
     font-size: 11px;
-    padding: 8px;
+    padding: var(--spacing-unit-8);
   }
   .home-goals small {
     display: none;
   }
   .home-goal-description {
     font-size: 11px;
-    margin: 12px 0 18px;
+    margin: var(--spacing-unit-12) 0 18px;
   }
   .home-tutor-grid {
     gap: 10px;
@@ -530,7 +527,7 @@
     height: 155px;
   }
   .home-tutor-portrait > .home-tutor-photo-details {
-    padding: 12px;
+    padding: var(--spacing-unit-12);
   }
   .home-tutor-portrait .bookmark {
     top: 10px;
@@ -550,11 +547,11 @@
   }
   .home-highlight {
     font-size: 11px;
-    margin-top: 12px;
+    margin-top: var(--spacing-unit-12);
   }
   .home-tutor-info .category {
     font-size: 8px;
-    padding: 2px 4px;
+    padding: 2px var(--spacing-unit-4);
   }
   .home-availability {
     font-size: 10px;
@@ -565,7 +562,7 @@
     margin: 5px 0 0;
   }
   .home-reserve {
-    margin-top: 20px;
+    margin-top: var(--spacing-unit-20);
   }
   .home-primary-button {
     padding: 13px 18px;
@@ -575,7 +572,7 @@
     font-size: 10px;
   }
   .home-shortcuts > div {
-    gap: 8px;
+    gap: var(--spacing-unit-8);
   }
   .home-shortcuts span {
     width: 42px;
@@ -591,13 +588,13 @@
     gap: 10px;
   }
   .home-challenge {
-    padding: 20px 14px;
+    padding: var(--spacing-unit-20) 14px;
   }
   .home-challenge-subtitle {
     font-size: 11px;
   }
   .home-challenge-invite {
-    padding: 52px 16px 22px;
+    padding: 52px var(--spacing-unit-16) 22px;
     margin-top: 22px;
   }
   .home-challenge-invite p {
@@ -614,7 +611,7 @@
   }
   .bookmark-notice a {
     font-size: 11px;
-    gap: 4px;
+    gap: var(--spacing-unit-4);
   }
 }
 
@@ -647,14 +644,14 @@
   aspect-ratio: 1;
   height: auto;
   overflow: hidden;
-  border-radius: 18px;
-  background: white;
+  border-radius: var(--radius-large);
+  background: var(--color-white);
   transition: background-color 0.2s;
 }
 .home-tutor-portrait > .home-tutor-photo-details {
   padding: 28px;
 }
-.home-tutor-portrait img {
+.home-tutor-portrait > .home-tutor-photo-details > img {
   filter: none;
   transition:
     filter 0.2s,
@@ -670,10 +667,10 @@
 }
 .home-tutor-portrait:hover,
 .home-tutor-portrait:focus-within {
-  background: #b3b3b3;
+  background: var(--color-photo-hover);
 }
-.home-tutor-portrait:hover img,
-.home-tutor-portrait:focus-within img {
+.home-tutor-portrait:hover > a > img,
+.home-tutor-portrait:focus-within > a > img {
   filter: blur(2px);
   mix-blend-mode: multiply;
 }
@@ -688,7 +685,7 @@
   position: absolute;
   top: 18px;
   left: 18px;
-  color: white;
+  color: var(--color-white);
   font-size: 18px;
   font-weight: 700;
   pointer-events: none;
@@ -699,14 +696,14 @@
   left: 18px;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--spacing-unit-8);
   pointer-events: none;
 }
 .home-tutor-topics span {
   padding: 5px 9px;
-  border-radius: 4px;
-  background: #494654;
-  color: white;
+  border-radius: var(--radius-small);
+  background: var(--color-subject-tag);
+  color: var(--color-white);
   font-size: 12px;
   font-weight: 700;
 }
@@ -718,29 +715,27 @@
   padding: 0;
 }
 .home-tutor-info .card-title {
-  margin-top: 20px;
+  margin-top: var(--spacing-unit-20);
 }
 .home-tutor-info .card-title > button {
-  font-size: 22px;
+  @apply text-label-20-bold;
 }
 .home-tutor-info .major {
   margin-top: 10px;
-  font-size: 19px;
-  font-weight: 600;
-  color: #5a5769;
+  @apply text-label-18;
+  color: var(--color-text-muted);
 }
 .home-tutor-info .university {
-  font-size: 17px;
-  font-weight: 600;
+  @apply text-label-16-semibold;
 }
 .home-tutor-info .category {
   display: inline-block;
-  margin-top: 12px;
+  margin-top: var(--spacing-unit-12);
   font-size: 14px;
 }
 @media (max-width: 600px) {
   .home-tutor-portrait > .home-tutor-photo-details {
-    padding: 16px;
+    padding: var(--spacing-unit-16);
   }
   .home-tutor-acceptance {
     top: 12px;
@@ -750,10 +745,10 @@
   .home-tutor-topics {
     bottom: 10px;
     left: 10px;
-    gap: 4px;
+    gap: var(--spacing-unit-4);
   }
   .home-tutor-topics span {
-    padding: 4px 6px;
+    padding: var(--spacing-unit-4) 6px;
     font-size: 10px;
   }
   .home-tutor-info .card-title > button {
@@ -768,6 +763,30 @@
   .home-tutor-info .category {
     font-size: 11px;
   }
+}
+.home-offer .icon-home-coupon {
+  width: 32px;
+  height: 24px;
+}
+
+.home-curriculum .icon-home-curriculum,
+.home-guide-row .icon-home-ringle-guide,
+.home-guide-row .icon-home-ot-application {
+  width: 32px;
+  height: 32px;
+}
+
+.home-shortcuts .icon-slot {
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+.home-trial .icon-slot {
+  width: 28px;
+  height: 28px;
 }
 
 .home-tutor-photo-details {

@@ -18,7 +18,7 @@ export function AppNavigation({ onNotice }: AppNavigationProps) {
     <>
       <aside className="sidebar">
         <Link className="logo" to="/" aria-label="Ringle 홈">
-          <img src={ringleLogo} alt="" width="44" height="44" />
+          <img src={ringleLogo} alt="" width="68.44" height="22" />
         </Link>
         <nav aria-label="주 메뉴">
           {items.map((item) =>
@@ -69,7 +69,7 @@ export function AppNavigation({ onNotice }: AppNavigationProps) {
               )
             }
           >
-            <Icon name="lesson" />
+            <Icon name="guide" />
             링글 가이드
           </button>
           <button

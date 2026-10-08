@@ -65,6 +65,10 @@ src/
 
 ## 디자인과 접근성
 
+최종 피그마의 Primitive·Semantic 변수와 텍스트 스타일을 `src/index.css`에서 관리합니다. 색상은 `--color-primary-*`, `--color-ringle-gray-*` 및 용도별 별칭을 사용합니다. 간격은 `--spacing-unit-*`, 모서리는 `--radius-*`, 타이포그래피는 `text-heading-40`, `text-heading-24`, `text-label-20-bold` 등의 Tailwind 유틸리티로 적용합니다. 간격 토큰을 별도 이름으로 정의해 기존 Tailwind `p-4` 등의 값은 유지합니다.
+
+Pretendard Variable 1.3.9는 `public/fonts`에서 제공하고 첫 화면에서 미리 로드합니다. 외부 폰트 CDN에 의존하지 않습니다. 폰트 출처는 [Pretendard 공식 저장소](https://github.com/orioncactus/pretendard/tree/v1.3.9/packages/pretendard)이며, 배포 라이선스는 `public/fonts/OFL.txt`에 포함되어 있습니다.
+
 Tailwind CSS 4의 테마 토큰과 `@apply`로 공통 레이아웃·색상·타이포그래피를 적용합니다. 첨부 디자인의 크기와 hover 전환 등은 화면 CSS에서 관리합니다. 기존 튜터 화면은 5열, 필터 화면은 4열로 표시하며 화면 너비에 따라 열 수가 줄어듭니다. 카드 소개는 넘치면 스크롤할 수 있고, 검색창과 버튼은 키보드 포커스를 표시합니다.
 
 공통 Modal은 네이티브 `dialog`로 배경을 비활성화합니다. Escape·닫기 버튼·배경 클릭으로 닫으며, 닫을 때 이전 포커스를 복원합니다.

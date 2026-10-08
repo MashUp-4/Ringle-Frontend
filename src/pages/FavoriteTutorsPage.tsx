@@ -27,7 +27,7 @@ export default function FavoriteTutorsPage() {
     <>
       <aside className="sidebar">
         <Link className="logo" to="/tutors" aria-label="Ringle 홈">
-          <img src={figmaAssets.ringleLogo} alt="" width="44" height="44" />
+          <img src={figmaAssets.ringleLogo} alt="" width="68.44" height="22" />
         </Link>
 
         <nav>

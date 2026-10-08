@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { AppNavigation } from '../components/layout/AppNavigation'
 import { Icon } from '../components/ui/Icon'
+import { chatbot } from '../components/ui/iconAssets'
 import { Modal } from '../components/ui/Modal'
 import { HomeTutorCard } from '../features/home/components/HomeTutorCard'
 import { ProfileEditor } from '../features/home/components/ProfileEditor'
@@ -21,17 +22,26 @@ type HomeDialog =
   | { type: 'tutor'; tutor: Tutor }
   | { type: 'information'; title: string; description: string }
   | null
+
+const shortcuts = [
+  { icon: 'shortcut-purchase', label: '구매' },
+  { icon: 'shortcut-tutor', label: '튜터' },
+  { icon: 'shortcut-material', label: '교재' },
+  { icon: 'shortcut-lesson-review', label: '수업 리뷰' },
+  { icon: 'shortcut-ai-analysis', label: 'AI 분석 통계' },
+]
+
 export default function HomePage() {
   const [params] = useSearchParams()
-  useEffect(() => {
-    document.title = '홈 | Ringle'
-  }, [])
+
   // 실제 보유 수업권 API 계약 전, 두 디자인 상태를 확인하는 데모 데이터입니다.
   const balance: LessonPassBalance =
     params.get('passes') === 'available'
       ? { fortyMinutes: 1, twentyMinutes: 0 }
       : { fortyMinutes: 0, twentyMinutes: 0 }
+
   const hasPass = balance.fortyMinutes + balance.twentyMinutes > 0
+
   const [goal, setGoal] = useState<LearningGoal>('career')
   const [profile, setProfile] = useState<HomeProfile>({
     name: '한수지',
@@ -44,51 +54,71 @@ export default function HomePage() {
   )
   const [challengeVisible, setChallengeVisible] = useState(true)
   const [curriculum, setCurriculum] = useState(false)
+
   const { tutors, loading, error, reload } = useTutors()
   const { saved, toggleBookmark, storageError } = useBookmarks()
+
   const selectedGoal = learningGoals.find((item) => item.id === goal)!
   const recommended = selectedGoal.tutorNames.flatMap((name) =>
     tutors.filter((tutor) => tutor.name === name),
   )
+
+  useEffect(() => {
+    document.title = '홈 | Ringle'
+  }, [])
+
   useEffect(() => {
     if (!toast) return
+
     const timer = setTimeout(() => setToast(''), 3000)
     return () => clearTimeout(timer)
   }, [toast])
+
   useEffect(() => {
     if (!bookmarkNotice) return
+
     const timer = setTimeout(() => setBookmarkNotice(null), 5000)
     return () => clearTimeout(timer)
   }, [bookmarkNotice])
+
   function information(title: string, description: string) {
     setDialog({ type: 'information', title, description })
   }
+
   function purchase() {
     information(
       '수업권 알아보기',
       '40분 수업은 깊이 있는 토론과 피드백을, 20분 수업은 꾸준한 영어 말하기 연습을 위한 선택이에요. 마음에 드는 튜터를 먼저 살펴보세요.',
     )
   }
+
   function bookmark(name: string) {
     const exists = saved.includes(name)
+
     toggleBookmark(name)
     setToast('')
     setBookmarkNotice(exists ? null : { name })
-    if (exists) setToast('찜한 튜터에서 삭제했어요.')
+
+    if (exists) {
+      setToast('찜한 튜터에서 삭제했어요.')
+    }
   }
+
   return (
     <>
       <AppNavigation onNotice={setToast} />
+
       <main className="home-page">
         <div className="home-columns">
           <div className="home-primary">
             <button className="home-offer" onClick={purchase}>
-              <span className="home-offer-icon">%</span>
+              <Icon name="home-coupon" />
               <span>[첫 구매 혜택] 수업권 최대 2회 추가</span>
               <strong>
                 혜택 확인하기 <Icon name="arrow" />
               </strong>
             </button>
+
             <button
               className="home-image-banner home-package"
               onClick={purchase}
@@ -98,6 +128,7 @@ export default function HomePage() {
                 alt="결과를 만드는 영어 학습, 링글 패키지 하나면 끝! 수업권 알아보기"
               />
             </button>
+
             <section
               className="home-recommendations"
               aria-labelledby="home-recommendation-title"
@@ -110,6 +141,7 @@ export default function HomePage() {
                 </h1>
                 <Link to="/tutors">추천 튜터 더보기</Link>
               </div>
+
               <div className="home-goals" role="tablist" aria-label="학습 목표">
                 {learningGoals.map((item) => (
                   <button
@@ -125,6 +157,7 @@ export default function HomePage() {
                       const index = learningGoals.findIndex(
                         (option) => option.id === goal,
                       )
+
                       const next =
                         event.key === 'ArrowRight'
                           ? (index + 1) % learningGoals.length
@@ -136,7 +169,9 @@ export default function HomePage() {
                               : event.key === 'End'
                                 ? learningGoals.length - 1
                                 : null
+
                       if (next === null) return
+
                       event.preventDefault()
                       setGoal(learningGoals[next].id)
                       document
@@ -149,6 +184,7 @@ export default function HomePage() {
                   </button>
                 ))}
               </div>
+
               <div
                 role="tabpanel"
                 id="home-tutor-panel"
@@ -157,6 +193,7 @@ export default function HomePage() {
                 <p className="home-goal-description">
                   {selectedGoal.description}
                 </p>
+
                 {storageError && (
                   <p
                     role="status"
@@ -165,11 +202,13 @@ export default function HomePage() {
                     {storageError}
                   </p>
                 )}
+
                 {loading && (
                   <p role="status" className="py-16 text-center text-muted">
                     추천 튜터를 불러오고 있어요.
                   </p>
                 )}
+
                 {error && (
                   <div role="alert" className="py-12 text-center">
                     <p>{error}</p>
@@ -178,6 +217,7 @@ export default function HomePage() {
                     </button>
                   </div>
                 )}
+
                 <div className="home-tutor-grid">
                   {recommended.map((tutor) => (
                     <HomeTutorCard
@@ -189,12 +229,14 @@ export default function HomePage() {
                     />
                   ))}
                 </div>
+
                 {!loading && !error && recommended.length === 0 && (
                   <p className="py-12 text-center text-muted">
                     추천할 튜터가 없어요. 다른 관심 분야를 선택해 주세요.
                   </p>
                 )}
               </div>
+
               <div className="home-reserve">
                 {hasPass ? (
                   <Link className="home-primary-button" to="/tutors">
@@ -210,6 +252,7 @@ export default function HomePage() {
                 )}
               </div>
             </section>
+
             <section className="home-curriculum">
               <button
                 className="home-curriculum-toggle"
@@ -218,11 +261,12 @@ export default function HomePage() {
                 onClick={() => setCurriculum((value) => !value)}
               >
                 <span>
-                  <Icon name="lesson" />
+                  <Icon name="home-curriculum" />
                   커리큘럼 선택
                 </span>
                 <Icon name="arrow" />
               </button>
+
               {curriculum && (
                 <div
                   id="curriculum-details"
@@ -244,6 +288,7 @@ export default function HomePage() {
                 </div>
               )}
             </section>
+
             <div className="home-guide-row">
               <button
                 onClick={() =>
@@ -253,9 +298,10 @@ export default function HomePage() {
                   )
                 }
               >
-                <Icon name="lesson" />
+                <Icon name="home-ringle-guide" />
                 링글 사용법
               </button>
+
               <button
                 onClick={() =>
                   information(
@@ -264,23 +310,19 @@ export default function HomePage() {
                   )
                 }
               >
-                <Icon name="chat" />
+                <Icon name="home-ot-application" />
                 OT 신청
               </button>
             </div>
+
             <section
               className="home-shortcuts"
               aria-labelledby="shortcuts-title"
             >
               <h2 id="shortcuts-title">바로가기</h2>
+
               <div>
-                {[
-                  ['calendar', '구매'],
-                  ['user', '튜터'],
-                  ['lesson', '교재'],
-                  ['chat', '수업 리뷰'],
-                  ['chart', 'AI 분석 통계'],
-                ].map(([icon, label]) =>
+                {shortcuts.map(({ icon, label }) =>
                   label === '튜터' ? (
                     <Link key={label} to="/tutors">
                       <span>
@@ -309,6 +351,7 @@ export default function HomePage() {
                 )}
               </div>
             </section>
+
             <button
               className="home-image-banner home-points"
               onClick={() =>
@@ -322,6 +365,7 @@ export default function HomePage() {
                 alt="링글 포인트를 받을 기회, 놓치지 마세요! 챌린지 참여하기"
               />
             </button>
+
             <section className="home-challenge" id="home-challenge">
               <div className="home-section-heading">
                 <h2>실리콘밸리 챌린지</h2>
@@ -336,9 +380,11 @@ export default function HomePage() {
                   자세히 보기 <Icon name="arrow" />
                 </button>
               </div>
+
               <p className="home-challenge-subtitle">
                 종료까지 56일 남음 · 1,606명 참여중
               </p>
+
               {challengeVisible ? (
                 <div className="home-challenge-invite">
                   <button
@@ -348,11 +394,13 @@ export default function HomePage() {
                   >
                     ×
                   </button>
+
                   <p>
                     2026년 링글로 영어 공부하고 포인트, 무료 수업권, 실리콘밸리
                     투어까지
                     <br />갈 수 있는 기회를 놓치지 마세요!
                   </p>
+
                   <button
                     className="home-primary-button"
                     onClick={() =>
@@ -375,6 +423,7 @@ export default function HomePage() {
               )}
             </section>
           </div>
+
           <aside className="home-secondary" aria-label="내 정보와 추천 이벤트">
             <section className="home-profile">
               <div className="home-profile-heading">
@@ -383,7 +432,9 @@ export default function HomePage() {
                   프로필 설정
                 </button>
               </div>
+
               <p className="home-timezone">{profile.timezone}</p>
+
               <div className="home-profile-links">
                 <button
                   onClick={() =>
@@ -400,6 +451,7 @@ export default function HomePage() {
                     <Icon name="arrow" />
                   </span>
                 </button>
+
                 <button
                   onClick={() =>
                     information(
@@ -411,6 +463,7 @@ export default function HomePage() {
                   <strong>AI 스피킹 멤버십</strong>
                   <Icon name="arrow" />
                 </button>
+
                 <button
                   onClick={() => information('포인트', '보유 포인트는 0P예요.')}
                 >
@@ -419,6 +472,7 @@ export default function HomePage() {
                     0P <Icon name="arrow" />
                   </span>
                 </button>
+
                 <button
                   onClick={() =>
                     information(
@@ -434,6 +488,7 @@ export default function HomePage() {
                 </button>
               </div>
             </section>
+
             <button
               className="home-image-banner"
               onClick={() =>
@@ -448,6 +503,7 @@ export default function HomePage() {
                 alt="링글 슈퍼매치, 수업과 응원으로 팀을 우승시키자!"
               />
             </button>
+
             <button
               className="home-image-banner"
               onClick={() =>
@@ -465,23 +521,26 @@ export default function HomePage() {
           </aside>
         </div>
       </main>
+
       <Link className="trial home-trial" to="/tutors">
-        <Icon name="calendar" />
+        <Icon name="trial" />
         체험 수업 예약
       </Link>
+
       <button
         className="floating-chat"
         aria-label="문의하기"
         onClick={() => setToast('문의: help@ringleplus.com')}
       >
-        <Icon name="chat" />
-        <i />
+        <img src={chatbot} alt="" width={72} height={72} />
       </button>
+
       {toast && (
         <div className="toast" role="status">
           {toast}
         </div>
       )}
+
       {bookmarkNotice && (
         <div className="bookmark-notice">
           <p role="status">찜한 튜터에 추가했어요.</p>
@@ -490,6 +549,7 @@ export default function HomePage() {
           </Link>
         </div>
       )}
+
       {dialog && (
         <Modal labelledBy="home-dialog-title" onClose={() => setDialog(null)}>
           {dialog.type === 'profile' ? (
