@@ -1,20 +1,14 @@
 @reference '../index.css';
 .home-page {
-  max-width: 1320px;
+  max-width: 1340px;
   width: calc(100% - 48px);
   margin: 0 auto;
-  padding: 122px 0 180px;
-}
-
-.home-page {
-  max-width: 1440px;
-  width: calc(100% - 160px);
-  padding: 120px 80px 180px 180px;
+  padding: 122px 6px 180px 14px;
 }
 .home-columns {
   @apply grid items-start;
-  grid-template-columns: minmax(0, 872fr) minmax(280px, 404fr);
-  gap: 44px;
+  grid-template-columns: minmax(0, 872fr) minmax(0, 403fr);
+  gap: 45px;
 }
 .home-primary,
 .home-secondary {
@@ -397,7 +391,7 @@
   font-size: 14px;
   white-space: nowrap;
 }
-@media (max-width: 1500px) {
+@container app-shell (max-width: 1500px) {
   .home-columns {
     gap: 34px;
     grid-template-columns: minmax(0, 1fr) 300px;
@@ -423,7 +417,7 @@
     font-size: 18px;
   }
 }
-@media (max-width: 1200px) {
+@container app-shell (max-width: 1200px) {
   .home-columns {
     grid-template-columns: minmax(0, 1fr) 280px;
     gap: 24px;
@@ -453,7 +447,7 @@
     width: 100%;
   }
 }
-@media (max-width: 950px) {
+@container app-shell (max-width: 950px) {
   .home-columns {
     grid-template-columns: 1fr;
   }
@@ -473,7 +467,7 @@
     height: 240px;
   }
 }
-@media (max-width: 600px) {
+@container app-shell (max-width: 600px) {
   .home-columns {
     gap: 24px;
   }
@@ -611,13 +605,13 @@
 .home-profile-links span {
   gap: 5px;
 }
-@media (max-width: 600px) {
+@container app-shell (max-width: 600px) {
   .home-tutor-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 600px) {
+@container app-shell (max-width: 600px) {
 }
 
 /* Tutor summaries follow the photo-overlay layout used on the home screen. */
@@ -723,7 +717,7 @@
   margin-top: var(--spacing-unit-12);
   font-size: 14px;
 }
-@media (max-width: 600px) {
+@container app-shell (max-width: 600px) {
   .home-tutor-portrait > a {
     padding: var(--spacing-unit-16);
   }
@@ -774,12 +768,12 @@
   box-shadow: none;
 }
 
-@media (max-width: 1200px) {
+@container app-shell (max-width: 1200px) {
   .home-page {
     padding: 60px 0 140px;
   }
 }
-@media (max-width: 600px) {
+@container app-shell (max-width: 600px) {
   .home-page {
     width: calc(100% - 40px);
     padding: 24px 0 110px;

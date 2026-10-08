@@ -56,7 +56,15 @@ export function TutorCard({
       <div className="card-title">
         <button onClick={onDetails}>{tutor.name}</button>
         <span>
-          <b>★</b> {tutor.rating} <em>({tutor.reviews})</em>
+          <span className="rating-star" aria-hidden="true">
+            <img
+              src={figmaAssets.ratingStar}
+              alt=""
+              width={13.1411}
+              height={12.5474}
+            />
+          </span>
+          {tutor.rating} <em>({tutor.reviews})</em>
         </span>
       </div>
       <p className="major">{tutor.major}</p>

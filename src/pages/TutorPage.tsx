@@ -78,9 +78,7 @@ function TutorPage() {
         <button className="recommend-banner" onClick={() => setRecommend(true)}>
           <Icon name="twinkle" />
           <span>나에게 맞는 튜터가 궁금하다면?</span>
-          <strong>
-            링글 팀에게 추천받기 <span>›</span>
-          </strong>
+          <strong>링글 팀에게 추천받기</strong>
         </button>
         <section className="recommendations">
           <div className="section-heading">

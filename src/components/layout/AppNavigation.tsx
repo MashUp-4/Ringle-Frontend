@@ -1,6 +1,11 @@
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Icon } from '../ui/Icon'
-import { ringleLogo, chatSidebar } from '../ui/iconAssets'
+import {
+  ringleLogo,
+  chatSidebar,
+  headerAvatar,
+  headerDivider,
+} from '../ui/iconAssets'
 import './AppShell.css'
 
 interface AppNavigationProps {
@@ -123,13 +128,17 @@ export function AppNavigation({ onNotice }: AppNavigationProps) {
               기업 제휴
             </button>
           </nav>
-          <i aria-hidden="true" />
+          <i aria-hidden="true">
+            <img src={headerDivider} alt="" width={27} height={1.6} />
+          </i>
           <button
             type="button"
             className="avatar"
             aria-label="내 프로필"
             onClick={() => onNotice('홈에서 프로필을 설정할 수 있어요.')}
-          />
+          >
+            <img src={headerAvatar} alt="" width={41} height={41} />
+          </button>
         </div>
       </header>
     </>
