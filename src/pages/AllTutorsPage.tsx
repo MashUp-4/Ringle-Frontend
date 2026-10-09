@@ -7,7 +7,7 @@ import { TutorFilterPanel } from '../features/tutors/components/TutorFilterPanel
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
 import { useTutors } from '../features/tutors/hooks/useTutors'
 
-export default function FavoriteTutorsPage() {
+export default function AllTutorsPage() {
   const [toast, setToast] = useState('')
   useEffect(() => {
     document.title = '전체 튜터 | Ringle'

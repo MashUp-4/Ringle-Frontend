@@ -1,15 +1,20 @@
-import { Route, Routes } from 'react-router-dom'
+import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import HomePage from './pages/HomePage'
 import TutorPage from './pages/TutorPage'
-import FavoriteTutorsPage from './pages/FavoriteTutorsPage'
+import AllTutorsPage from './pages/AllTutorsPage'
 import './App.css'
 
 export default function App() {
+  const { search } = useLocation()
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
       <Route path="/tutors" element={<TutorPage />} />
-      <Route path="/tutors/favorites" element={<FavoriteTutorsPage />} />
+      <Route path="/tutors/all" element={<AllTutorsPage />} />
+      <Route
+        path="/tutors/favorites"
+        element={<Navigate to={{ pathname: '/tutors/all', search }} replace />}
+      />
       <Route path="/tutors/:tutorId" element={<TutorPage />} />
       <Route
         path="*"
