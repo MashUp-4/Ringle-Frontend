@@ -21,8 +21,8 @@ function TutorTypeFilter({
           <img
             src={figmaAssets.tutorFilterBookmark}
             alt=""
-            width="14"
-            height="18"
+            width="28"
+            height="28"
           />
         </span>
         찜한 튜터

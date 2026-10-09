@@ -33,7 +33,7 @@ export function AppShell({ children, onNotice }: AppShellProps) {
   const screen =
     pathname === '/'
       ? 'home'
-      : pathname === '/tutors/favorites'
+      : pathname === '/tutors/all'
         ? 'favorites'
         : 'tutors'
   const scale = useSyncExternalStore(

@@ -1,5 +1,12 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom'
 import { Icon } from '../components/ui/Icon'
 import { AppShell } from '../components/layout/AppShell'
 import { TutorPageHeader } from '../components/layout/TutorPageHeader'
@@ -17,15 +24,31 @@ function TutorPage() {
   const navigate = useNavigate()
   const { tutorId } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
+  const location = useLocation()
+  const returnTo = location.state?.returnTo
   const requestedTab = searchParams.get('tab')
   const tab: TutorTab = requestedTab === '전체' ? '전체' : '추천'
   function setTab(value: string) {
-    setSearchParams(value === '추천' ? {} : { tab: value })
+    if (value === '전체') {
+      navigate('/tutors/all')
+      return
+    }
+
+    setSearchParams({})
   }
   const { saved, toggleBookmark, storageError } = useBookmarks()
   const { tutors, loading, error, reload } = useTutors()
   const selected = tutors.find((t) => t.name === tutorId) ?? null
   function setSelected(tutor: Tutor | null) {
+    if (
+      !tutor &&
+      typeof returnTo === 'string' &&
+      (returnTo === '/tutors/all' || returnTo.startsWith('/tutors/all?'))
+    ) {
+      navigate(returnTo, { replace: true })
+      return
+    }
+
     navigate({
       pathname: tutor ? `/tutors/${encodeURIComponent(tutor.name)}` : '/tutors',
       search: searchParams.toString(),
@@ -61,6 +84,9 @@ function TutorPage() {
     setToast('')
     setBookmarkNotice(exists ? null : { name })
     if (exists) setToast('찜한 튜터에서 삭제했어요.')
+  }
+  if (requestedTab === '전체') {
+    return <Navigate to="/tutors/all" replace />
   }
   return (
     <AppShell onNotice={setToast}>
@@ -169,7 +195,7 @@ function TutorPage() {
           <p role="status" aria-live="polite">
             찜한 튜터에 추가했어요.
           </p>
-          <button onClick={() => navigate('/tutors/favorites?saved=1')}>
+          <button onClick={() => navigate('/tutors/all?saved=1')}>
             찜한 목록 바로가기 <Icon name="arrow" />
           </button>
         </div>
