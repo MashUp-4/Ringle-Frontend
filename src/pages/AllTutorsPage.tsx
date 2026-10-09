@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { AppShell } from '../components/layout/AppShell'
 import { TutorPageHeader } from '../components/layout/TutorPageHeader'
 import { TutorCard } from '../features/tutors/components/TutorCard'
@@ -9,20 +9,44 @@ import { useTutors } from '../features/tutors/hooks/useTutors'
 
 export default function AllTutorsPage() {
   const [toast, setToast] = useState('')
+  const navigate = useNavigate()
+  const location = useLocation()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const query = searchParams.get('q') ?? ''
+  const savedOnly = searchParams.get('saved') === '1'
+
+  const { tutors, loading, error, reload } = useTutors()
+  const { saved, toggleBookmark, storageError } = useBookmarks()
+
   useEffect(() => {
     document.title = '전체 튜터 | Ringle'
   }, [])
+
   useEffect(() => {
     if (!toast) return
+
     const timer = setTimeout(() => setToast(''), 2500)
     return () => clearTimeout(timer)
   }, [toast])
-  const navigate = useNavigate()
-  const [query, setQuery] = useState('')
-  const [searchParams, setSearchParams] = useSearchParams()
-  const savedOnly = searchParams.get('saved') === '1'
-  const { tutors, loading, error, reload } = useTutors()
-  const { saved, toggleBookmark, storageError } = useBookmarks()
+
+  function setQuery(value: string) {
+    const next = new URLSearchParams(searchParams)
+
+    if (value) next.set('q', value)
+    else next.delete('q')
+
+    setSearchParams(next, { replace: true })
+  }
+
+  function setSavedOnly(checked: boolean) {
+    const next = new URLSearchParams(searchParams)
+
+    if (checked) next.set('saved', '1')
+    else next.delete('saved')
+
+    setSearchParams(next)
+  }
 
   const visibleTutors = tutors.filter(
     (tutor) =>
@@ -39,7 +63,7 @@ export default function AllTutorsPage() {
           tab="전체"
           onTabChange={(tab) => {
             if (tab === '추천') navigate('/tutors')
-            else setSearchParams({})
+            else setSavedOnly(false)
           }}
           query={query}
           onQueryChange={setQuery}
@@ -51,9 +75,7 @@ export default function AllTutorsPage() {
         <div className="favorite-layout">
           <TutorFilterPanel
             savedOnly={savedOnly}
-            onSavedOnlyChange={(checked) =>
-              setSearchParams(checked ? { saved: '1' } : {})
-            }
+            onSavedOnlyChange={setSavedOnly}
           />
 
           <section aria-label="튜터 목록">
@@ -61,7 +83,7 @@ export default function AllTutorsPage() {
               <button
                 type="button"
                 className="favorite-filter-chip"
-                onClick={() => setSearchParams({})}
+                onClick={() => setSavedOnly(false)}
               >
                 찜한 튜터 <span aria-hidden="true">×</span>
               </button>
@@ -81,6 +103,7 @@ export default function AllTutorsPage() {
                 <p className="favorite-tutor-count">
                   {visibleTutors.length}명의 튜터
                 </p>
+
                 {visibleTutors.length === 0 ? (
                   <div>
                     <h2>
@@ -90,8 +113,9 @@ export default function AllTutorsPage() {
                           ? '찜한 튜터가 없어요'
                           : '등록된 튜터가 없어요'}
                     </h2>
+
                     {savedOnly && !query.trim() && (
-                      <button type="button" onClick={() => setSearchParams({})}>
+                      <button type="button" onClick={() => setSavedOnly(false)}>
                         모든 튜터 보기
                       </button>
                     )}
@@ -105,7 +129,14 @@ export default function AllTutorsPage() {
                         bookmarked={saved.includes(tutor.name)}
                         onBookmark={() => toggleBookmark(tutor.name)}
                         onDetails={() =>
-                          navigate(`/tutors/${encodeURIComponent(tutor.name)}`)
+                          navigate(
+                            `/tutors/${encodeURIComponent(tutor.name)}`,
+                            {
+                              state: {
+                                returnTo: `${location.pathname}${location.search}`,
+                              },
+                            },
+                          )
                         }
                       />
                     ))}
@@ -116,6 +147,7 @@ export default function AllTutorsPage() {
           </section>
         </div>
       </main>
+
       {toast && (
         <div className="toast" role="status">
           {toast}

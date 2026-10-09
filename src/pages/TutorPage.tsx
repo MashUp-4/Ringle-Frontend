@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import {
   Link,
   Navigate,
+  useLocation,
   useNavigate,
   useParams,
   useSearchParams,
@@ -23,6 +24,8 @@ function TutorPage() {
   const navigate = useNavigate()
   const { tutorId } = useParams()
   const [searchParams, setSearchParams] = useSearchParams()
+  const location = useLocation()
+  const returnTo = location.state?.returnTo
   const requestedTab = searchParams.get('tab')
   const tab: TutorTab = requestedTab === '전체' ? '전체' : '추천'
   function setTab(value: string) {
@@ -37,6 +40,15 @@ function TutorPage() {
   const { tutors, loading, error, reload } = useTutors()
   const selected = tutors.find((t) => t.name === tutorId) ?? null
   function setSelected(tutor: Tutor | null) {
+    if (
+      !tutor &&
+      typeof returnTo === 'string' &&
+      (returnTo === '/tutors/all' || returnTo.startsWith('/tutors/all?'))
+    ) {
+      navigate(returnTo, { replace: true })
+      return
+    }
+
     navigate({
       pathname: tutor ? `/tutors/${encodeURIComponent(tutor.name)}` : '/tutors',
       search: searchParams.toString(),
