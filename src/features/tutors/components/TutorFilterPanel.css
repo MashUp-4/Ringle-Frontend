@@ -1,0 +1,160 @@
+.favorite-filter-panel.tutor-filter-panel {
+  align-self: start;
+  overflow: visible;
+  padding: 20px;
+  border: 0;
+  border-radius: 0;
+  background: var(--color-white);
+  color: #2f2d3d;
+}
+
+.tutor-filter-types {
+  display: grid;
+  gap: 20px;
+  padding-bottom: 20px;
+}
+
+.tutor-filter-type {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 28px;
+  cursor: pointer;
+}
+
+.tutor-filter-type-content {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: -0.18px;
+}
+
+.tutor-filter-recommended {
+  color: #663db8;
+}
+
+.tutor-filter-pointback {
+  color: #f87170;
+}
+
+.tutor-filter-panel input[type='checkbox'] {
+  flex-shrink: 0;
+  width: 23px;
+  height: 23px;
+  margin: 0;
+  accent-color: #663db8;
+  cursor: pointer;
+}
+
+.tutor-filter-section {
+  padding: 20px 0;
+  border-top: 1px solid #e8e7ed;
+}
+
+.tutor-filter-section:last-child {
+  padding-bottom: 0;
+}
+
+.tutor-filter-section > summary {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+  cursor: pointer;
+}
+
+.tutor-filter-options {
+  display: grid;
+  gap: 20px;
+  padding: 16px 8px 0;
+}
+
+.tutor-filter-options label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 23px;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  letter-spacing: -0.16px;
+  cursor: pointer;
+}
+
+.tutor-filter-options label span {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.tutor-filter-availability {
+  padding-top: 16px;
+}
+
+.tutor-filter-caption {
+  margin: 0 0 16px;
+  color: #92919d;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+.tutor-filter-days {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px 8px;
+  margin-bottom: 16px;
+}
+
+.tutor-filter-days button {
+  grid-column: span 3;
+}
+
+.tutor-filter-days button:nth-child(n + 5) {
+  grid-column: span 4;
+}
+
+.tutor-filter-times {
+  display: grid;
+  gap: 12px;
+}
+
+.tutor-filter-days button,
+.tutor-filter-times button {
+  min-width: 0;
+  min-height: 45px;
+  border: 1px solid #e8e7ed;
+  border-radius: 4px;
+  background: var(--color-white);
+  color: #2f2d3d;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: pointer;
+}
+
+.tutor-filter-days button {
+  padding: 10px 0;
+  text-align: center;
+}
+
+.tutor-filter-times button {
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.tutor-filter-panel button[aria-pressed='true'] {
+  border-color: #663db8;
+  background: #f5f0ff;
+  color: #663db8;
+}
+
+.tutor-filter-panel button:focus-visible,
+.tutor-filter-panel input:focus-visible,
+.tutor-filter-panel summary:focus-visible {
+  outline: 2px solid #663db8;
+  outline-offset: 3px;
+}
