@@ -1,4 +1,5 @@
 import type { Tutor } from '../types/tutor'
+
 // API 연동 전 화면 확인용 목데이터입니다. 실제 연동 시 이 파일과 import를 제거합니다.
 export const demoTutors: Tutor[] = [
   {
@@ -13,6 +14,19 @@ export const demoTutors: Tutor[] = [
     image: 1,
     intro:
       '편안한 대화 속에서 자신 있게 영어로 생각을 표현해 보세요. 과학과 일상에 관한 이야기를 좋아해요.',
+    availability: [
+      { day: 'mon', startMinute: 420, endMinute: 540 },
+      { day: 'wed', startMinute: 1140, endMinute: 1260 },
+    ],
+    strengths: ['문법 교정', '발음 교정'],
+    experiences: ['대학원'],
+    majorCategory: '자연과학',
+    interests: ['과학', '건강'],
+    gender: 'female',
+    accent: '미국 영어',
+    hasTaught: true,
+    isRecommended: true,
+    hasPointBack: false,
   },
   {
     name: 'Alexander',
@@ -26,6 +40,19 @@ export const demoTutors: Tutor[] = [
     image: 2,
     intro:
       '여러분의 이야기를 듣고 새로운 관점을 나누고 싶어요. 자연스러운 표현과 논리적인 말하기를 함께 연습해요.',
+    availability: [
+      { day: 'tue', startMinute: 540, endMinute: 720 },
+      { day: 'thu', startMinute: 1140, endMinute: 1260 },
+    ],
+    strengths: ['자연스러운 표현', '면접 준비'],
+    experiences: ['취업'],
+    majorCategory: '사회과학',
+    interests: ['심리', '비즈니스'],
+    gender: 'male',
+    accent: '영국 영어',
+    hasTaught: false,
+    isRecommended: true,
+    hasPointBack: true,
   },
   {
     name: 'Audley',
@@ -39,6 +66,19 @@ export const demoTutors: Tutor[] = [
     image: 3,
     intro:
       '역사, 문화, 여행에 대해 이야기해요. 작은 실수도 배움의 기회가 되는 따뜻한 수업을 만들어요.',
+    availability: [
+      { day: 'wed', startMinute: 420, endMinute: 540 },
+      { day: 'sat', startMinute: 540, endMinute: 720 },
+    ],
+    strengths: ['논리적인 말하기', '자연스러운 표현'],
+    experiences: ['유학'],
+    majorCategory: '인문학',
+    interests: ['역사', '여행'],
+    gender: 'female',
+    accent: '미국 영어',
+    hasTaught: false,
+    isRecommended: false,
+    hasPointBack: true,
   },
   {
     name: 'Luigi',
@@ -52,6 +92,19 @@ export const demoTutors: Tutor[] = [
     image: 4,
     intro:
       '복잡한 생각을 명확한 영어로 전달하는 연습을 도와드려요. 기술과 과학에 대한 대화도 환영해요.',
+    availability: [
+      { day: 'fri', startMinute: 1140, endMinute: 1260 },
+      { day: 'sun', startMinute: 540, endMinute: 720 },
+    ],
+    strengths: ['문법 교정', '논리적인 말하기'],
+    experiences: ['연구'],
+    majorCategory: '공학',
+    interests: ['기술', '과학'],
+    gender: 'male',
+    accent: '미국 영어',
+    hasTaught: true,
+    isRecommended: false,
+    hasPointBack: false,
   },
   {
     name: 'Tatiana',
@@ -65,5 +118,18 @@ export const demoTutors: Tutor[] = [
     image: 5,
     intro:
       '디자인과 예술에서 일상까지, 관심 있는 주제로 이야기해요. 여러분만의 표현을 찾도록 도와드릴게요.',
+    availability: [
+      { day: 'mon', startMinute: 1140, endMinute: 1260 },
+      { day: 'sat', startMinute: 780, endMinute: 900 },
+    ],
+    strengths: ['발음 교정', '면접 준비'],
+    experiences: ['취업', '유학'],
+    majorCategory: '예술',
+    interests: ['예술', '여행'],
+    gender: 'female',
+    accent: '미국 영어',
+    hasTaught: false,
+    isRecommended: true,
+    hasPointBack: false,
   },
 ]
