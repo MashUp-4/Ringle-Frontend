@@ -1,4 +1,5 @@
 import type { Tutor } from '../types/tutor'
+
 // API 연동 전 화면 확인용 목데이터입니다. 실제 연동 시 이 파일과 import를 제거합니다.
 export const demoTutors: Tutor[] = [
   {
@@ -13,6 +14,19 @@ export const demoTutors: Tutor[] = [
     image: 1,
     intro:
       '편안한 대화 속에서 자신 있게 영어로 생각을 표현해 보세요. 과학과 일상에 관한 이야기를 좋아해요.',
+    availability: [
+      { day: 'mon', startMinute: 420, endMinute: 540 },
+      { day: 'wed', startMinute: 1140, endMinute: 1260 },
+    ],
+    strengths: ['초급 영어', '토론/심화 영어'],
+    experiences: ['대학원 재학/졸업', '의료/바이오 직무'],
+    majorCategory: '자연과학계열',
+    interests: ['스포츠', '문화 (영화, 책, 음식)'],
+    gender: 'female',
+    accent: '미국식',
+    hasTaught: true,
+    isRecommended: true,
+    hasPointBack: false,
   },
   {
     name: 'Alexander',
@@ -26,6 +40,19 @@ export const demoTutors: Tutor[] = [
     image: 2,
     intro:
       '여러분의 이야기를 듣고 새로운 관점을 나누고 싶어요. 자연스러운 표현과 논리적인 말하기를 함께 연습해요.',
+    availability: [
+      { day: 'tue', startMinute: 540, endMinute: 720 },
+      { day: 'thu', startMinute: 1140, endMinute: 1260 },
+    ],
+    strengths: ['비즈니스 영어', '인터뷰'],
+    experiences: ['기획/전략 직무'],
+    majorCategory: '사회과학계열',
+    interests: ['커리어/자기계발', '경제/투자'],
+    gender: 'male',
+    accent: '영국식',
+    hasTaught: false,
+    isRecommended: true,
+    hasPointBack: true,
   },
   {
     name: 'Audley',
@@ -39,6 +66,19 @@ export const demoTutors: Tutor[] = [
     image: 3,
     intro:
       '역사, 문화, 여행에 대해 이야기해요. 작은 실수도 배움의 기회가 되는 따뜻한 수업을 만들어요.',
+    availability: [
+      { day: 'wed', startMinute: 420, endMinute: 540 },
+      { day: 'sat', startMinute: 540, endMinute: 720 },
+    ],
+    strengths: ['Writing/에세이/이력서', '토론/심화 영어'],
+    experiences: ['교육 직무'],
+    majorCategory: '인문계열',
+    interests: ['여행', '문화 (영화, 책, 음식)'],
+    gender: 'female',
+    accent: '미국식',
+    hasTaught: false,
+    isRecommended: false,
+    hasPointBack: true,
   },
   {
     name: 'Luigi',
@@ -52,6 +92,19 @@ export const demoTutors: Tutor[] = [
     image: 4,
     intro:
       '복잡한 생각을 명확한 영어로 전달하는 연습을 도와드려요. 기술과 과학에 대한 대화도 환영해요.',
+    availability: [
+      { day: 'fri', startMinute: 1140, endMinute: 1260 },
+      { day: 'sun', startMinute: 540, endMinute: 720 },
+    ],
+    strengths: ['공인 영어시험', '토론/심화 영어'],
+    experiences: ['IT/개발 직무', '의료/바이오 직무'],
+    majorCategory: '공학계열',
+    interests: ['테크/IT', '게임'],
+    gender: 'male',
+    accent: '미국식',
+    hasTaught: true,
+    isRecommended: false,
+    hasPointBack: false,
   },
   {
     name: 'Tatiana',
@@ -65,5 +118,18 @@ export const demoTutors: Tutor[] = [
     image: 5,
     intro:
       '디자인과 예술에서 일상까지, 관심 있는 주제로 이야기해요. 여러분만의 표현을 찾도록 도와드릴게요.',
+    availability: [
+      { day: 'mon', startMinute: 1140, endMinute: 1260 },
+      { day: 'sat', startMinute: 780, endMinute: 900 },
+    ],
+    strengths: ['초급 영어', '인터뷰'],
+    experiences: ['예술/미디어 직무'],
+    majorCategory: '예체능계열',
+    interests: ['여행', '패션/뷰티'],
+    gender: 'female',
+    accent: '미국식',
+    hasTaught: false,
+    isRecommended: true,
+    hasPointBack: false,
   },
 ]

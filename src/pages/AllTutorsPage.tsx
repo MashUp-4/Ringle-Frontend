@@ -1,23 +1,40 @@
 import { useEffect, useState } from 'react'
-import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
+import tutorEmptyIcon from '../assets/icons/tutor-empty.svg'
+import filterResetIcon from '../assets/icons/filter-reset.svg'
 import { AppShell } from '../components/layout/AppShell'
 import { TutorPageHeader } from '../components/layout/TutorPageHeader'
 import { TutorCard } from '../features/tutors/components/TutorCard'
 import { TutorFilterPanel } from '../features/tutors/components/TutorFilterPanel'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
+import { useTutorFilters } from '../features/tutors/hooks/useTutorFilters'
 import { useTutors } from '../features/tutors/hooks/useTutors'
+import './AllTutorsPage.css'
 
 export default function AllTutorsPage() {
   const [toast, setToast] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
-  const [searchParams, setSearchParams] = useSearchParams()
-
-  const query = searchParams.get('q') ?? ''
-  const savedOnly = searchParams.get('saved') === '1'
 
   const { tutors, loading, error, reload } = useTutors()
   const { saved, toggleBookmark, storageError } = useBookmarks()
+
+  const {
+    query,
+    savedOnly,
+    filters,
+    chips,
+    hasActiveFilters,
+    setQuery,
+    setSavedOnly,
+    toggleFilterValue,
+    removeFilterValue,
+    resetFilters,
+    getVisibleTutors,
+  } = useTutorFilters()
+
+  const visibleTutors = getVisibleTutors(tutors, saved)
+  const hasQuery = query.trim().length > 0
 
   useEffect(() => {
     document.title = '전체 튜터 | Ringle'
@@ -29,32 +46,6 @@ export default function AllTutorsPage() {
     const timer = setTimeout(() => setToast(''), 2500)
     return () => clearTimeout(timer)
   }, [toast])
-
-  function setQuery(value: string) {
-    const next = new URLSearchParams(searchParams)
-
-    if (value) next.set('q', value)
-    else next.delete('q')
-
-    setSearchParams(next, { replace: true })
-  }
-
-  function setSavedOnly(checked: boolean) {
-    const next = new URLSearchParams(searchParams)
-
-    if (checked) next.set('saved', '1')
-    else next.delete('saved')
-
-    setSearchParams(next)
-  }
-
-  const visibleTutors = tutors.filter(
-    (tutor) =>
-      (!savedOnly || saved.includes(tutor.name)) &&
-      `${tutor.name} ${tutor.major} ${tutor.university}`
-        .toLowerCase()
-        .includes(query.trim().toLowerCase()),
-  )
 
   return (
     <AppShell onNotice={setToast}>
@@ -75,18 +66,53 @@ export default function AllTutorsPage() {
         <div className="favorite-layout">
           <TutorFilterPanel
             savedOnly={savedOnly}
+            filters={filters}
             onSavedOnlyChange={setSavedOnly}
+            onToggleFilter={toggleFilterValue}
           />
 
-          <section aria-label="튜터 목록">
-            {savedOnly && (
-              <button
-                type="button"
-                className="favorite-filter-chip"
-                onClick={() => setSavedOnly(false)}
-              >
-                찜한 튜터 <span aria-hidden="true">×</span>
-              </button>
+          <section className="all-tutors-results" aria-label="튜터 목록">
+            {hasActiveFilters && (
+              <div className="all-tutors-filter-toolbar">
+                <div
+                  className="all-tutors-filter-chips"
+                  role="group"
+                  aria-label="선택한 필터"
+                >
+                  {savedOnly && (
+                    <button
+                      type="button"
+                      className="favorite-filter-chip"
+                      aria-label="찜한 튜터 필터 해제"
+                      onClick={() => setSavedOnly(false)}
+                    >
+                      찜한 튜터 <span aria-hidden="true">×</span>
+                    </button>
+                  )}
+
+                  {chips.map((chip) => (
+                    <button
+                      key={chip.id}
+                      type="button"
+                      className="favorite-filter-chip"
+                      aria-label={`${chip.label} 필터 해제`}
+                      onClick={() => removeFilterValue(chip.key, chip.value)}
+                    >
+                      {chip.label} <span aria-hidden="true">×</span>
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  className="all-tutors-reset"
+                  onClick={resetFilters}
+                  aria-label="선택한 필터 전체 초기화"
+                >
+                  <img src={filterResetIcon} alt="" />
+                  <span>초기화</span>
+                </button>
+              </div>
             )}
 
             {loading && <p role="status">튜터를 불러오고 있어요.</p>}
@@ -94,29 +120,57 @@ export default function AllTutorsPage() {
             {error && (
               <div role="alert">
                 <p>{error}</p>
-                <button onClick={reload}>다시 시도</button>
+                <button type="button" onClick={reload}>
+                  다시 시도
+                </button>
               </div>
             )}
 
             {!loading && !error && (
               <>
-                <p className="favorite-tutor-count">
+                <p className="favorite-tutor-count" role="status">
                   {visibleTutors.length}명의 튜터
                 </p>
 
                 {visibleTutors.length === 0 ? (
-                  <div>
+                  <div className="all-tutors-empty">
+                    <div className="all-tutors-empty-icon" aria-hidden="true">
+                      <img src={tutorEmptyIcon} alt="" />
+                    </div>
+
                     <h2>
-                      {query.trim()
-                        ? '검색 결과가 없어요'
-                        : savedOnly
-                          ? '찜한 튜터가 없어요'
-                          : '등록된 튜터가 없어요'}
+                      {hasActiveFilters
+                        ? '조건을 만족하는 튜터가 없어요.'
+                        : hasQuery
+                          ? '검색 결과가 없어요.'
+                          : '등록된 튜터가 없어요.'}
                     </h2>
 
-                    {savedOnly && !query.trim() && (
-                      <button type="button" onClick={() => setSavedOnly(false)}>
-                        모든 튜터 보기
+                    <p>
+                      {hasActiveFilters
+                        ? '필터를 다시 설정해보세요.'
+                        : hasQuery
+                          ? '검색어를 다시 확인해보세요.'
+                          : '잠시 후 다시 확인해주세요.'}
+                    </p>
+
+                    {hasActiveFilters && (
+                      <button
+                        type="button"
+                        className="all-tutors-empty-action"
+                        onClick={resetFilters}
+                      >
+                        필터 초기화
+                      </button>
+                    )}
+
+                    {hasQuery && (
+                      <button
+                        type="button"
+                        className="all-tutors-empty-action"
+                        onClick={() => setQuery('')}
+                      >
+                        검색어 지우기
                       </button>
                     )}
                   </div>
