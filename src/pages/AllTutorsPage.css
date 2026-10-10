@@ -1,0 +1,136 @@
+.all-tutors-filter-toolbar {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.all-tutors-filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.all-tutors-filter-chips .favorite-filter-chip {
+  min-height: 40px;
+  margin: 0;
+  padding: 12px;
+  border: 0;
+  border-radius: 8px;
+  background: #3d4066;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+  letter-spacing: -0.16px;
+  cursor: pointer;
+}
+
+.all-tutors-reset {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 24px;
+  padding: 4px 10px;
+  border: 0;
+  background: #f7f8fb;
+  color: #585767;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.all-tutors-reset img {
+  display: block;
+  flex-shrink: 0;
+  max-width: none;
+}
+
+.all-tutors-results .favorite-tutor-count {
+  margin: 0 0 32px;
+  color: #2f2d3d;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 18px;
+}
+
+.all-tutors-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 48px 16px 80px;
+  text-align: center;
+}
+
+.all-tutors-empty-icon {
+  display: grid;
+  place-items: center;
+  width: 45px;
+  height: 55.585px;
+}
+
+.all-tutors-empty-icon img {
+  display: block;
+  max-width: none;
+}
+
+.all-tutors-empty h2 {
+  margin: 0;
+  color: #2f2d3d;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 28px;
+  letter-spacing: -0.2px;
+}
+
+.all-tutors-empty p {
+  margin: 0;
+  color: #92919d;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: -0.18px;
+}
+
+.all-tutors-empty-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 244px;
+  max-width: 100%;
+  min-height: 55px;
+  padding: 10px 16px;
+  border: 2px solid #e8e7ed;
+  border-radius: 8px;
+  background: #fff;
+  color: #000;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 16px;
+  cursor: pointer;
+}
+
+.all-tutors-results button:focus-visible {
+  outline: 2px solid #663db8;
+  outline-offset: 3px;
+}
+
+@media (max-width: 600px) {
+  .all-tutors-filter-toolbar {
+    flex-wrap: wrap;
+  }
+
+  .all-tutors-empty {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
