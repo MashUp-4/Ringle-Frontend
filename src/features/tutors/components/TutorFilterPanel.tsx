@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import * as figmaAssets from '../../../components/ui/iconAssets'
 import {
   accentOptions,
@@ -10,11 +9,17 @@ import {
   strengthOptions,
   timeOptions,
 } from '../data/tutorFilterOptions'
+import type {
+  TutorFilterKey,
+  TutorFilterValues,
+} from '../hooks/useTutorFilters'
 import './TutorFilterPanel.css'
 
 interface TutorFilterPanelProps {
   savedOnly: boolean
+  filters: TutorFilterValues
   onSavedOnlyChange: (checked: boolean) => void
+  onToggleFilter: (key: TutorFilterKey, value: string) => void
 }
 
 interface FilterOption {
@@ -80,62 +85,49 @@ const typeOptions = [
   },
 ]
 
+const groups: {
+  key: TutorFilterKey
+  title: string
+  options: FilterOption[]
+}[] = [
+  {
+    key: 'strengths',
+    title: '수업 강점',
+    options: toOptions(strengthOptions),
+  },
+  {
+    key: 'experiences',
+    title: '경험',
+    options: toOptions(experienceOptions),
+  },
+  {
+    key: 'majors',
+    title: '전공',
+    options: toOptions(majorOptions),
+  },
+  {
+    key: 'interests',
+    title: '관심사',
+    options: toOptions(interestOptions),
+  },
+  {
+    key: 'genders',
+    title: '성별',
+    options: genderOptions,
+  },
+  {
+    key: 'accents',
+    title: '발음',
+    options: accentOptions,
+  },
+]
+
 export function TutorFilterPanel({
   savedOnly,
+  filters,
   onSavedOnlyChange,
+  onToggleFilter,
 }: TutorFilterPanelProps) {
-  const [selection, setSelection] = useState<Record<string, string[]>>({})
-
-  function selectedValues(key: string): string[] {
-    return selection[key] ?? []
-  }
-
-  function toggleValue(key: string, value: string) {
-    setSelection((previous) => {
-      const current = previous[key] ?? []
-
-      return {
-        ...previous,
-        [key]: current.includes(value)
-          ? current.filter((item) => item !== value)
-          : [...current, value],
-      }
-    })
-  }
-
-  const groups = [
-    {
-      key: 'strengths',
-      title: '수업 강점',
-      options: toOptions(strengthOptions),
-    },
-    {
-      key: 'experiences',
-      title: '경험',
-      options: toOptions(experienceOptions),
-    },
-    {
-      key: 'majors',
-      title: '전공',
-      options: toOptions(majorOptions),
-    },
-    {
-      key: 'interests',
-      title: '관심사',
-      options: toOptions(interestOptions),
-    },
-    {
-      key: 'genders',
-      title: '성별',
-      options: genderOptions,
-    },
-    {
-      key: 'accents',
-      title: '발음',
-      options: accentOptions,
-    },
-  ]
-
   return (
     <aside
       className="favorite-filter-panel tutor-filter-panel"
@@ -169,8 +161,8 @@ export function TutorFilterPanel({
           >
             <input
               type="checkbox"
-              checked={selectedValues('types').includes(option.value)}
-              onChange={() => toggleValue('types', option.value)}
+              checked={filters.types.includes(option.value)}
+              onChange={() => onToggleFilter('types', option.value)}
             />
 
             <span className="tutor-filter-type-content">
@@ -183,7 +175,7 @@ export function TutorFilterPanel({
         ))}
       </div>
 
-      <details className="tutor-filter-section" open>
+      <details className="tutor-filter-section">
         <summary>시간대</summary>
 
         <div className="tutor-filter-availability">
@@ -194,8 +186,8 @@ export function TutorFilterPanel({
               <button
                 key={option.value}
                 type="button"
-                aria-pressed={selectedValues('days').includes(option.value)}
-                onClick={() => toggleValue('days', option.value)}
+                aria-pressed={filters.days.includes(option.value)}
+                onClick={() => onToggleFilter('days', option.value)}
               >
                 {option.label}
               </button>
@@ -209,8 +201,8 @@ export function TutorFilterPanel({
               <button
                 key={option.value}
                 type="button"
-                aria-pressed={selectedValues('times').includes(option.value)}
-                onClick={() => toggleValue('times', option.value)}
+                aria-pressed={filters.times.includes(option.value)}
+                onClick={() => onToggleFilter('times', option.value)}
               >
                 {option.label}
               </button>
@@ -224,8 +216,8 @@ export function TutorFilterPanel({
           key={group.key}
           title={group.title}
           options={group.options}
-          selected={selectedValues(group.key)}
-          onToggle={(value) => toggleValue(group.key, value)}
+          selected={filters[group.key]}
+          onToggle={(value) => onToggleFilter(group.key, value)}
         />
       ))}
     </aside>
