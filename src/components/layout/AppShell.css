@@ -16,38 +16,6 @@
   container: app-shell / inline-size;
 }
 
-.tutor-frame-viewport {
-  --tutor-frame-width: 1920px;
-  --tutor-frame-height: 1080px;
-  position: relative;
-  width: calc(var(--tutor-frame-width) * var(--tutor-frame-scale));
-  height: calc(var(--tutor-frame-height) * var(--tutor-frame-scale));
-  margin-inline: auto;
-}
-
-.tutor-frame-viewport > .app-shell {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: var(--tutor-frame-width);
-  height: var(--tutor-frame-height);
-  overflow: hidden;
-  transform: scale(var(--tutor-frame-scale));
-  transform-origin: top left;
-}
-
-.tutor-frame-viewport .sidebar {
-  height: var(--tutor-frame-height);
-}
-
-.tutor-frame-viewport .sidebar-menu {
-  height: var(--sidebar-menu-height);
-}
-
-.tutor-frame-viewport .app-content {
-  min-height: calc(var(--tutor-frame-height) - var(--shell-header-height));
-}
-
 .app-shell[data-screen='home'] {
   --sidebar-menu-height: 878px;
 }
