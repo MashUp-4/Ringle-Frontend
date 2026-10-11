@@ -16,7 +16,7 @@ export interface Tutor {
   rating: string
   reviews: number
   image: number
-  acceptanceRate: number
+  acceptanceRate?: number
   subjects: string[]
   intro: string
 
