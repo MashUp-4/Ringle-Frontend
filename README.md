@@ -1,6 +1,6 @@
 # Ringle Frontend
 
-Mashup 4팀의 React·TypeScript 프론트엔드입니다. 현재 튜터 추천 화면과 필터가 있는 전체 튜터 화면, 검색, 찜하기, 카드 상세 보기를 구현했습니다.
+Mashup 4팀의 React·TypeScript 프론트엔드입니다. 홈, 튜터 추천, 필터가 있는 전체 튜터 화면을 구현하고 있으며 현재는 로컬 데모 데이터를 사용합니다. Figma와의 정합화는 진행 중입니다.
 
 ## 실행
 
@@ -18,12 +18,15 @@ npm run format:check
 
 ## 화면과 라우팅
 
-- `/`: 홈 (예약된 수업과 수업권 없음)
-- `/?passes=available`: 홈의 수업권 있음 데모 상태
+- `/`: 홈의 예약 수업 1개 데모 상태
+- `/?lessons=0`: 예약 수업과 수업권이 없는 홈 추천 화면
+- `/?lessons=0&passes=available`: 예약 수업이 없고 수업권이 있는 홈 추천 화면
+- `/?lessons=2`, `/?lessons=3`: 예약 수업 2개·3개 데모 상태
 - `/tutors`: 추천 튜터
 - `/tutors?tab=전체`: 기존 화면의 전체 튜터 탭
-- `/tutors/favorites`: 필터가 있는 전체 튜터 화면
-- `/tutors/favorites?saved=1`: 찜한 튜터만 표시
+- `/tutors/all`: 필터가 있는 전체 튜터 화면
+- `/tutors/all?saved=1`: 찜한 튜터만 표시
+- `/tutors/favorites`: `/tutors/all`로 이동하는 기존 경로. 쿼리 문자열을 유지합니다.
 - `/tutors/:tutorId`: 튜터 상세 팝업. 현재 데모의 ID는 튜터 이름이며 실제 API 연동 시 서버 ID로 교체해야 합니다.
 - 등록되지 않은 경로: 404 안내
 
@@ -36,7 +39,13 @@ src/
   components/ui/          공통 Icon, Modal
   components/layout/      AppShell, AppNavigation, TutorPageHeader, FloatingActions
   pages/TutorPage.tsx     기존 튜터 화면
-  pages/FavoriteTutorsPage.tsx  필터가 있는 튜터 화면
+  pages/AllTutorsPage.tsx  필터가 있는 튜터 화면
+  pages/HomePage.tsx       홈 화면
+  pages/HomePage.css       홈 화면 스타일
+  features/home/
+    components/           HomeTutorCard, ScheduledLessons, ProfileEditor
+    data/                 홈 프로필·추천 정보·예약 수업 데모 데이터
+    types/                홈 데이터 타입
   features/tutors/
     api/tutors.ts         튜터 데이터 제공 경계
     components/           TutorCard, TutorFilterPanel
@@ -48,11 +57,17 @@ src/
   index.css               Tailwind 테마 토큰과 전역 스타일
 ```
 
-컴포넌트·페이지 파일은 PascalCase, 훅은 `use` 접두사, 데이터·타입 파일은 camelCase를 사용합니다. 현재 화면에 종속된 코드는 `features/tutors`, 재사용 가능한 UI는 `components/ui`에 둡니다.
+컴포넌트·페이지 파일은 PascalCase, 훅은 `use` 접두사, 데이터·타입 파일은 camelCase를 사용합니다. 화면에 종속된 코드는 `features/home`과 `features/tutors`, 재사용 가능한 UI는 `components/ui`에 둡니다.
 
 ## 홈 화면
 
 첨부한 ‘수업권 없음’·‘수업권 있음’ 디자인을 한 페이지에서 조건부로 표시합니다. 학습 목표별 추천 카드, 찜하기와 저장 목록 연결, 커리큘럼 선택, 프로필 입력 검증, 배너 및 챌린지 안내를 제공합니다. 홈과 튜터 페이지는 공통 내비게이션을 사용합니다.
+
+예약 수업이 있으면 `ScheduledLessons`, 없으면 홈 추천영역을 표시합니다. 기본 주소 `/`에는 예약 수업 1개가 있으므로 홈 추천카드의 변경사항은 `/?lessons=0`에서 확인합니다.
+
+홈 추천카드는 Figma의 286×522 크기, 252×252 사진, 16px 카드 간격을 적용했습니다. 추천 문구·태그·가장 빠른 수업과 홈 전용 별점을 `homeTutorRecommendations`에서 제공합니다. Figma 예시대로 Anshi는 `selected`의 그림자, Alexander는 `disabled`의 투명도 70%를 표시하며, 이 상태 이름으로 클릭을 막거나 상태 전환 규칙을 추가하지 않았습니다. 커리어/인터뷰 추천은 현재 2개이므로 목록 안에 모두 들어가 다음 버튼을 눌러도 이동하지 않습니다. 가로 목록이 넘치면 카드 너비와 간격만큼 이동하며 반복 이동은 구현하지 않았습니다.
+
+홈의 초기 학습 목표와 ‘가입 시 선택’ 표시는 `HomeProfile.signupGoal`을 사용합니다. 탭 클릭으로 선택한 학습 목표와 가입 목표는 별도 상태이며, 프로필 이름·시간대 수정 시 가입 목표를 유지합니다. 현재 가입 목표는 데모 값이고 실제 API는 연결되지 않았습니다.
 
 튜터 수락률·분야 태그를 포함한 튜터 정보는 `src/features/tutors/data/demoTutors.ts`의 목데이터입니다. API 연동 시 `getTutors`를 실제 요청으로 교체하고 목데이터 파일과 import를 제거합니다. 수업권 잔액, 쿠폰과 챌린지 수치도 데모입니다. 프로필 수정은 현재 페이지 상태에만 반영됩니다. 수업권 구매는 안내 팝업을 열고, ‘바로 예약하기’는 튜터 선택 화면으로 이동합니다. 실제 결제·예약·챌린지 신청·프로필 API는 연결되지 않았으며 완료 상태를 생성하지 않습니다.
 
@@ -68,21 +83,31 @@ src/
 
 홈·튜터 추천·전체 튜터 화면은 `AppShell`에서 내비게이션과 예약·문의 버튼을 공유합니다. 홈과 튜터 화면의 이벤트 문구는 경로에 따라 구분하고, 수업 메뉴·튜터 탭·검색창은 공통 헤더를 사용합니다. 공통 치수는 `components/layout/AppShell.css`에서 관리합니다. 피그마의 1920×1080 표시 영역 기준으로 사이드바는 100px, 헤더는 82px, 튜터 콘텐츠 폭은 최대 1340px입니다. 사이드바 메뉴 높이는 튜터 화면 886px, 홈 화면 878px입니다.
 
-작은 데스크톱 창에서는 `AppShell`이 `min(1, 표시 영역 너비 / 1920, 표시 영역 높이 / 1080)`으로 공통 배율을 계산해 CSS `zoom`으로 원본 비율을 유지합니다. 이 동작은 피그마에 명시된 반응형 규칙이 아니라 작은 창에서 UI가 잘리는 문제를 해결하기 위해 추가한 구현 규칙입니다. 사이드바는 실제 창 높이를 채우고, 예약·문의 버튼은 스크롤 중에도 고정됩니다. 화면별 너비 조건은 축소 전 공통 컨테이너 너비를 기준으로 확인해 비율 축소와 별도의 재배치가 중복 적용되지 않게 합니다.
+`/tutors`와 튜터 상세 경로는 `AppShell`의 `TutorFrame`에서 1920×1080 기준 프레임을 사용합니다. 배율은 `min(1, 표시 영역 너비 / 1920, 표시 영역 높이 / 1080)`이며 CSS `transform: scale()`을 적용합니다. 창 크기에 따른 축소는 구현상의 표시 방식으로, Figma에 명시된 반응형 규칙은 아닙니다. 홈과 `/tutors/all`에는 이 프레임 축소를 적용하지 않습니다. 이전의 공통 CSS `zoom` 처리는 제거했습니다.
 
 최종 피그마의 Primitive·Semantic 변수와 텍스트 스타일을 `src/index.css`에서 관리합니다. 색상은 `--color-primary-*`, `--color-ringle-gray-*` 및 용도별 별칭을 사용합니다. 간격은 `--spacing-unit-*`, 모서리는 `--radius-*`, 타이포그래피는 `text-heading-40`, `text-heading-24`, `text-label-20-bold` 등의 Tailwind 유틸리티로 적용합니다. 간격 토큰을 별도 이름으로 정의해 기존 Tailwind `p-4` 등의 값은 유지합니다.
 
 Pretendard Variable 1.3.9는 `public/fonts`에서 제공하고 첫 화면에서 미리 로드합니다. 외부 폰트 CDN에 의존하지 않습니다. 폰트 출처는 [Pretendard 공식 저장소](https://github.com/orioncactus/pretendard/tree/v1.3.9/packages/pretendard)이며, 배포 라이선스는 `public/fonts/OFL.txt`에 포함되어 있습니다.
 
-Tailwind CSS 4의 테마 토큰과 `@apply`로 공통 레이아웃·색상·타이포그래피를 적용합니다. 첨부 디자인의 크기와 hover 전환 등은 화면 CSS에서 관리합니다. 튜터 추천 화면은 5열, 필터 화면은 4열을 기준으로 표시합니다. 현재 작은 창 대응은 전체 비율 축소입니다. 카드 소개는 넘치면 스크롤할 수 있고, 검색창과 버튼은 키보드 포커스를 표시합니다.
+Tailwind CSS 4의 테마 토큰과 `@apply`로 공통 레이아웃·색상·타이포그래피를 적용합니다. 첨부 디자인의 크기와 hover 전환 등은 화면 CSS에서 관리합니다. 튜터 추천 첫 섹션은 252px 카드와 20px 간격, 필터 화면은 4열을 기준으로 표시합니다. 추천 첫 섹션의 다음 버튼은 카드 한 장과 간격만큼 이동합니다. 카드 소개는 넘치면 스크롤할 수 있고, 검색창과 버튼은 키보드 포커스를 표시합니다.
 
 공통 Modal은 네이티브 `dialog`로 배경을 비활성화합니다. Escape·닫기 버튼·배경 클릭으로 닫으며, 닫을 때 이전 포커스를 복원합니다.
 
 ## Git 협업
 
-현재 필터 화면 작업 브랜치는 `feat/favorite-tutors-page`입니다. 기능 브랜치는 `dev`에서 만들고, 작업 브랜치에서 `dev`로 PR을 보냅니다. 팀원 리뷰 후 `dev`에서 통합 검증하고, 이후 `dev`에서 `main`으로 PR을 보냅니다. 커밋은 `feat:`, `fix:`, `refactor:`, `docs:`, `chore:` 접두사를 사용하며 커밋 훅에서 린트와 포맷을 확인합니다.
+기능 브랜치는 `dev`에서 만들고, 작업 브랜치에서 `dev`로 PR을 보냅니다. 팀원 리뷰 후 `dev`에서 통합 검증하고, 이후 `dev`에서 `main`으로 PR을 보냅니다. 커밋은 `feat:`, `fix:`, `refactor:`, `docs:`, `chore:` 접두사를 사용하며 커밋 훅에서 린트와 포맷을 확인합니다.
 
 ## 과제 완료를 위해 남은 사항
+
+화면 정합화는 아래 작업이 남아 있습니다. 완료한 카드 디자인만으로 홈 전체가 Figma와 일치하는 상태는 아닙니다.
+
+- 홈 추천영역의 제목·탭·설명·여백과 관심 분야 ‘경영’ 문구 반영
+- 예정된 수업 1개·2개·3개 화면의 Figma 비교 및 크기·배치 정합화
+- 홈의 구매 혜택·커리큘럼·가이드·OT·바로가기·프로필 영역 비교
+- 체험 수업 예약 버튼과 튜터 추천 첫 섹션의 hover 디자인 확인
+- 홈 추천 더미를 확장할 경우, 일부 보이는 세 번째 카드와 다음 버튼 이동 확인
+
+튜터 추천의 ‘후기로 검증된’·‘숨겨진 실력파’ 등 후속 섹션은 이번 작업 범위에서 제외합니다.
 
 현재 버전은 UI 데모입니다. 아래 항목은 완료되지 않았으며 백엔드·팀 합의 후 구현해야 합니다.
 
