@@ -22,7 +22,7 @@ export function HomeTutorCard({
   onDetails,
 }: HomeTutorCardProps) {
   return (
-    <article className="home-tutor-card">
+    <article className="home-tutor-card" data-state={recommendation?.state}>
       <div className="home-tutor-portrait">
         <button
           className="home-tutor-photo-details"
@@ -34,16 +34,6 @@ export function HomeTutorCard({
             alt={`${tutor.name} 튜터 캐릭터`}
           />
         </button>
-        {tutor.acceptanceRate !== undefined && (
-          <span className="home-tutor-acceptance">
-            수락률 {tutor.acceptanceRate}%
-          </span>
-        )}
-        <div className="home-tutor-topics">
-          {tutor.subjects.map((subject) => (
-            <span key={subject}>{subject}</span>
-          ))}
-        </div>
         <button
           className={`bookmark ${bookmarked ? 'saved' : ''}`}
           aria-label={`${tutor.name} 찜하기`}
@@ -67,7 +57,7 @@ export function HomeTutorCard({
             <span className="rating-star" aria-hidden="true">
               <img src={ratingStar} alt="" width={13.1411} height={12.5474} />
             </span>
-            {tutor.rating} <em>({tutor.reviews})</em>
+            {recommendation?.rating ?? tutor.rating} <em>({tutor.reviews})</em>
           </span>
         </div>
         <p className="major">{tutor.major}</p>

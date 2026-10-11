@@ -49,10 +49,14 @@ export const homeTutorRecommendations: Partial<
     reason: '실제 면접처럼 꼬리 질문',
     tags: ['미국 영어', '모의 인터뷰'],
     earliestLesson: '오늘 22:00',
+    rating: '4.0',
+    state: 'selected',
   },
   Alexander: {
     reason: '이력서 첨삭부터 답변까지',
     tags: ['캐나다 영어', '영문 이력서 첨삭'],
     earliestLesson: '내일 07:30',
+    rating: '4.7',
+    state: 'disabled',
   },
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { AppShell } from '../components/layout/AppShell'
 import { Icon } from '../components/ui/Icon'
@@ -21,6 +21,7 @@ import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
 import { useTutors } from '../features/tutors/hooks/useTutors'
 import type { Tutor } from '../features/tutors/types/tutor'
 import './HomePage.css'
+import { nextButtonRight } from '../components/ui/iconAssets'
 
 type HomeDialog =
   | { type: 'profile' }
@@ -114,6 +115,22 @@ export default function HomePage() {
     if (exists) {
       setToast('찜한 튜터에서 삭제했어요.')
     }
+  }
+
+  const homeTutorGridRef = useRef<HTMLDivElement>(null)
+
+  function showNextHomeTutor() {
+    const grid = homeTutorGridRef.current
+    const firstCard = grid?.firstElementChild
+
+    if (!grid || !(firstCard instanceof HTMLElement)) return
+
+    const gap = parseFloat(getComputedStyle(grid).columnGap) || 0
+
+    grid.scrollBy({
+      left: firstCard.offsetWidth + gap,
+      behavior: 'instant',
+    })
   }
 
   return (
@@ -242,17 +259,28 @@ export default function HomePage() {
                     </div>
                   )}
 
-                  <div className="home-tutor-grid">
-                    {recommended.map((tutor) => (
-                      <HomeTutorCard
-                        key={tutor.name}
-                        tutor={tutor}
-                        recommendation={homeTutorRecommendations[tutor.name]}
-                        bookmarked={saved.includes(tutor.name)}
-                        onBookmark={() => bookmark(tutor.name)}
-                        onDetails={() => setDialog({ type: 'tutor', tutor })}
-                      />
-                    ))}
+                  <div className="home-tutor-row">
+                    <div className="home-tutor-grid" ref={homeTutorGridRef}>
+                      {recommended.map((tutor) => (
+                        <HomeTutorCard
+                          key={tutor.name}
+                          tutor={tutor}
+                          recommendation={homeTutorRecommendations[tutor.name]}
+                          bookmarked={saved.includes(tutor.name)}
+                          onBookmark={() => bookmark(tutor.name)}
+                          onDetails={() => setDialog({ type: 'tutor', tutor })}
+                        />
+                      ))}
+                    </div>
+
+                    <button
+                      type="button"
+                      className="home-tutor-next"
+                      aria-label="다음 추천 튜터"
+                      onClick={showNextHomeTutor}
+                    >
+                      <img src={nextButtonRight} alt="" />
+                    </button>
                   </div>
 
                   {!loading && !error && recommended.length === 0 && (

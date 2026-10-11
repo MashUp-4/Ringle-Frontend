@@ -21,4 +21,6 @@ export interface HomeTutorRecommendation {
   reason: string
   tags: string[]
   earliestLesson: string
+  rating?: string
+  state?: 'selected' | 'disabled'
 }
