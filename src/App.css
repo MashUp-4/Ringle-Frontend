@@ -119,6 +119,26 @@ h2 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--spacing-unit-20);
 }
+.tutor-card-row {
+  position: relative;
+}
+
+.tutor-card-next {
+  position: absolute;
+  top: 50%;
+  right: -20px;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  z-index: 3;
+}
+
+.tutor-card-next img {
+  display: block;
+  width: 40px;
+  height: 40px;
+}
 .tutor-card {
   @apply min-w-0;
   border-radius: var(--radius-large);

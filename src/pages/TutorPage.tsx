@@ -15,6 +15,7 @@ import { TutorCard } from '../features/tutors/components/TutorCard'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
 import { useTutors } from '../features/tutors/hooks/useTutors'
 import type { Tutor, TutorTab } from '../features/tutors/types/tutor'
+import { nextButtonRight } from '../components/ui/iconAssets'
 
 function TutorPage() {
   const [query, setQuery] = useState('')
@@ -161,16 +162,26 @@ function TutorPage() {
               </Link>
             </p>
           )}
-          <div className="tutor-grid">
-            {visible.map((t) => (
-              <TutorCard
-                key={t.name}
-                tutor={t}
-                bookmarked={saved.includes(t.name)}
-                onBookmark={() => bookmark(t.name)}
-                onDetails={() => setSelected(t)}
-              />
-            ))}
+          <div className="tutor-card-row">
+            <div className="tutor-grid">
+              {visible.map((t) => (
+                <TutorCard
+                  key={t.name}
+                  tutor={t}
+                  bookmarked={saved.includes(t.name)}
+                  onBookmark={() => bookmark(t.name)}
+                  onDetails={() => setSelected(t)}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              className="tutor-card-next"
+              aria-label="다음 튜터"
+            >
+              <img src={nextButtonRight} alt="" />
+            </button>
           </div>
           {!loading && !error && visible.length === 0 && (
             <div className="empty">
