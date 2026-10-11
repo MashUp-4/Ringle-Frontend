@@ -4,14 +4,19 @@ import {
   ratingStar,
 } from '../../../components/ui/iconAssets'
 import type { Tutor } from '../../tutors/types/tutor'
+import homeTutorDivider from '../../../assets/icons/home-tutor-divider.svg'
+import type { HomeTutorRecommendation } from '../types/home'
 interface HomeTutorCardProps {
   tutor: Tutor
+  recommendation?: HomeTutorRecommendation
   bookmarked: boolean
   onBookmark: () => void
   onDetails: () => void
 }
+
 export function HomeTutorCard({
   tutor,
+  recommendation,
   bookmarked,
   onBookmark,
   onDetails,
@@ -67,7 +72,32 @@ export function HomeTutorCard({
         </div>
         <p className="major">{tutor.major}</p>
         <p className="university">{tutor.university}</p>
-        <span className="category">{tutor.category}</span>
+        {recommendation ? (
+          <>
+            <div className="home-tutor-recommendation">
+              <p className="home-tutor-reason">{recommendation.reason}</p>
+
+              <div className="home-tutor-recommendation-tags">
+                {recommendation.tags.map((tag) => (
+                  <span key={tag}>{tag}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="home-tutor-earliest">
+              <div className="home-tutor-divider">
+                <img src={homeTutorDivider} alt="" />
+              </div>
+
+              <p className="home-tutor-earliest-label">
+                <span>가장 빠른 수업</span>
+                <strong>{recommendation.earliestLesson}</strong>
+              </p>
+            </div>
+          </>
+        ) : (
+          <span className="category">{tutor.category}</span>
+        )}
       </div>
     </article>
   )

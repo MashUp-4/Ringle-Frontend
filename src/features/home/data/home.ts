@@ -1,4 +1,15 @@
-import type { LearningGoal } from '../types/home'
+import type {
+  HomeProfile,
+  HomeTutorRecommendation,
+  LearningGoal,
+} from '../types/home'
+
+export const demoHomeProfile: HomeProfile = {
+  name: '한수지',
+  timezone: 'Asia/Seoul',
+  signupGoal: 'career',
+}
+
 export const learningGoals: {
   id: LearningGoal
   label: string
@@ -30,3 +41,18 @@ export const learningGoals: {
     tutorNames: ['Anshi', 'Audley'],
   },
 ]
+
+export const homeTutorRecommendations: Partial<
+  Record<string, HomeTutorRecommendation>
+> = {
+  Anshi: {
+    reason: '실제 면접처럼 꼬리 질문',
+    tags: ['미국 영어', '모의 인터뷰'],
+    earliestLesson: '오늘 22:00',
+  },
+  Alexander: {
+    reason: '이력서 첨삭부터 답변까지',
+    tags: ['캐나다 영어', '영문 이력서 첨삭'],
+    earliestLesson: '내일 07:30',
+  },
+}

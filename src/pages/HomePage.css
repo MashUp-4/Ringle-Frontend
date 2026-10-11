@@ -932,3 +932,63 @@
     font-size: 10px;
   }
 }
+.home-tutor-recommendation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-12);
+  margin-top: var(--spacing-unit-20);
+}
+
+.home-tutor-reason {
+  @apply text-label-16-semibold;
+  color: var(--color-ink);
+}
+
+.home-tutor-recommendation-tags {
+  display: flex;
+  gap: var(--spacing-unit-8);
+  align-items: center;
+}
+
+.home-tutor-recommendation-tags > span {
+  @apply text-label-14-bold;
+  padding: var(--spacing-unit-4) var(--spacing-unit-8);
+  border-radius: var(--radius-small);
+  background: var(--color-surface-subtle);
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.home-tutor-earliest {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-12);
+  margin-top: var(--spacing-unit-32);
+}
+
+.home-tutor-divider {
+  position: relative;
+  height: 0;
+}
+
+.home-tutor-divider > img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  max-width: none;
+}
+
+.home-tutor-earliest-label {
+  @apply text-label-16-medium;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-8);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.home-tutor-earliest-label > strong {
+  @apply text-label-16-semibold;
+  color: var(--color-ink);
+}

@@ -7,7 +7,11 @@ import { ScheduledLessons } from '../features/home/components/ScheduledLessons'
 import { demoLessons } from '../features/home/data/demoLessons'
 import { HomeTutorCard } from '../features/home/components/HomeTutorCard'
 import { ProfileEditor } from '../features/home/components/ProfileEditor'
-import { learningGoals } from '../features/home/data/home'
+import {
+  demoHomeProfile,
+  homeTutorRecommendations,
+  learningGoals,
+} from '../features/home/data/home'
 import type {
   HomeProfile,
   LessonPassBalance,
@@ -52,11 +56,9 @@ export default function HomePage() {
 
   const hasPass = balance.fortyMinutes + balance.twentyMinutes > 0
 
-  const [goal, setGoal] = useState<LearningGoal>('career')
-  const [profile, setProfile] = useState<HomeProfile>({
-    name: '한수지',
-    timezone: 'Asia/Seoul',
-  })
+  const [profile, setProfile] = useState<HomeProfile>(demoHomeProfile)
+  const [selectedGoalId, setGoal] = useState<LearningGoal | null>(null)
+  const goal = selectedGoalId ?? profile.signupGoal
   const [dialog, setDialog] = useState<HomeDialog>(null)
   const [toast, setToast] = useState('')
   const [bookmarkNotice, setBookmarkNotice] = useState<{ name: string } | null>(
@@ -200,7 +202,9 @@ export default function HomePage() {
                       }}
                     >
                       {item.label}
-                      {item.id === 'career' && <small>가입 시 선택</small>}
+                      {item.id === profile.signupGoal && (
+                        <small>가입 시 선택</small>
+                      )}
                     </button>
                   ))}
                 </div>
@@ -243,6 +247,7 @@ export default function HomePage() {
                       <HomeTutorCard
                         key={tutor.name}
                         tutor={tutor}
+                        recommendation={homeTutorRecommendations[tutor.name]}
                         bookmarked={saved.includes(tutor.name)}
                         onBookmark={() => bookmark(tutor.name)}
                         onDetails={() => setDialog({ type: 'tutor', tutor })}
