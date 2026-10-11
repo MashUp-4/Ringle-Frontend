@@ -16,7 +16,7 @@ export function ProfileEditor({ profile, onSave }: ProfileEditorProps) {
           setError('이름을 입력해 주세요.')
           return
         }
-        onSave({ name: name.trim(), timezone })
+        onSave({ ...profile, name: name.trim(), timezone })
       }}
     >
       <h2 id="home-dialog-title">프로필 설정</h2>

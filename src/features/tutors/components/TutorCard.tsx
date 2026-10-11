@@ -43,9 +43,12 @@ export function TutorCard({
           />
         </button>
         <div className="tutor-photo-overlay">
-          <span className="tutor-acceptance">
-            수락률 {tutor.acceptanceRate}%
-          </span>
+          {tutor.acceptanceRate !== undefined && (
+            <span className="tutor-acceptance">
+              수락률 {tutor.acceptanceRate}%
+            </span>
+          )}
+
           <div className="tutor-subjects">
             {tutor.subjects.map((subject) => (
               <span key={subject}>{subject}</span>

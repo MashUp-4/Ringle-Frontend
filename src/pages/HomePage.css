@@ -614,142 +614,6 @@
 @container app-shell (max-width: 600px) {
 }
 
-/* Tutor summaries follow the photo-overlay layout used on the home screen. */
-.home-tutor-card {
-  border: 0;
-  border-radius: 0;
-  overflow: visible;
-}
-.home-tutor-card:hover,
-.home-tutor-card:focus-within {
-  box-shadow: none;
-}
-.home-tutor-portrait {
-  isolation: isolate;
-  aspect-ratio: 1;
-  height: auto;
-  overflow: hidden;
-  border-radius: var(--radius-large);
-  background: var(--color-white);
-  transition: background-color 0.2s;
-}
-.home-tutor-portrait > .home-tutor-photo-details {
-  padding: 28px;
-}
-.home-tutor-portrait > .home-tutor-photo-details > img {
-  filter: none;
-  transition:
-    filter 0.2s,
-    transform 0.2s;
-}
-.home-tutor-acceptance,
-.home-tutor-topics {
-  z-index: 1;
-  opacity: 0;
-  visibility: hidden;
-  transition:
-    opacity 0.2s,
-    visibility 0.2s;
-}
-.home-tutor-portrait:hover,
-.home-tutor-portrait:focus-within {
-  background: var(--color-photo-hover);
-}
-.home-tutor-portrait:hover > .home-tutor-photo-details > img,
-.home-tutor-portrait:focus-within > .home-tutor-photo-details > img {
-  filter: blur(2px);
-  mix-blend-mode: multiply;
-}
-.home-tutor-portrait:hover .home-tutor-acceptance,
-.home-tutor-portrait:hover .home-tutor-topics,
-.home-tutor-portrait:focus-within .home-tutor-acceptance,
-.home-tutor-portrait:focus-within .home-tutor-topics {
-  opacity: 1;
-  visibility: visible;
-}
-.home-tutor-acceptance {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  color: var(--color-white);
-  font-size: 18px;
-  font-weight: 700;
-  pointer-events: none;
-}
-.home-tutor-topics {
-  position: absolute;
-  bottom: 16px;
-  left: 18px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--spacing-unit-8);
-  pointer-events: none;
-}
-.home-tutor-topics span {
-  padding: 5px 9px;
-  border-radius: var(--radius-small);
-  background: var(--color-subject-tag);
-  color: var(--color-white);
-  font-size: 12px;
-  font-weight: 700;
-}
-.home-tutor-portrait .bookmark {
-  top: 14px;
-  right: 14px;
-}
-.home-tutor-info {
-  padding: 0;
-}
-.home-tutor-info .card-title {
-  margin-top: var(--spacing-unit-20);
-}
-.home-tutor-info .card-title > button {
-  @apply text-label-20-bold;
-}
-.home-tutor-info .major {
-  margin-top: 10px;
-  @apply text-label-18;
-  color: var(--color-text-muted);
-}
-.home-tutor-info .university {
-  @apply text-label-16-semibold;
-}
-.home-tutor-info .category {
-  display: inline-block;
-  margin-top: var(--spacing-unit-12);
-  font-size: 14px;
-}
-@container app-shell (max-width: 600px) {
-  .home-tutor-portrait > .home-tutor-photo-details {
-    padding: var(--spacing-unit-16);
-  }
-  .home-tutor-acceptance {
-    top: 12px;
-    left: 10px;
-    font-size: 13px;
-  }
-  .home-tutor-topics {
-    bottom: 10px;
-    left: 10px;
-    gap: var(--spacing-unit-4);
-  }
-  .home-tutor-topics span {
-    padding: var(--spacing-unit-4) 6px;
-    font-size: 10px;
-  }
-  .home-tutor-info .card-title > button {
-    font-size: 16px;
-  }
-  .home-tutor-info .major {
-    font-size: 14px;
-  }
-  .home-tutor-info .university {
-    font-size: 12px;
-  }
-  .home-tutor-info .category {
-    font-size: 11px;
-  }
-}
 .home-offer .icon-home-coupon {
   width: 32px;
   height: 24px;
@@ -931,4 +795,187 @@
   .home-lesson-tags span {
     font-size: 10px;
   }
+}
+.home-tutor-recommendation {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-12);
+  margin-top: var(--spacing-unit-20);
+}
+
+.home-tutor-reason {
+  @apply text-label-16-semibold;
+  color: var(--color-ink);
+}
+
+.home-tutor-recommendation-tags {
+  display: flex;
+  gap: var(--spacing-unit-8);
+  align-items: center;
+}
+
+.home-tutor-recommendation-tags > span {
+  @apply text-label-14-bold;
+  padding: var(--spacing-unit-4) var(--spacing-unit-8);
+  border-radius: var(--radius-small);
+  background: var(--color-surface-subtle);
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+.home-tutor-earliest {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-unit-12);
+  margin-top: var(--spacing-unit-32);
+}
+
+.home-tutor-divider {
+  position: relative;
+  height: 0;
+}
+
+.home-tutor-divider > img {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: block;
+  max-width: none;
+}
+
+.home-tutor-earliest-label {
+  @apply text-label-16-medium;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-unit-8);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.home-tutor-earliest-label > strong {
+  @apply text-label-16-semibold;
+  color: var(--color-ink);
+}
+.home-page .home-recommendations {
+  padding: var(--spacing-unit-32);
+}
+
+.home-tutor-row {
+  position: relative;
+  width: 806px;
+  max-width: 100%;
+  height: 522px;
+}
+
+.home-recommendations .home-tutor-grid {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 522px;
+  gap: var(--spacing-unit-16);
+  overflow: hidden;
+}
+
+.home-recommendations .home-tutor-card {
+  flex: 0 0 286px;
+  width: 286px;
+  height: 522px;
+  padding: var(--spacing-unit-20) var(--spacing-unit-16);
+  border: 1px solid var(--color-ringle-gray-150);
+  border-radius: var(--radius-large);
+  background: var(--color-white);
+  overflow: visible;
+  opacity: 1;
+  box-shadow: none;
+}
+
+.home-recommendations .home-tutor-card[data-state='selected'] {
+  box-shadow: var(--shadow-card-selected);
+}
+
+.home-recommendations .home-tutor-card[data-state='disabled'] {
+  opacity: 0.7;
+}
+
+.home-recommendations .home-tutor-portrait {
+  width: 252px;
+  height: 252px;
+  background: var(--color-white);
+  border-radius: var(--radius-large);
+}
+
+.home-recommendations .home-tutor-portrait > .home-tutor-photo-details {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+}
+
+.home-recommendations .home-tutor-portrait > .home-tutor-photo-details > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: none;
+  filter: none;
+  mix-blend-mode: normal;
+  border-radius: var(--radius-large);
+}
+
+.home-recommendations .home-tutor-portrait .bookmark {
+  top: var(--spacing-unit-12);
+  right: var(--spacing-unit-12);
+  transform: none;
+}
+
+.home-recommendations .home-tutor-info {
+  width: 252px;
+  padding: 0;
+  margin-top: var(--spacing-unit-16);
+}
+
+.home-recommendations .home-tutor-info .card-title {
+  height: 28px;
+  margin: 0;
+  gap: 0;
+}
+
+.home-recommendations .home-tutor-info .card-title > button {
+  @apply text-label-20-bold;
+}
+
+.home-recommendations .home-tutor-info .card-title > span {
+  @apply text-label-16-semibold;
+}
+
+.home-recommendations .home-tutor-info .card-title em {
+  @apply text-label-16-medium;
+}
+
+.home-recommendations .home-tutor-info .major {
+  @apply text-label-18;
+  margin-top: var(--spacing-unit-12);
+}
+
+.home-recommendations .home-tutor-info .university {
+  @apply text-label-16-semibold;
+  margin-top: var(--spacing-unit-8);
+}
+
+.home-tutor-next {
+  position: absolute;
+  top: 233.2093px;
+  right: -22px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  z-index: 3;
+}
+
+.home-tutor-next > img {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  display: block;
+  max-width: none;
 }

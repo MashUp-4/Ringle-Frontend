@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import {
   Link,
   Navigate,
@@ -15,9 +15,26 @@ import { TutorCard } from '../features/tutors/components/TutorCard'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
 import { useTutors } from '../features/tutors/hooks/useTutors'
 import type { Tutor, TutorTab } from '../features/tutors/types/tutor'
+import { nextButtonRight } from '../components/ui/iconAssets'
 
 function TutorPage() {
+  const tutorGridRef = useRef<HTMLDivElement>(null)
   const [query, setQuery] = useState('')
+
+  function showNextTutor() {
+    const grid = tutorGridRef.current
+    const firstCard = grid?.firstElementChild
+
+    if (!grid || !(firstCard instanceof HTMLElement)) return
+
+    const gap = parseFloat(getComputedStyle(grid).columnGap) || 0
+
+    grid.scrollBy({
+      left: firstCard.offsetWidth + gap,
+      behavior: 'instant',
+    })
+  }
+
   useEffect(() => {
     document.title = '튜터 추천 | Ringle'
   }, [])
@@ -161,16 +178,27 @@ function TutorPage() {
               </Link>
             </p>
           )}
-          <div className="tutor-grid">
-            {visible.map((t) => (
-              <TutorCard
-                key={t.name}
-                tutor={t}
-                bookmarked={saved.includes(t.name)}
-                onBookmark={() => bookmark(t.name)}
-                onDetails={() => setSelected(t)}
-              />
-            ))}
+          <div className="tutor-card-row">
+            <div className="tutor-grid" ref={tutorGridRef}>
+              {visible.map((t) => (
+                <TutorCard
+                  key={t.name}
+                  tutor={t}
+                  bookmarked={saved.includes(t.name)}
+                  onBookmark={() => bookmark(t.name)}
+                  onDetails={() => setSelected(t)}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              className="tutor-card-next"
+              aria-label="다음 튜터"
+              onClick={showNextTutor}
+            >
+              <img src={nextButtonRight} alt="" />
+            </button>
           </div>
           {!loading && !error && visible.length === 0 && (
             <div className="empty">

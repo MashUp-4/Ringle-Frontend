@@ -8,9 +8,7 @@ interface AppShellProps {
   onNotice: (message: string) => void
 }
 
-// Final Figma desktop frames use a 1920 × 1080 viewport.
-// Preserve their proportions when the browser's CSS viewport is smaller.
-function getShellScale() {
+function getTutorFrameScale() {
   return Math.min(
     1,
     document.documentElement.clientWidth / 1920,
@@ -20,12 +18,22 @@ function getShellScale() {
 
 function subscribeToViewport(onChange: () => void) {
   window.addEventListener('resize', onChange)
-  const observer = new ResizeObserver(onChange)
-  observer.observe(document.documentElement)
-  return () => {
-    window.removeEventListener('resize', onChange)
-    observer.disconnect()
-  }
+  return () => window.removeEventListener('resize', onChange)
+}
+
+function TutorFrame({ children }: { children: ReactNode }) {
+  const scale = useSyncExternalStore(
+    subscribeToViewport,
+    getTutorFrameScale,
+    () => 1,
+  )
+  const style = { '--tutor-frame-scale': scale } as CSSProperties
+
+  return (
+    <div className="tutor-frame-viewport" style={style}>
+      {children}
+    </div>
+  )
 }
 
 export function AppShell({ children, onNotice }: AppShellProps) {
@@ -36,17 +44,13 @@ export function AppShell({ children, onNotice }: AppShellProps) {
       : pathname === '/tutors/all'
         ? 'favorites'
         : 'tutors'
-  const scale = useSyncExternalStore(
-    subscribeToViewport,
-    getShellScale,
-    () => 1,
-  )
-  const style = { '--shell-scale': scale } as CSSProperties
-  return (
-    <div className="app-shell" data-screen={screen} style={style}>
+  const shell = (
+    <div className="app-shell" data-screen={screen}>
       <AppNavigation onNotice={onNotice} />
       <div className="app-content">{children}</div>
       <FloatingActions onNotice={onNotice} />
     </div>
   )
+
+  return screen === 'tutors' ? <TutorFrame>{shell}</TutorFrame> : shell
 }

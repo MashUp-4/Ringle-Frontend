@@ -119,6 +119,41 @@ h2 {
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: var(--spacing-unit-20);
 }
+.tutor-card-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 380px;
+}
+
+.tutor-card-row > .tutor-grid {
+  flex: 0 0 100%;
+  min-width: 0;
+  height: 100%;
+  grid-template-columns: none;
+  grid-auto-flow: column;
+  grid-auto-columns: 252px;
+  gap: var(--spacing-unit-20);
+  overflow-x: hidden;
+}
+
+.tutor-card-next {
+  position: relative;
+  flex: 0 0 var(--spacing-unit-40);
+  margin-left: var(--spacing-unit-20);
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  z-index: 3;
+}
+
+.tutor-card-next img {
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  display: block;
+  max-width: none;
+}
 .tutor-card {
   @apply min-w-0;
   border-radius: var(--radius-large);
@@ -207,10 +242,6 @@ h2 {
   opacity: 1;
   transform: none;
   @apply pointer-events-auto;
-}
-.tutor-card:hover .portrait,
-.tutor-card:focus-within .portrait {
-  box-shadow: 0 6px 24px #663db818;
 }
 .card-title {
   @apply flex items-center justify-between;
@@ -708,29 +739,33 @@ h2 {
     visibility 0.2s;
 }
 .tutor-acceptance {
+  @apply text-label-18;
   position: absolute;
-  top: 18px;
-  left: 18px;
+  top: var(--spacing-unit-12);
+  left: var(--spacing-unit-16);
   color: var(--color-white);
-  font-size: 18px;
-  font-weight: 700;
+  line-height: 26px;
 }
+
 .tutor-subjects {
   position: absolute;
-  bottom: 16px;
-  left: 18px;
+  bottom: 14px;
+  left: var(--spacing-unit-16);
   right: 12px;
   display: flex;
   flex-wrap: wrap;
   gap: var(--spacing-unit-8);
 }
+
 .tutor-subjects span {
-  padding: 5px 9px;
+  padding: var(--spacing-unit-4) var(--spacing-unit-8);
   border-radius: var(--radius-small);
-  background: var(--color-subject-tag);
+  background: var(--color-ringle-gray-500);
   color: var(--color-white);
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
+  line-height: 16px;
+  letter-spacing: normal;
 }
 .tutor-card .portrait {
   transition: background-color 0.2s;
@@ -750,16 +785,6 @@ h2 {
   visibility: visible;
 }
 @container app-shell (max-width: 600px) {
-  .tutor-acceptance {
-    top: 12px;
-    left: 10px;
-    font-size: 13px;
-  }
-  .tutor-subjects {
-    bottom: 10px;
-    left: 10px;
-    gap: var(--spacing-unit-4);
-  }
   .tutor-subjects span {
     padding: var(--spacing-unit-4) 6px;
     font-size: 10px;
