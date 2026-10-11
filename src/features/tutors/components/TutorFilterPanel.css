@@ -179,11 +179,11 @@
   margin-right: 3px;
   border-right: 1px solid currentColor;
   border-bottom: 1px solid currentColor;
-  transform: rotate(-45deg);
+  transform: rotate(45deg);
   flex-shrink: 0;
 }
 .tutor-filter-section[open] > summary::after {
-  transform: rotate(45deg);
+  transform: rotate(225deg);
 }
 .tutor-filter-panel input[type='checkbox']:checked {
   border-color: #663db8;
