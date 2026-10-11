@@ -305,3 +305,18 @@
   max-width: none;
   pointer-events: none;
 }
+
+/* Match the reference site's desktop density across every page. */
+@media (min-width: 901px) {
+  .app-shell {
+    zoom: 0.8;
+  }
+  .app-shell .sidebar {
+    height: 125dvh;
+  }
+  .app-shell .sidebar-menu {
+    height: calc(
+      125dvh - var(--shell-reference-height) + var(--sidebar-menu-height)
+    );
+  }
+}
