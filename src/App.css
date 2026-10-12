@@ -699,6 +699,43 @@ h2 {
 }
 
 /* Shared by the tutor list and saved tutors. */
+.tutor-glass-definitions {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.tutor-glass-source {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-white);
+}
+.portrait:hover .tutor-glass-source,
+.portrait:focus-within .tutor-glass-source {
+  filter: var(--tutor-glass-filter);
+}
+.tutor-glass-surface {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgb(0 0 0 / 29%);
+  border-radius: inherit;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.tutor-glass-surface img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.portrait:hover .tutor-glass-surface,
+.portrait:focus-within .tutor-glass-surface {
+  opacity: 1;
+  visibility: visible;
+}
 .tutor-photo-details {
   width: 100%;
   height: 100%;
@@ -716,6 +753,8 @@ h2 {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  border-radius: var(--radius-large);
+  z-index: 3;
   transition:
     opacity 0.2s,
     visibility 0.2s;
@@ -748,18 +787,6 @@ h2 {
   font-weight: 600;
   line-height: 16px;
   letter-spacing: normal;
-}
-.tutor-card .portrait {
-  transition: background-color 0.2s;
-}
-.tutor-card .portrait:hover,
-.tutor-card .portrait:focus-within {
-  background: var(--color-photo-hover);
-}
-.portrait:hover .tutor-photo-details img,
-.portrait:focus-within .tutor-photo-details img {
-  filter: blur(2px);
-  mix-blend-mode: multiply;
 }
 .portrait:hover .tutor-photo-overlay,
 .portrait:focus-within .tutor-photo-overlay {
