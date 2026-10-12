@@ -21,7 +21,11 @@ import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
 import { useTutors } from '../features/tutors/hooks/useTutors'
 import type { Tutor } from '../features/tutors/types/tutor'
 import './HomePage.css'
-import { nextButtonRight } from '../components/ui/iconAssets'
+import {
+  homeGuideDivider,
+  homeProfileDivider,
+  nextButtonRight,
+} from '../components/ui/iconAssets'
 
 type HomeDialog =
   | { type: 'profile' }
@@ -140,9 +144,11 @@ export default function HomePage() {
           <div className="home-primary">
             <button className="home-offer" onClick={purchase}>
               <Icon name="home-coupon" />
-              <span>[첫 구매 혜택] 수업권 최대 2회 추가</span>
+              <span className="home-offer-label">
+                [첫 구매 혜택] 수업권 최대 2회 추가
+              </span>
               <strong>
-                D-276 <Icon name="arrow" />
+                D-276 <Icon name="home-offer-arrow" />
               </strong>
             </button>
 
@@ -321,7 +327,7 @@ export default function HomePage() {
                   <Icon name="home-curriculum" />
                   커리큘럼 선택
                 </span>
-                <Icon name="arrow" />
+                <Icon name="home-arrow" />
               </button>
 
               {curriculum && (
@@ -359,6 +365,9 @@ export default function HomePage() {
                 링글 사용법
               </button>
 
+              <span className="home-guide-divider" aria-hidden="true">
+                <img src={homeGuideDivider} alt="" />
+              </span>
               <button
                 onClick={() =>
                   information(
@@ -434,7 +443,7 @@ export default function HomePage() {
                     )
                   }
                 >
-                  자세히 보기 <Icon name="arrow" />
+                  자세히 보기 <Icon name="home-arrow" />
                 </button>
               </div>
 
@@ -449,26 +458,28 @@ export default function HomePage() {
                     aria-label="챌린지 안내 닫기"
                     onClick={() => setChallengeVisible(false)}
                   >
-                    ×
+                    <Icon name="home-dismiss" />
                   </button>
 
-                  <p>
-                    2026년 링글로 영어 공부하고 포인트, 무료 수업권, 실리콘밸리
-                    투어까지
-                    <br />갈 수 있는 기회를 놓치지 마세요!
-                  </p>
+                  <div className="home-challenge-message">
+                    <p>
+                      2026년 링글로 영어 공부하고 포인트, 무료 수업권,
+                      실리콘밸리 투어까지
+                      <br />갈 수 있는 기회를 놓치지 마세요!
+                    </p>
 
-                  <button
-                    className="home-primary-button"
-                    onClick={() =>
-                      information(
-                        '챌린지 참여 안내',
-                        '챌린지 참여 신청은 준비 중이에요. 자세한 참여 조건과 일정은 정식 안내에서 확인해 주세요.',
-                      )
-                    }
-                  >
-                    1초만에 신청하기
-                  </button>
+                    <button
+                      className="home-primary-button"
+                      onClick={() =>
+                        information(
+                          '챌린지 참여 안내',
+                          '챌린지 참여 신청은 준비 중이에요. 자세한 참여 조건과 일정은 정식 안내에서 확인해 주세요.',
+                        )
+                      }
+                    >
+                      1초만에 신청하기
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <button
@@ -484,13 +495,18 @@ export default function HomePage() {
           <aside className="home-secondary" aria-label="내 정보와 추천 이벤트">
             <section className="home-profile">
               <div className="home-profile-heading">
-                <h2>안녕하세요 {profile.name}님!</h2>
+                <div>
+                  <h2>안녕하세요 {profile.name}님!</h2>
+                  <p className="home-timezone">{profile.timezone}</p>
+                </div>
                 <button onClick={() => setDialog({ type: 'profile' })}>
                   프로필 설정
                 </button>
               </div>
 
-              <p className="home-timezone">{profile.timezone}</p>
+              <div className="home-profile-divider" aria-hidden="true">
+                <img src={homeProfileDivider} alt="" />
+              </div>
 
               <div className="home-profile-links">
                 <button
@@ -503,9 +519,15 @@ export default function HomePage() {
                 >
                   <strong>내 수업권</strong>
                   <span>
-                    40분 <b>{balance.fortyMinutes}</b> 20분{' '}
-                    <b>{balance.twentyMinutes}</b>
-                    <Icon name="arrow" />
+                    <span className="home-pass-balances">
+                      <span>
+                        40분 <b>{balance.fortyMinutes}</b>
+                      </span>
+                      <span>
+                        20분 <b>{balance.twentyMinutes}</b>
+                      </span>
+                    </span>
+                    <Icon name="home-profile-arrow" />
                   </span>
                 </button>
 
@@ -518,7 +540,7 @@ export default function HomePage() {
                   }
                 >
                   <strong>AI 스피킹 멤버십</strong>
-                  <Icon name="arrow" />
+                  <Icon name="home-profile-arrow" />
                 </button>
 
                 <button
@@ -526,7 +548,7 @@ export default function HomePage() {
                 >
                   <strong>포인트</strong>
                   <span className="text-ink">
-                    0P <Icon name="arrow" />
+                    0P <Icon name="home-profile-arrow" />
                   </span>
                 </button>
 
@@ -540,7 +562,7 @@ export default function HomePage() {
                 >
                   <strong>쿠폰</strong>
                   <span>
-                    1 <Icon name="arrow" />
+                    1 <Icon name="home-profile-arrow" />
                   </span>
                 </button>
               </div>

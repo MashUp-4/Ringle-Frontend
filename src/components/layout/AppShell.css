@@ -281,7 +281,7 @@
   z-index: 3;
 }
 .trial:hover {
-  background: var(--color-primary-hover);
+  background: #3d1885;
 }
 .trial .icon-slot {
   width: 28px;

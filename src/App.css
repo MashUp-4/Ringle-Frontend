@@ -436,15 +436,14 @@ h2 {
     height: 220px;
   }
   .recommend-banner strong {
-    font-size: 12px;
+    @apply text-label-20-bold;
   }
   .recommend-banner > span:nth-child(2) {
-    font-size: 12px;
+    @apply text-label-20-medium;
   }
 }
 @container app-shell (max-width: 600px) {
   h1 {
-    font-size: 28px;
     margin: 30px 0 15px;
   }
   .tab-row {
@@ -466,9 +465,6 @@ h2 {
     margin-top: -3px;
     @apply w-full;
   }
-  h2 {
-    font-size: 18px;
-  }
   .section-heading {
     margin-bottom: 18px;
   }
@@ -481,15 +477,6 @@ h2 {
   }
   .hover-panel {
     padding-top: 52px;
-  }
-  .card-title > button {
-    font-size: 15px;
-  }
-  .major {
-    font-size: 12px;
-  }
-  .university {
-    font-size: 11px;
   }
   .toast {
     bottom: 85px;
@@ -530,14 +517,13 @@ h2 {
   z-index: 20;
 }
 .bookmark-notice p {
-  color: var(--color-black);
-  @apply text-label-16-semibold;
+  color: #000;
+  @apply text-label-18;
 }
 .bookmark-notice button {
-  @apply flex items-center;
+  @apply flex items-center text-label-16-medium;
   gap: 10px;
   @apply text-muted;
-  font-size: 14px;
   padding: var(--spacing-unit-8) 0;
   @apply whitespace-nowrap;
 }
@@ -555,11 +541,7 @@ h2 {
     padding: var(--spacing-unit-16);
     gap: var(--spacing-unit-12);
   }
-  .bookmark-notice p {
-    font-size: 12px;
-  }
   .bookmark-notice button {
-    font-size: 11px;
     gap: var(--spacing-unit-4);
   }
   .bookmark-notice .icon-slot {
@@ -717,6 +699,43 @@ h2 {
 }
 
 /* Shared by the tutor list and saved tutors. */
+.tutor-glass-definitions {
+  position: absolute;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+.tutor-glass-source {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--color-white);
+}
+.portrait:hover .tutor-glass-source,
+.portrait:focus-within .tutor-glass-source {
+  filter: var(--tutor-glass-filter);
+}
+.tutor-glass-surface {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: rgb(0 0 0 / 29%);
+  border-radius: inherit;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.tutor-glass-surface img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.portrait:hover .tutor-glass-surface,
+.portrait:focus-within .tutor-glass-surface {
+  opacity: 1;
+  visibility: visible;
+}
 .tutor-photo-details {
   width: 100%;
   height: 100%;
@@ -734,6 +753,8 @@ h2 {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  border-radius: var(--radius-large);
+  z-index: 3;
   transition:
     opacity 0.2s,
     visibility 0.2s;
@@ -766,18 +787,6 @@ h2 {
   font-weight: 600;
   line-height: 16px;
   letter-spacing: normal;
-}
-.tutor-card .portrait {
-  transition: background-color 0.2s;
-}
-.tutor-card .portrait:hover,
-.tutor-card .portrait:focus-within {
-  background: var(--color-photo-hover);
-}
-.portrait:hover .tutor-photo-details img,
-.portrait:focus-within .tutor-photo-details img {
-  filter: blur(2px);
-  mix-blend-mode: multiply;
 }
 .portrait:hover .tutor-photo-overlay,
 .portrait:focus-within .tutor-photo-overlay {

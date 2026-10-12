@@ -74,6 +74,18 @@ const icons: Record<
     width: 32,
     height: 24,
   },
+  'home-arrow': { src: figmaAssets.homeArrow, width: 16, height: 20 },
+  'home-offer-arrow': {
+    src: figmaAssets.homeOfferArrow,
+    width: 16,
+    height: 20,
+  },
+  'home-profile-arrow': {
+    src: figmaAssets.homeProfileArrow,
+    width: 16,
+    height: 20,
+  },
+  'home-dismiss': { src: figmaAssets.homeDismiss, width: 24, height: 24 },
   'home-curriculum': {
     src: figmaAssets.homeCurriculum,
     width: 32,

@@ -1,5 +1,6 @@
 import * as figmaAssets from '../../../components/ui/iconAssets'
 import type { Tutor } from '../types/tutor'
+import { TutorGlass } from './TutorGlass'
 interface TutorCardProps {
   tutor: Tutor
   bookmarked: boolean
@@ -15,33 +16,35 @@ export function TutorCard({
   return (
     <article className="tutor-card">
       <div className="portrait">
-        <button
-          className="tutor-photo-details"
-          onClick={onDetails}
-          aria-label={`${tutor.name} 튜터 자세히 보기`}
-        >
-          <img
-            src={`/tutor-${tutor.image}.png`}
-            alt={`${tutor.name} 튜터 캐릭터`}
-          />
-        </button>
-        <button
-          className={`bookmark ${bookmarked ? 'saved' : ''}`}
-          aria-label={`${tutor.name} 북마크`}
-          aria-pressed={bookmarked}
-          onClick={onBookmark}
-        >
-          <img
-            src={
-              bookmarked
-                ? figmaAssets.bookmarkSelected
-                : figmaAssets.bookmarkDefault
-            }
-            alt=""
-            width="64"
-            height="64"
-          />
-        </button>
+        <TutorGlass>
+          <button
+            className="tutor-photo-details"
+            onClick={onDetails}
+            aria-label={`${tutor.name} 튜터 자세히 보기`}
+          >
+            <img
+              src={`/tutor-${tutor.image}.png`}
+              alt={`${tutor.name} 튜터 캐릭터`}
+            />
+          </button>
+          <button
+            className={`bookmark ${bookmarked ? 'saved' : ''}`}
+            aria-label={`${tutor.name} 북마크`}
+            aria-pressed={bookmarked}
+            onClick={onBookmark}
+          >
+            <img
+              src={
+                bookmarked
+                  ? figmaAssets.bookmarkSelected
+                  : figmaAssets.bookmarkDefault
+              }
+              alt=""
+              width="64"
+              height="64"
+            />
+          </button>
+        </TutorGlass>
         <div className="tutor-photo-overlay">
           {tutor.acceptanceRate !== undefined && (
             <span className="tutor-acceptance">
