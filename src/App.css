@@ -711,9 +711,9 @@ h2 {
   border-radius: inherit;
   background: var(--color-white);
 }
-.portrait:hover .tutor-glass-source,
-.portrait:focus-within .tutor-glass-source {
-  filter: var(--tutor-glass-filter);
+.portrait:hover .tutor-photo-details > img,
+.portrait:focus-within .tutor-photo-details > img {
+  filter: blur(2px);
 }
 .tutor-glass-surface {
   position: absolute;

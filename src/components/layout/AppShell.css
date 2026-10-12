@@ -112,8 +112,7 @@
   background: var(--color-white);
 }
 .topbar-inner {
-  @apply text-label-20-bold;
-  font-weight: 600;
+  @apply text-label-18;
   color: var(--color-ringle-gray-500);
   display: flex;
   align-items: center;
