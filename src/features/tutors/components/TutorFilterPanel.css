@@ -1,9 +1,11 @@
+@reference '../../../index.css';
+
 .favorite-filter-panel.tutor-filter-panel {
   align-self: start;
   overflow: visible;
   padding: 20px;
-  border: 0;
-  border-radius: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-large);
   background: var(--color-white);
   color: #2f2d3d;
 }
@@ -83,14 +85,11 @@
 }
 
 .tutor-filter-options label {
+  @apply text-label-16-medium;
   display: flex;
   align-items: center;
   gap: 12px;
   min-height: 23px;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
-  letter-spacing: -0.16px;
   cursor: pointer;
 }
 
@@ -104,11 +103,9 @@
 }
 
 .tutor-filter-caption {
+  @apply text-label-16-medium;
   margin: 0 0 16px;
   color: #92919d;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 16px;
 }
 
 .tutor-filter-days {
@@ -133,16 +130,13 @@
 
 .tutor-filter-days button,
 .tutor-filter-times button {
+  @apply text-label-16-medium;
   min-width: 0;
   min-height: 45px;
   border: 1px solid #e8e7ed;
   border-radius: 4px;
   background: var(--color-white);
   color: #2f2d3d;
-  font: inherit;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 20px;
   cursor: pointer;
 }
 

@@ -1,3 +1,5 @@
+@reference '../index.css';
+
 .all-tutors-filter-toolbar {
   display: flex;
   align-items: flex-start;
@@ -41,9 +43,7 @@
   background: #f7f8fb;
   color: #585767;
   font: inherit;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 16px;
+  @apply text-label-16-semibold;
   cursor: pointer;
 }
 
@@ -54,11 +54,51 @@
 }
 
 .all-tutors-results .favorite-tutor-count {
+  @apply text-label-18;
   margin: 0 0 32px;
-  color: #2f2d3d;
-  font-size: 18px;
-  font-weight: 600;
-  line-height: 18px;
+  color: var(--color-text-muted);
+}
+
+/* Figma uses a 240px instance of the 252px tutor card. */
+.all-tutors-results {
+  --all-tutor-card-font-scale: 0.9523809524;
+}
+
+.all-tutors-results .card-title > button {
+  font-size: calc(var(--text-label-20-bold) * var(--all-tutor-card-font-scale));
+  line-height: calc(
+    var(--text-label-20-bold--line-height) * var(--all-tutor-card-font-scale)
+  );
+  letter-spacing: -0.01em;
+}
+
+.all-tutors-results .card-title > span,
+.all-tutors-results .card-title em,
+.all-tutors-results .university {
+  font-size: calc(
+    var(--text-label-16-semibold) * var(--all-tutor-card-font-scale)
+  );
+  line-height: calc(
+    var(--text-label-16-semibold--line-height) *
+      var(--all-tutor-card-font-scale)
+  );
+  letter-spacing: -0.01em;
+}
+
+.all-tutors-results .major {
+  font-size: calc(var(--text-label-18) * var(--all-tutor-card-font-scale));
+  line-height: calc(
+    var(--text-label-18--line-height) * var(--all-tutor-card-font-scale)
+  );
+  letter-spacing: -0.01em;
+}
+
+.all-tutors-results .category {
+  font-size: calc(var(--text-label-14-bold) * var(--all-tutor-card-font-scale));
+  line-height: calc(
+    var(--text-label-14-bold--line-height) * var(--all-tutor-card-font-scale)
+  );
+  letter-spacing: -0.01em;
 }
 
 .all-tutors-empty {
@@ -113,9 +153,7 @@
   background: #fff;
   color: #000;
   font: inherit;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 16px;
+  @apply text-label-16-semibold;
   cursor: pointer;
 }
 
