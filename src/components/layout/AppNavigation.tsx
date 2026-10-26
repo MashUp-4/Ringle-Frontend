@@ -7,6 +7,7 @@ import {
   headerDivider,
 } from '../ui/iconAssets'
 import './AppShell.css'
+import { useProfileImage } from '../../features/user/hooks/useUser'
 
 interface AppNavigationProps {
   onNotice: (message: string) => void
@@ -22,6 +23,7 @@ const items = [
 ]
 
 export function AppNavigation({ onNotice }: AppNavigationProps) {
+  const profileImage = useProfileImage()
   const isHome = useLocation().pathname === '/'
   return (
     <>
@@ -137,7 +139,17 @@ export function AppNavigation({ onNotice }: AppNavigationProps) {
             aria-label="내 프로필"
             onClick={() => onNotice('홈에서 프로필을 설정할 수 있어요.')}
           >
-            <img src={headerAvatar} alt="" width={41} height={41} />
+            <img
+              src={profileImage ?? headerAvatar}
+              alt=""
+              width={41}
+              height={41}
+              onError={(event) => {
+                event.currentTarget.onerror = null
+                event.currentTarget.src = headerAvatar
+              }}
+              style={{ borderRadius: '50%', objectFit: 'cover' }}
+            />
           </button>
         </div>
       </header>
