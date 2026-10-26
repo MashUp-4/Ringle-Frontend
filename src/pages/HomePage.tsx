@@ -6,17 +6,13 @@ import { Modal } from '../components/ui/Modal'
 import { ScheduledLessons } from '../features/home/components/ScheduledLessons'
 import { demoLessons } from '../features/home/data/demoLessons'
 import { HomeTutorCard } from '../features/home/components/HomeTutorCard'
-import { ProfileEditor } from '../features/home/components/ProfileEditor'
+import { useUserSummary } from '../features/user/hooks/useUser'
 import {
   demoHomeProfile,
   homeTutorRecommendations,
   learningGoals,
 } from '../features/home/data/home'
-import type {
-  HomeProfile,
-  LessonPassBalance,
-  LearningGoal,
-} from '../features/home/types/home'
+import type { HomeProfile, LearningGoal } from '../features/home/types/home'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
 import { useTutors } from '../features/tutors/hooks/useTutors'
 import type { Tutor } from '../features/tutors/types/tutor'
@@ -28,7 +24,6 @@ import {
 } from '../components/ui/iconAssets'
 
 type HomeDialog =
-  | { type: 'profile' }
   | { type: 'tutor'; tutor: Tutor }
   | { type: 'information'; title: string; description: string }
   | null
@@ -53,15 +48,22 @@ export default function HomePage() {
           : 1
   const scheduledLessons = demoLessons.slice(0, lessonCount)
 
-  // 실제 보유 수업권 API 계약 전, 두 디자인 상태를 확인하는 데모 데이터입니다.
-  const balance: LessonPassBalance =
-    params.get('passes') === 'available'
-      ? { fortyMinutes: 1, twentyMinutes: 0 }
-      : { fortyMinutes: 0, twentyMinutes: 0 }
-
+  const {
+    summary,
+    loading: userLoading,
+    error: userError,
+    reload: reloadUser,
+  } = useUserSummary()
+  const balance = {
+    fortyMinutes: summary?.credit40MinCount ?? 0,
+    twentyMinutes: summary?.credit20MinCount ?? 0,
+  }
   const hasPass = balance.fortyMinutes + balance.twentyMinutes > 0
-
-  const [profile, setProfile] = useState<HomeProfile>(demoHomeProfile)
+  const profile: HomeProfile = {
+    name: summary?.name ?? '',
+    timezone: summary?.timeZone ?? '',
+    signupGoal: demoHomeProfile.signupGoal,
+  }
   const [selectedGoalId, setGoal] = useState<LearningGoal | null>(null)
   const goal = selectedGoalId ?? profile.signupGoal
   const [dialog, setDialog] = useState<HomeDialog>(null)
@@ -309,7 +311,12 @@ export default function HomePage() {
                       >
                         수업권 구매하고 예약하기
                       </button>
-                      <p>보유 쿠폰 1장이 자동으로 적용돼요.</p>
+                      {summary && summary.unusedCouponCount > 0 && (
+                        <p>
+                          사용 가능한 쿠폰 {summary.unusedCouponCount}장이
+                          있어요.
+                        </p>
+                      )}
                     </>
                   )}
                 </div>
@@ -493,79 +500,106 @@ export default function HomePage() {
           </div>
 
           <aside className="home-secondary" aria-label="내 정보와 추천 이벤트">
-            <section className="home-profile">
-              <div className="home-profile-heading">
-                <div>
-                  <h2>안녕하세요 {profile.name}님!</h2>
-                  <p className="home-timezone">{profile.timezone}</p>
+            <section className="home-profile" aria-busy={userLoading}>
+              {userLoading ? (
+                <p role="status">회원 정보를 불러오는 중이에요.</p>
+              ) : userError ? (
+                <div role="alert">
+                  <p>{userError}</p>
+                  <button onClick={reloadUser}>다시 시도</button>
                 </div>
-                <button onClick={() => setDialog({ type: 'profile' })}>
-                  프로필 설정
-                </button>
-              </div>
+              ) : (
+                summary && (
+                  <>
+                    <div className="home-profile-heading">
+                      <div>
+                        <h2>안녕하세요 {profile.name}님!</h2>
+                        <p className="home-timezone">{profile.timezone}</p>
+                      </div>
+                      <button
+                        onClick={() =>
+                          information(
+                            '프로필 설정',
+                            '프로필 수정 기능은 API 준비 후 제공됩니다.',
+                          )
+                        }
+                      >
+                        프로필 설정
+                      </button>
+                    </div>
 
-              <div className="home-profile-divider" aria-hidden="true">
-                <img src={homeProfileDivider} alt="" />
-              </div>
+                    <div className="home-profile-divider" aria-hidden="true">
+                      <img src={homeProfileDivider} alt="" />
+                    </div>
 
-              <div className="home-profile-links">
-                <button
-                  onClick={() =>
-                    information(
-                      '내 수업권',
-                      `40분 수업권 ${balance.fortyMinutes}회, 20분 수업권 ${balance.twentyMinutes}회를 보유하고 있어요.`,
-                    )
-                  }
-                >
-                  <strong>내 수업권</strong>
-                  <span>
-                    <span className="home-pass-balances">
-                      <span>
-                        40분 <b>{balance.fortyMinutes}</b>
-                      </span>
-                      <span>
-                        20분 <b>{balance.twentyMinutes}</b>
-                      </span>
-                    </span>
-                    <Icon name="home-profile-arrow" />
-                  </span>
-                </button>
+                    <div className="home-profile-links">
+                      <button
+                        onClick={() =>
+                          information(
+                            '내 수업권',
+                            `40분 수업권 ${balance.fortyMinutes}회, 20분 수업권 ${balance.twentyMinutes}회를 보유하고 있어요.`,
+                          )
+                        }
+                      >
+                        <strong>내 수업권</strong>
+                        <span>
+                          <span className="home-pass-balances">
+                            <span>
+                              40분 <b>{balance.fortyMinutes}</b>
+                            </span>
+                            <span>
+                              20분 <b>{balance.twentyMinutes}</b>
+                            </span>
+                          </span>
+                          <Icon name="home-profile-arrow" />
+                        </span>
+                      </button>
 
-                <button
-                  onClick={() =>
-                    information(
-                      'AI 스피킹 멤버십',
-                      'AI 스피킹 멤버십 서비스는 준비 중이에요.',
-                    )
-                  }
-                >
-                  <strong>AI 스피킹 멤버십</strong>
-                  <Icon name="home-profile-arrow" />
-                </button>
+                      <button
+                        onClick={() =>
+                          information(
+                            'AI 스피킹 멤버십',
+                            'AI 스피킹 멤버십 서비스는 준비 중이에요.',
+                          )
+                        }
+                      >
+                        <strong>AI 스피킹 멤버십</strong>
+                        <Icon name="home-profile-arrow" />
+                      </button>
 
-                <button
-                  onClick={() => information('포인트', '보유 포인트는 0P예요.')}
-                >
-                  <strong>포인트</strong>
-                  <span className="text-ink">
-                    0P <Icon name="home-profile-arrow" />
-                  </span>
-                </button>
+                      <button
+                        onClick={() =>
+                          information(
+                            '포인트',
+                            `보유 포인트는 ${summary.points.toLocaleString()}P예요.`,
+                          )
+                        }
+                      >
+                        <strong>포인트</strong>
+                        <span className="text-ink">
+                          {summary.points.toLocaleString()}P{' '}
+                          <Icon name="home-profile-arrow" />
+                        </span>
+                      </button>
 
-                <button
-                  onClick={() =>
-                    information(
-                      '쿠폰',
-                      '첫 구매에 사용할 수 있는 쿠폰 1장이 있어요.',
-                    )
-                  }
-                >
-                  <strong>쿠폰</strong>
-                  <span>
-                    1 <Icon name="home-profile-arrow" />
-                  </span>
-                </button>
-              </div>
+                      <button
+                        onClick={() =>
+                          information(
+                            '쿠폰',
+                            `사용할 수 있는 쿠폰 ${summary.unusedCouponCount}장이 있어요.`,
+                          )
+                        }
+                      >
+                        <strong>쿠폰</strong>
+                        <span>
+                          {summary.unusedCouponCount}{' '}
+                          <Icon name="home-profile-arrow" />
+                        </span>
+                      </button>
+                    </div>
+                  </>
+                )
+              )}
             </section>
 
             <button
@@ -618,16 +652,7 @@ export default function HomePage() {
 
       {dialog && (
         <Modal labelledBy="home-dialog-title" onClose={() => setDialog(null)}>
-          {dialog.type === 'profile' ? (
-            <ProfileEditor
-              profile={profile}
-              onSave={(value) => {
-                setProfile(value)
-                setDialog(null)
-                setToast('프로필을 저장했어요.')
-              }}
-            />
-          ) : dialog.type === 'tutor' ? (
+          {dialog.type === 'tutor' ? (
             <>
               <img src={`/tutor-${dialog.tutor.image}.png`} alt="" />
               <h2 id="home-dialog-title">{dialog.tutor.name}</h2>
