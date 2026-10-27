@@ -12,7 +12,9 @@ import { AppShell } from '../components/layout/AppShell'
 import { TutorPageHeader } from '../components/layout/TutorPageHeader'
 import { Modal } from '../components/ui/Modal'
 import { TutorCard } from '../features/tutors/components/TutorCard'
-import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
+import { useServerBookmarks } from '../features/tutors/hooks/useServerBookmarks'
+import { buildTutorQuery } from '../features/tutors/api/tutorQuery'
+import { TutorImage } from '../features/tutors/components/TutorImage'
 import { useTutors } from '../features/tutors/hooks/useTutors'
 import type { Tutor, TutorTab } from '../features/tutors/types/tutor'
 import { nextButtonRight } from '../components/ui/iconAssets'
@@ -53,9 +55,13 @@ function TutorPage() {
 
     setSearchParams({})
   }
-  const { saved, toggleBookmark, storageError } = useBookmarks()
-  const { tutors, loading, error, reload } = useTutors()
-  const selected = tutors.find((t) => t.name === tutorId) ?? null
+  const { tutors, loading, error, reload } = useTutors(
+    tutorId ? '' : buildTutorQuery(query, false, undefined, true),
+  )
+  const { isSaved, isPending, toggleBookmark, storageError } =
+    useServerBookmarks(tutors)
+  const selected =
+    tutors.find((t) => String(t.id) === tutorId || t.name === tutorId) ?? null
   function setSelected(tutor: Tutor | null) {
     if (
       !tutor &&
@@ -67,7 +73,7 @@ function TutorPage() {
     }
 
     navigate({
-      pathname: tutor ? `/tutors/${encodeURIComponent(tutor.name)}` : '/tutors',
+      pathname: tutor ? `/tutors/${tutor.id}` : '/tutors',
       search: searchParams.toString(),
     })
   }
@@ -88,18 +94,12 @@ function TutorPage() {
     const timer = setTimeout(() => setBookmarkNotice(null), 5000)
     return () => clearTimeout(timer)
   }, [bookmarkNotice])
-  const visible = tutors.filter(
-    (t) =>
-      `${t.name} ${t.major} ${t.university}`
-        .toLowerCase()
-        .includes(query.toLowerCase()) &&
-      (!filter || t.category === filter),
-  )
-  function bookmark(name: string) {
-    const exists = saved.includes(name)
-    toggleBookmark(name)
+  const visible = tutors.filter((t) => !filter || t.category === filter)
+  async function bookmark(tutor: Tutor) {
+    const exists = isSaved(tutor)
+    if (!(await toggleBookmark(tutor))) return
     setToast('')
-    setBookmarkNotice(exists ? null : { name })
+    setBookmarkNotice(exists ? null : { name: tutor.name })
     if (exists) setToast('찜한 튜터에서 삭제했어요.')
   }
   if (requestedTab === '전체') {
@@ -182,10 +182,11 @@ function TutorPage() {
             <div className="tutor-grid" ref={tutorGridRef}>
               {visible.map((t) => (
                 <TutorCard
-                  key={t.name}
+                  key={t.id}
                   tutor={t}
-                  bookmarked={saved.includes(t.name)}
-                  onBookmark={() => bookmark(t.name)}
+                  bookmarked={isSaved(t)}
+                  bookmarkDisabled={isPending(t)}
+                  onBookmark={() => bookmark(t)}
                   onDetails={() => setSelected(t)}
                 />
               ))}
@@ -243,7 +244,7 @@ function TutorPage() {
         >
           {selected ? (
             <>
-              <img src={`/tutor-${selected.image}.png`} alt="" />
+              <TutorImage tutor={selected} />
               <h2 id="dialog-title">{selected.name}</h2>
               <p className="modal-school">
                 {selected.major} · {selected.university}
@@ -254,11 +255,12 @@ function TutorPage() {
               </p>
               <button
                 className="primary"
-                onClick={() => bookmark(selected.name)}
+                disabled={isPending(selected)}
+                onClick={() => {
+                  void bookmark(selected)
+                }}
               >
-                {saved.includes(selected.name)
-                  ? '북마크 해제'
-                  : '튜터 북마크하기'}
+                {isSaved(selected) ? '북마크 해제' : '튜터 북마크하기'}
               </button>
             </>
           ) : (
