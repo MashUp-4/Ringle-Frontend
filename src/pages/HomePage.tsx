@@ -14,7 +14,7 @@ import {
 } from '../features/home/data/home'
 import type { HomeProfile, LearningGoal } from '../features/home/types/home'
 import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
-import { useTutors } from '../features/tutors/hooks/useTutors'
+import { useDemoTutors } from '../features/tutors/hooks/useDemoTutors'
 import type { Tutor } from '../features/tutors/types/tutor'
 import './HomePage.css'
 import {
@@ -74,7 +74,7 @@ export default function HomePage() {
   const [challengeVisible, setChallengeVisible] = useState(true)
   const [curriculum, setCurriculum] = useState(false)
 
-  const { tutors, loading, error, reload } = useTutors()
+  const { tutors, loading, error, reload } = useDemoTutors()
   const { saved, toggleBookmark, storageError } = useBookmarks()
 
   const selectedGoal = learningGoals.find((item) => item.id === goal)!

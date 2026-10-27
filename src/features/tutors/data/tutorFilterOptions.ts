@@ -42,12 +42,6 @@ export const timeOptions = [
     endMinute: 900,
   },
   {
-    value: '900-1020',
-    label: '오후 15:00 - 17:00',
-    startMinute: 900,
-    endMinute: 1020,
-  },
-  {
     value: '1140-1260',
     label: '저녁 19:00 - 21:00',
     startMinute: 1140,

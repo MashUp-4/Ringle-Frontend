@@ -9,6 +9,9 @@ export interface TutorAvailability {
 }
 
 export interface Tutor {
+  id?: number
+  imageUrl?: string | null
+  isMyTutor?: boolean
   name: string
   major: string
   university: string
@@ -20,16 +23,16 @@ export interface Tutor {
   subjects: string[]
   intro: string
 
-  availability: TutorAvailability[]
-  strengths: string[]
-  experiences: string[]
-  majorCategory: string
+  availability?: TutorAvailability[]
+  strengths?: string[]
+  experiences?: string[]
+  majorCategory?: string
   interests: string[]
-  gender: TutorGender
-  accent: string
-  hasTaught: boolean
-  isRecommended: boolean
-  hasPointBack: boolean
+  gender?: TutorGender
+  accent?: string
+  hasTaught?: boolean
+  isRecommended?: boolean
+  hasPointBack?: boolean
 }
 
 export type TutorTab = '추천' | '전체'

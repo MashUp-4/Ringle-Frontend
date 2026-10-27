@@ -35,3 +35,22 @@ export async function apiGet<T>(path: string): Promise<T> {
   }
   return body.data
 }
+
+export async function apiWrite(
+  path: string,
+  method: 'POST' | 'DELETE',
+): Promise<void> {
+  const response = await fetch(`${baseUrl}${path}`, {
+    method,
+    headers: { Accept: 'application/json' },
+    signal: AbortSignal.timeout(30000),
+  })
+  if (!response.ok)
+    throw new ApiError('변경 요청에 실패했어요.', response.status)
+  const body: ApiResponse<null> = await response.json()
+  if (!body.success)
+    throw new ApiError(
+      body.message || '변경을 저장하지 못했어요.',
+      response.status,
+    )
+}

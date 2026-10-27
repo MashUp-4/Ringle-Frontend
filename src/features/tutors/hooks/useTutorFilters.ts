@@ -9,7 +9,6 @@ import {
   strengthOptions,
   timeOptions,
 } from '../data/tutorFilterOptions'
-import type { Tutor } from '../types/tutor'
 
 interface FilterOption {
   value: string
@@ -55,12 +54,6 @@ function readValues(params: URLSearchParams, key: TutorFilterKey): string[] {
   const allowed = new Set(filterOptions[key].map((option) => option.value))
 
   return [...new Set(params.getAll(key))].filter((value) => allowed.has(value))
-}
-
-function matchesAny(selected: string[], actual: string[]): boolean {
-  return (
-    selected.length === 0 || selected.some((value) => actual.includes(value))
-  )
 }
 
 export function useTutorFilters() {
@@ -148,63 +141,6 @@ export function useTutorFilters() {
     })
   }
 
-  function getVisibleTutors(tutors: Tutor[], saved: string[]): Tutor[] {
-    const normalizedQuery = query.trim().toLowerCase()
-
-    const selectedTimes = timeOptions.filter((option) =>
-      filters.times.includes(option.value),
-    )
-
-    return tutors.filter((tutor) => {
-      if (savedOnly && !saved.includes(tutor.name)) return false
-
-      const searchableText =
-        `${tutor.name} ${tutor.major} ${tutor.university}`.toLowerCase()
-
-      if (!searchableText.includes(normalizedQuery)) return false
-
-      if (filters.types.includes('taught') && !tutor.hasTaught) return false
-      if (filters.types.includes('recommended') && !tutor.isRecommended) {
-        return false
-      }
-      if (filters.types.includes('pointback') && !tutor.hasPointBack) {
-        return false
-      }
-
-      if (!matchesAny(filters.strengths, tutor.strengths)) return false
-      if (!matchesAny(filters.experiences, tutor.experiences)) return false
-      if (!matchesAny(filters.majors, [tutor.majorCategory])) return false
-      if (!matchesAny(filters.interests, tutor.interests)) return false
-      if (!matchesAny(filters.genders, [tutor.gender])) return false
-      if (!matchesAny(filters.accents, [tutor.accent])) return false
-
-      const hasAvailabilityFilter =
-        filters.days.length > 0 || selectedTimes.length > 0
-
-      if (
-        hasAvailabilityFilter &&
-        !tutor.availability.some((availability) => {
-          const matchesDay =
-            filters.days.length === 0 || filters.days.includes(availability.day)
-
-          const matchesTime =
-            selectedTimes.length === 0 ||
-            selectedTimes.some(
-              (time) =>
-                availability.startMinute < time.endMinute &&
-                availability.endMinute > time.startMinute,
-            )
-
-          return matchesDay && matchesTime
-        })
-      ) {
-        return false
-      }
-
-      return true
-    })
-  }
-
   const chips = filterKeys.flatMap((key) =>
     filters[key].map((value) => ({
       id: `${key}:${value}`,
@@ -229,6 +165,5 @@ export function useTutorFilters() {
     toggleFilterValue,
     removeFilterValue,
     resetFilters,
-    getVisibleTutors,
   }
 }

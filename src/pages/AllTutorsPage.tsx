@@ -6,7 +6,8 @@ import { AppShell } from '../components/layout/AppShell'
 import { TutorPageHeader } from '../components/layout/TutorPageHeader'
 import { TutorCard } from '../features/tutors/components/TutorCard'
 import { TutorFilterPanel } from '../features/tutors/components/TutorFilterPanel'
-import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
+import { useServerBookmarks } from '../features/tutors/hooks/useServerBookmarks'
+import { buildTutorQuery } from '../features/tutors/api/tutorQuery'
 import { useTutorFilters } from '../features/tutors/hooks/useTutorFilters'
 import { useTutors } from '../features/tutors/hooks/useTutors'
 import './AllTutorsPage.css'
@@ -15,9 +16,6 @@ export default function AllTutorsPage() {
   const [toast, setToast] = useState('')
   const navigate = useNavigate()
   const location = useLocation()
-
-  const { tutors, loading, error, reload } = useTutors()
-  const { saved, toggleBookmark, storageError } = useBookmarks()
 
   const {
     query,
@@ -30,10 +28,16 @@ export default function AllTutorsPage() {
     toggleFilterValue,
     removeFilterValue,
     resetFilters,
-    getVisibleTutors,
   } = useTutorFilters()
 
-  const visibleTutors = getVisibleTutors(tutors, saved)
+  const {
+    tutors: visibleTutors,
+    loading,
+    error,
+    reload,
+  } = useTutors(buildTutorQuery(query, savedOnly, filters))
+  const { isSaved, isPending, toggleBookmark, storageError } =
+    useServerBookmarks(visibleTutors)
   const hasQuery = query.trim().length > 0
 
   useEffect(() => {
@@ -178,19 +182,21 @@ export default function AllTutorsPage() {
                   <div className="tutor-grid favorite-tutor-grid">
                     {visibleTutors.map((tutor) => (
                       <TutorCard
-                        key={tutor.name}
+                        key={tutor.id}
                         tutor={tutor}
-                        bookmarked={saved.includes(tutor.name)}
-                        onBookmark={() => toggleBookmark(tutor.name)}
+                        bookmarked={isSaved(tutor)}
+                        bookmarkDisabled={isPending(tutor)}
+                        onBookmark={() => {
+                          void toggleBookmark(tutor).then((success) => {
+                            if (success && savedOnly) reload()
+                          })
+                        }}
                         onDetails={() =>
-                          navigate(
-                            `/tutors/${encodeURIComponent(tutor.name)}`,
-                            {
-                              state: {
-                                returnTo: `${location.pathname}${location.search}`,
-                              },
+                          navigate(`/tutors/${tutor.id}`, {
+                            state: {
+                              returnTo: `${location.pathname}${location.search}`,
                             },
-                          )
+                          })
                         }
                       />
                     ))}

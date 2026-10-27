@@ -1,15 +1,18 @@
 import * as figmaAssets from '../../../components/ui/iconAssets'
 import type { Tutor } from '../types/tutor'
+import { TutorImage } from './TutorImage'
 import { TutorGlass } from './TutorGlass'
 interface TutorCardProps {
   tutor: Tutor
   bookmarked: boolean
+  bookmarkDisabled?: boolean
   onBookmark: () => void
   onDetails: () => void
 }
 export function TutorCard({
   tutor,
   bookmarked,
+  bookmarkDisabled,
   onBookmark,
   onDetails,
 }: TutorCardProps) {
@@ -22,15 +25,13 @@ export function TutorCard({
             onClick={onDetails}
             aria-label={`${tutor.name} 튜터 자세히 보기`}
           >
-            <img
-              src={`/tutor-${tutor.image}.png`}
-              alt={`${tutor.name} 튜터 캐릭터`}
-            />
+            <TutorImage tutor={tutor} alt={`${tutor.name} 튜터 사진`} />
           </button>
           <button
             className={`bookmark ${bookmarked ? 'saved' : ''}`}
             aria-label={`${tutor.name} 북마크`}
             aria-pressed={bookmarked}
+            disabled={bookmarkDisabled}
             onClick={onBookmark}
           >
             <img
