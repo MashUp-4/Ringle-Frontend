@@ -714,20 +714,30 @@
   width: 808px;
   max-width: calc(100% + 2px);
 }
-.home-lesson-next {
+.home-lesson-next,
+.home-lesson-previous {
   position: absolute;
   top: 172px;
-  right: -20px;
   width: 40px;
   height: 40px;
   padding: 0;
 }
-.home-lesson-next img {
+.home-lesson-next {
+  right: -20px;
+}
+.home-lesson-previous {
+  left: -20px;
+}
+.home-lesson-next img,
+.home-lesson-previous img {
   position: absolute;
   top: -8px;
   left: -8px;
   display: block;
   max-width: none;
+}
+.home-lesson-previous img {
+  transform: scaleX(-1);
 }
 .home-lesson-track {
   display: flex;

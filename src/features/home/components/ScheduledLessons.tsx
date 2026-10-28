@@ -20,12 +20,16 @@ export function ScheduledLessons({
   const track = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
   const multiple = lessons.length > 1
+  const lastIndex = Math.max(0, lessons.length - 1)
+  const currentIndex = Math.min(Math.max(active, 0), lastIndex)
 
   function move(index: number) {
     const element = track.current
-    if (!element) return
+    if (!element || lessons.length === 0) return
+    const targetIndex = Math.min(Math.max(index, 0), lastIndex)
+    if (multiple) element.focus({ preventScroll: true })
     element.scrollTo({
-      left: index * element.clientWidth,
+      left: targetIndex * element.clientWidth,
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
         ? 'instant'
         : 'smooth',
@@ -49,9 +53,9 @@ export function ScheduledLessons({
             if (event.target !== event.currentTarget) return
             const next =
               event.key === 'ArrowRight'
-                ? Math.min(active + 1, lessons.length - 1)
+                ? currentIndex + 1
                 : event.key === 'ArrowLeft'
-                  ? Math.max(active - 1, 0)
+                  ? currentIndex - 1
                   : event.key === 'Home'
                     ? 0
                     : event.key === 'End'
@@ -75,7 +79,7 @@ export function ScheduledLessons({
                 className="home-lesson-slide"
                 key={lesson.id}
                 aria-label={`${index + 1} / ${lessons.length}: ${lesson.dateLabel}`}
-                inert={multiple && active !== index}
+                inert={multiple && currentIndex !== index}
               >
                 <h2>{lesson.dateLabel}</h2>
                 <div className="home-lesson-summary">
@@ -142,14 +146,26 @@ export function ScheduledLessons({
             )
           })}
         </div>
-        <button
-          type="button"
-          className="home-lesson-next"
-          aria-label="다음 수업"
-          onClick={() => move(active + 1)}
-        >
-          <img src={nextButtonRight} alt="" />
-        </button>
+        {currentIndex > 0 && (
+          <button
+            type="button"
+            className="home-lesson-previous"
+            aria-label="이전 수업"
+            onClick={() => move(currentIndex - 1)}
+          >
+            <img src={nextButtonRight} alt="" />
+          </button>
+        )}
+        {(lessons.length === 1 || currentIndex < lastIndex) && (
+          <button
+            type="button"
+            className="home-lesson-next"
+            aria-label="다음 수업"
+            onClick={() => move(currentIndex + 1)}
+          >
+            <img src={nextButtonRight} alt="" />
+          </button>
+        )}
       </div>
     </section>
   )
