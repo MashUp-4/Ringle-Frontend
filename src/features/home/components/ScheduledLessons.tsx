@@ -2,17 +2,18 @@ import { useRef, useState } from 'react'
 import type { ScheduledLesson } from '../types/home'
 import type { Tutor } from '../../tutors/types/tutor'
 import { nextButtonRight } from '../../../components/ui/iconAssets'
+import { TutorImage } from '../../tutors/components/TutorImage'
 
 interface ScheduledLessonsProps {
   lessons: ScheduledLesson[]
-  tutors: Tutor[]
+  totalCount?: number
   onDetails: (tutor: Tutor) => void
   onInformation: (title: string, description: string) => void
 }
 
 export function ScheduledLessons({
   lessons,
-  tutors,
+  totalCount = lessons.length,
   onDetails,
   onInformation,
 }: ScheduledLessonsProps) {
@@ -34,7 +35,7 @@ export function ScheduledLessons({
   return (
     <section className="home-scheduled" aria-labelledby="scheduled-title">
       <div className="home-scheduled-heading">
-        <h1 id="scheduled-title">예정된 수업 {lessons.length}</h1>
+        <h1 id="scheduled-title">예정된 수업 {totalCount}</h1>
       </div>
       <div className="home-lesson-row">
         <div
@@ -68,7 +69,7 @@ export function ScheduledLessons({
           }}
         >
           {lessons.map((lesson, index) => {
-            const tutor = tutors.find((item) => item.name === lesson.tutorName)
+            const tutor = lesson.tutor
             return (
               <article
                 className="home-lesson-slide"
@@ -84,7 +85,7 @@ export function ScheduledLessons({
                       aria-label={`${tutor.name} 튜터 자세히 보기`}
                       onClick={() => onDetails(tutor)}
                     >
-                      <img src={`/tutor-${tutor.image}.png`} alt="" />
+                      <TutorImage tutor={tutor} />
                     </button>
                   )}
                   <div className="home-lesson-info">
