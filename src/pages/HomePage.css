@@ -828,6 +828,9 @@
   min-width: 126px;
   padding: var(--spacing-unit-20) var(--spacing-unit-32);
 }
+.home-lesson-actions button:focus-visible {
+  outline-offset: -2px;
+}
 .home-lesson-change {
   @apply text-label-18;
   text-decoration: underline;

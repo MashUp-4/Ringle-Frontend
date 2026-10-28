@@ -23,11 +23,11 @@ export function ScheduledLessons({
   const lastIndex = Math.max(0, lessons.length - 1)
   const currentIndex = Math.min(Math.max(active, 0), lastIndex)
 
-  function move(index: number) {
+  function move(index: number, focusTrack = false) {
     const element = track.current
     if (!element || lessons.length === 0) return
     const targetIndex = Math.min(Math.max(index, 0), lastIndex)
-    if (multiple) element.focus({ preventScroll: true })
+    if (multiple && focusTrack) element.focus({ preventScroll: true })
     element.scrollTo({
       left: targetIndex * element.clientWidth,
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -151,7 +151,7 @@ export function ScheduledLessons({
             type="button"
             className="home-lesson-previous"
             aria-label="이전 수업"
-            onClick={() => move(currentIndex - 1)}
+            onClick={(event) => move(currentIndex - 1, event.detail === 0)}
           >
             <img src={nextButtonRight} alt="" />
           </button>
@@ -161,7 +161,7 @@ export function ScheduledLessons({
             type="button"
             className="home-lesson-next"
             aria-label="다음 수업"
-            onClick={() => move(currentIndex + 1)}
+            onClick={(event) => move(currentIndex + 1, event.detail === 0)}
           >
             <img src={nextButtonRight} alt="" />
           </button>
