@@ -11,6 +11,14 @@ interface ScheduledLessonsProps {
   onInformation: (title: string, description: string) => void
 }
 
+function getSlideOffsets(element: HTMLDivElement) {
+  const slides = Array.from(element.children).filter(
+    (child): child is HTMLElement => child instanceof HTMLElement,
+  )
+  const start = slides[0]?.offsetLeft ?? 0
+  return slides.map((slide) => slide.offsetLeft - start)
+}
+
 export function ScheduledLessons({
   lessons,
   totalCount = lessons.length,
@@ -29,7 +37,7 @@ export function ScheduledLessons({
     const targetIndex = Math.min(Math.max(index, 0), lastIndex)
     if (multiple && focusTrack) element.focus({ preventScroll: true })
     element.scrollTo({
-      left: targetIndex * element.clientWidth,
+      left: getSlideOffsets(element)[targetIndex] ?? 0,
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
         ? 'instant'
         : 'smooth',
@@ -44,6 +52,7 @@ export function ScheduledLessons({
       <div className="home-lesson-row">
         <div
           className="home-lesson-track"
+          data-multiple={multiple || undefined}
           ref={track}
           role={multiple ? 'region' : undefined}
           aria-label={multiple ? '예약 수업 목록' : undefined}
@@ -68,8 +77,17 @@ export function ScheduledLessons({
           }}
           onScroll={(event) => {
             const element = event.currentTarget
-            if (element.clientWidth)
-              setActive(Math.round(element.scrollLeft / element.clientWidth))
+            const offsets = getSlideOffsets(element)
+            let closestIndex = 0
+            for (let index = 1; index < offsets.length; index += 1) {
+              if (
+                Math.abs(offsets[index] - element.scrollLeft) <
+                Math.abs(offsets[closestIndex] - element.scrollLeft)
+              ) {
+                closestIndex = index
+              }
+            }
+            setActive(closestIndex)
           }}
         >
           {lessons.map((lesson, index) => {
