@@ -741,10 +741,16 @@
 }
 .home-lesson-track {
   display: flex;
+  gap: var(--spacing-unit-16);
   overflow-x: auto;
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   overscroll-behavior-x: contain;
+}
+/* Allow the last snap point to align without fractional-zoom end clamping. */
+.home-lesson-track[data-multiple]::after {
+  content: '';
+  flex: 0 0 1px;
 }
 .home-lesson-track::-webkit-scrollbar {
   display: none;
