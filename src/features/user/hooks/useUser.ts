@@ -1,10 +1,32 @@
 import { useEffect, useState } from 'react'
-import { getProfileImage, getUserSummary } from '../api/user'
+import { getClassCounts, getProfileImage, getUserSummary } from '../api/user'
 import type { UserSummary } from '../api/user'
 
 // Share concurrent requests across StrictMode and the common navigation.
 let summaryRequest: Promise<UserSummary> | null = null
 let imageRequest: ReturnType<typeof getProfileImage> | null = null
+let classCountRequest: ReturnType<typeof getClassCounts> | null = null
+
+export function useClassCount() {
+  const [classCount, setClassCount] = useState<number | null>(null)
+  useEffect(() => {
+    let active = true
+    classCountRequest ??= getClassCounts().finally(() => {
+      classCountRequest = null
+    })
+    classCountRequest
+      .then((value) => {
+        if (active) setClassCount(value.classCount)
+      })
+      .catch(() => {
+        // Leave the count unknown when the navigation's optional request fails.
+      })
+    return () => {
+      active = false
+    }
+  }, [])
+  return classCount
+}
 
 export function useUserSummary() {
   const [summary, setSummary] = useState<UserSummary | null>(null)

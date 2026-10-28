@@ -2,29 +2,34 @@ import { useRef, useState } from 'react'
 import type { ScheduledLesson } from '../types/home'
 import type { Tutor } from '../../tutors/types/tutor'
 import { nextButtonRight } from '../../../components/ui/iconAssets'
+import { TutorImage } from '../../tutors/components/TutorImage'
 
 interface ScheduledLessonsProps {
   lessons: ScheduledLesson[]
-  tutors: Tutor[]
+  totalCount?: number
   onDetails: (tutor: Tutor) => void
   onInformation: (title: string, description: string) => void
 }
 
 export function ScheduledLessons({
   lessons,
-  tutors,
+  totalCount = lessons.length,
   onDetails,
   onInformation,
 }: ScheduledLessonsProps) {
   const track = useRef<HTMLDivElement>(null)
   const [active, setActive] = useState(0)
   const multiple = lessons.length > 1
+  const lastIndex = Math.max(0, lessons.length - 1)
+  const currentIndex = Math.min(Math.max(active, 0), lastIndex)
 
   function move(index: number) {
     const element = track.current
-    if (!element) return
+    if (!element || lessons.length === 0) return
+    const targetIndex = Math.min(Math.max(index, 0), lastIndex)
+    if (multiple) element.focus({ preventScroll: true })
     element.scrollTo({
-      left: index * element.clientWidth,
+      left: targetIndex * element.clientWidth,
       behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
         ? 'instant'
         : 'smooth',
@@ -34,7 +39,7 @@ export function ScheduledLessons({
   return (
     <section className="home-scheduled" aria-labelledby="scheduled-title">
       <div className="home-scheduled-heading">
-        <h1 id="scheduled-title">예정된 수업 {lessons.length}</h1>
+        <h1 id="scheduled-title">예정된 수업 {totalCount}</h1>
       </div>
       <div className="home-lesson-row">
         <div
@@ -48,9 +53,9 @@ export function ScheduledLessons({
             if (event.target !== event.currentTarget) return
             const next =
               event.key === 'ArrowRight'
-                ? Math.min(active + 1, lessons.length - 1)
+                ? currentIndex + 1
                 : event.key === 'ArrowLeft'
-                  ? Math.max(active - 1, 0)
+                  ? currentIndex - 1
                   : event.key === 'Home'
                     ? 0
                     : event.key === 'End'
@@ -68,13 +73,13 @@ export function ScheduledLessons({
           }}
         >
           {lessons.map((lesson, index) => {
-            const tutor = tutors.find((item) => item.name === lesson.tutorName)
+            const tutor = lesson.tutor
             return (
               <article
                 className="home-lesson-slide"
                 key={lesson.id}
                 aria-label={`${index + 1} / ${lessons.length}: ${lesson.dateLabel}`}
-                inert={multiple && active !== index}
+                inert={multiple && currentIndex !== index}
               >
                 <h2>{lesson.dateLabel}</h2>
                 <div className="home-lesson-summary">
@@ -84,7 +89,7 @@ export function ScheduledLessons({
                       aria-label={`${tutor.name} 튜터 자세히 보기`}
                       onClick={() => onDetails(tutor)}
                     >
-                      <img src={`/tutor-${tutor.image}.png`} alt="" />
+                      <TutorImage tutor={tutor} />
                     </button>
                   )}
                   <div className="home-lesson-info">
@@ -141,14 +146,26 @@ export function ScheduledLessons({
             )
           })}
         </div>
-        <button
-          type="button"
-          className="home-lesson-next"
-          aria-label="다음 수업"
-          onClick={() => move(active + 1)}
-        >
-          <img src={nextButtonRight} alt="" />
-        </button>
+        {currentIndex > 0 && (
+          <button
+            type="button"
+            className="home-lesson-previous"
+            aria-label="이전 수업"
+            onClick={() => move(currentIndex - 1)}
+          >
+            <img src={nextButtonRight} alt="" />
+          </button>
+        )}
+        {(lessons.length === 1 || currentIndex < lastIndex) && (
+          <button
+            type="button"
+            className="home-lesson-next"
+            aria-label="다음 수업"
+            onClick={() => move(currentIndex + 1)}
+          >
+            <img src={nextButtonRight} alt="" />
+          </button>
+        )}
       </div>
     </section>
   )

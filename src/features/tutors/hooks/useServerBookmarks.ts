@@ -1,4 +1,4 @@
-import { useEffect, useSyncExternalStore } from 'react'
+import { useSyncExternalStore } from 'react'
 import { apiWrite } from '../../../lib/api'
 import type { Tutor } from '../types/tutor'
 
@@ -18,22 +18,10 @@ function subscribe(listener: () => void) {
   }
 }
 
-export function useServerBookmarks(tutors: Tutor[]) {
-  useEffect(() => {
-    let changed = false
-    const values = new Map(state.values)
-    for (const tutor of tutors) {
-      if (tutor.id === undefined || state.pending.has(tutor.id)) continue
-      if (values.get(tutor.id) !== tutor.isMyTutor) {
-        values.set(tutor.id, tutor.isMyTutor ?? false)
-        changed = true
-      }
-    }
-    if (changed) {
-      state = { ...state, values }
-      emit()
-    }
-  }, [tutors])
+export function useServerBookmarks(_tutors: Tutor[]) {
+  void _tutors
+  // Only successful writes create overrides. A late list/home response must not
+  // replace a newer write, and DTOs without a bookmark field must not clear it.
   const snapshot = useSyncExternalStore(subscribe, () => state)
   function isSaved(tutor: Tutor) {
     return tutor.id !== undefined

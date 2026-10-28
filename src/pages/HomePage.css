@@ -714,20 +714,30 @@
   width: 808px;
   max-width: calc(100% + 2px);
 }
-.home-lesson-next {
+.home-lesson-next,
+.home-lesson-previous {
   position: absolute;
   top: 172px;
-  right: -20px;
   width: 40px;
   height: 40px;
   padding: 0;
 }
-.home-lesson-next img {
+.home-lesson-next {
+  right: -20px;
+}
+.home-lesson-previous {
+  left: -20px;
+}
+.home-lesson-next img,
+.home-lesson-previous img {
   position: absolute;
   top: -8px;
   left: -8px;
   display: block;
   max-width: none;
+}
+.home-lesson-previous img {
+  transform: scaleX(-1);
 }
 .home-lesson-track {
   display: flex;
@@ -850,6 +860,7 @@
 
 .home-tutor-recommendation-tags {
   display: flex;
+  flex-wrap: wrap;
   gap: var(--spacing-unit-8);
   align-items: center;
 }
@@ -886,10 +897,10 @@
 .home-tutor-earliest-label {
   @apply text-label-16-medium;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: var(--spacing-unit-8);
   color: var(--color-text-muted);
-  white-space: nowrap;
 }
 
 .home-tutor-earliest-label > strong {
@@ -904,14 +915,16 @@
   position: relative;
   width: 806px;
   max-width: 100%;
-  height: 522px;
+  min-height: 522px;
+  height: auto;
 }
 
 .home-recommendations .home-tutor-grid {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
-  height: 522px;
+  min-height: 522px;
+  height: auto;
   gap: var(--spacing-unit-16);
   overflow: hidden;
 }
@@ -919,7 +932,8 @@
 .home-recommendations .home-tutor-card {
   flex: 0 0 286px;
   width: 286px;
-  height: 522px;
+  min-height: 522px;
+  height: auto;
   padding: var(--spacing-unit-20) var(--spacing-unit-16);
   border: 1px solid var(--color-ringle-gray-150);
   border-radius: var(--radius-large);

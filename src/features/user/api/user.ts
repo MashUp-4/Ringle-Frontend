@@ -13,3 +13,6 @@ export interface UserSummary {
 export const getUserSummary = () => apiGet<UserSummary>('/users/me/summary')
 export const getProfileImage = () =>
   apiGet<{ imageUrl: string | null }>('/users/me/profile-image')
+
+export const getClassCounts = () =>
+  apiGet<{ classCount: number }>('/users/me/class-counts')

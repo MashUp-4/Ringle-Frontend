@@ -1,3 +1,5 @@
+import type { Tutor } from '../../tutors/types/tutor'
+
 export type LearningGoal = 'career' | 'business' | 'daily' | 'study'
 export interface HomeProfile {
   name: string
@@ -15,6 +17,7 @@ export interface ScheduledLesson {
   goal: string
   durationMinutes: number
   tags: string[]
+  tutor?: Tutor
 }
 
 export interface HomeTutorRecommendation {

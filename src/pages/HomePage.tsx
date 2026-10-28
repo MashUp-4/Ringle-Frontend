@@ -1,20 +1,23 @@
-import { useEffect, useRef, useState } from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { useEffect, useMemo, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import { AppShell } from '../components/layout/AppShell'
 import { Icon } from '../components/ui/Icon'
 import { Modal } from '../components/ui/Modal'
 import { ScheduledLessons } from '../features/home/components/ScheduledLessons'
-import { demoLessons } from '../features/home/data/demoLessons'
 import { HomeTutorCard } from '../features/home/components/HomeTutorCard'
 import { useUserSummary } from '../features/user/hooks/useUser'
+import { learningGoals } from '../features/home/data/home'
+import type { LearningGoal } from '../features/home/types/home'
+import { useServerBookmarks } from '../features/tutors/hooks/useServerBookmarks'
+import { useTutors } from '../features/tutors/hooks/useTutors'
+import { TutorImage } from '../features/tutors/components/TutorImage'
+import { useHome } from '../features/home/hooks/useHome'
 import {
-  demoHomeProfile,
-  homeTutorRecommendations,
-  learningGoals,
-} from '../features/home/data/home'
-import type { HomeProfile, LearningGoal } from '../features/home/types/home'
-import { useBookmarks } from '../features/tutors/hooks/useBookmarks'
-import { useDemoTutors } from '../features/tutors/hooks/useDemoTutors'
+  getLearningGoal,
+  homeCategories,
+  toHomeRecommendations,
+  toScheduledLessons,
+} from '../features/home/api/homeAdapter'
 import type { Tutor } from '../features/tutors/types/tutor'
 import './HomePage.css'
 import {
@@ -37,17 +40,6 @@ const shortcuts = [
 ]
 
 export default function HomePage() {
-  const [params] = useSearchParams()
-  const lessonCount =
-    params.get('lessons') === '0'
-      ? 0
-      : params.get('lessons') === '2'
-        ? 2
-        : params.get('lessons') === '3'
-          ? 3
-          : 1
-  const scheduledLessons = demoLessons.slice(0, lessonCount)
-
   const {
     summary,
     loading: userLoading,
@@ -58,14 +50,36 @@ export default function HomePage() {
     fortyMinutes: summary?.credit40MinCount ?? 0,
     twentyMinutes: summary?.credit20MinCount ?? 0,
   }
-  const hasPass = balance.fortyMinutes + balance.twentyMinutes > 0
-  const profile: HomeProfile = {
+  const profile = {
     name: summary?.name ?? '',
     timezone: summary?.timeZone ?? '',
-    signupGoal: demoHomeProfile.signupGoal,
   }
   const [selectedGoalId, setGoal] = useState<LearningGoal | null>(null)
-  const goal = selectedGoalId ?? profile.signupGoal
+  const { home, recommendedTutors, loading, error, reload } = useHome(
+    selectedGoalId ? homeCategories[selectedGoalId] : undefined,
+  )
+  const recommendationData =
+    home?.type === 'RECOMMENDED_TUTORS' ? home.recommendedTutors : null
+  const signupGoal = recommendationData
+    ? getLearningGoal(recommendationData.signupCategory)
+    : null
+  const goal =
+    selectedGoalId ??
+    (recommendationData
+      ? getLearningGoal(recommendationData.selectedCategory)
+      : 'career')
+  const hasPass = recommendationData?.hasLessonPass ?? false
+  const recommended = useMemo(
+    () => toHomeRecommendations(recommendedTutors),
+    [recommendedTutors],
+  )
+  const scheduledLessons = useMemo(
+    () =>
+      home?.type === 'UPCOMING_CLASS'
+        ? toScheduledLessons(home.upcomingClasses.classes)
+        : [],
+    [home],
+  )
   const [dialog, setDialog] = useState<HomeDialog>(null)
   const [toast, setToast] = useState('')
   const [bookmarkNotice, setBookmarkNotice] = useState<{ name: string } | null>(
@@ -74,13 +88,35 @@ export default function HomePage() {
   const [challengeVisible, setChallengeVisible] = useState(true)
   const [curriculum, setCurriculum] = useState(false)
 
-  const { tutors, loading, error, reload } = useDemoTutors()
-  const { saved, toggleBookmark, storageError } = useBookmarks()
+  const {
+    tutors: listedTutors,
+    loading: tutorsLoading,
+    error: tutorsError,
+  } = useTutors()
+  const { isSaved, isPending, toggleBookmark, storageError } =
+    useServerBookmarks(listedTutors)
+  const dialogTutor = dialog?.type === 'tutor' ? dialog.tutor : null
+  const listedTutor = listedTutors.find((tutor) => tutor.id === dialogTutor?.id)
+  const canSupplementTutor = home?.type === 'UPCOMING_CLASS'
+  const selectedTutor = dialogTutor
+    ? {
+        ...dialogTutor,
+        isMyTutor: canSupplementTutor
+          ? (listedTutor?.isMyTutor ?? dialogTutor.isMyTutor)
+          : dialogTutor.isMyTutor,
+        rating: canSupplementTutor
+          ? (listedTutor?.rating ?? dialogTutor.rating)
+          : dialogTutor.rating,
+        reviews: canSupplementTutor
+          ? (listedTutor?.reviews ?? dialogTutor.reviews)
+          : dialogTutor.reviews,
+        intro:
+          dialogTutor.intro ||
+          (canSupplementTutor ? (listedTutor?.intro ?? '') : ''),
+      }
+    : null
 
   const selectedGoal = learningGoals.find((item) => item.id === goal)!
-  const recommended = selectedGoal.tutorNames.flatMap((name) =>
-    tutors.filter((tutor) => tutor.name === name),
-  )
 
   useEffect(() => {
     document.title = '홈 | Ringle'
@@ -111,16 +147,12 @@ export default function HomePage() {
     )
   }
 
-  function bookmark(name: string) {
-    const exists = saved.includes(name)
-
-    toggleBookmark(name)
+  async function bookmark(tutor: Tutor) {
+    const exists = isSaved(tutor)
+    if (!(await toggleBookmark(tutor))) return
     setToast('')
-    setBookmarkNotice(exists ? null : { name })
-
-    if (exists) {
-      setToast('찜한 튜터에서 삭제했어요.')
-    }
+    setBookmarkNotice(exists ? null : { name: tutor.name })
+    if (exists) setToast('찜한 튜터에서 삭제했어요.')
   }
 
   const homeTutorGridRef = useRef<HTMLDivElement>(null)
@@ -144,6 +176,18 @@ export default function HomePage() {
       <main className="home-page">
         <div className="home-columns">
           <div className="home-primary">
+            {loading && !home && (
+              <p role="status" className="py-12 text-center">
+                홈 정보를 불러오고 있어요.
+              </p>
+            )}
+            {error && (
+              <div role="alert" className="py-12 text-center">
+                <p>{error}</p>
+                <button onClick={reload}>다시 시도</button>
+              </div>
+            )}
+
             <button className="home-offer" onClick={purchase}>
               <Icon name="home-coupon" />
               <span className="home-offer-label">
@@ -164,17 +208,18 @@ export default function HomePage() {
               />
             </button>
 
-            {scheduledLessons.length > 0 ? (
+            {home?.type === 'UPCOMING_CLASS' ? (
               <ScheduledLessons
                 lessons={scheduledLessons}
-                tutors={tutors}
+                totalCount={home.upcomingClasses.totalCount}
                 onDetails={(tutor) => setDialog({ type: 'tutor', tutor })}
                 onInformation={information}
               />
-            ) : (
+            ) : home?.type === 'RECOMMENDED_TUTORS' ? (
               <section
                 className="home-recommendations"
                 aria-labelledby="home-recommendation-title"
+                aria-busy={loading}
               >
                 <div className="home-section-heading">
                   <h1 id="home-recommendation-title">
@@ -227,9 +272,7 @@ export default function HomePage() {
                       }}
                     >
                       {item.label}
-                      {item.id === profile.signupGoal && (
-                        <small>가입 시 선택</small>
-                      )}
+                      {item.id === signupGoal && <small>가입 시 선택</small>}
                     </button>
                   ))}
                 </div>
@@ -240,7 +283,11 @@ export default function HomePage() {
                   aria-labelledby={`goal-${goal}`}
                 >
                   <p className="home-goal-description">
-                    {selectedGoal.description}
+                    {recommendationData?.interestField
+                      ? `${recommendationData.interestField} 관심 분야에 맞는 튜터예요.`
+                      : goal === 'career' && signupGoal !== 'career'
+                        ? '커리어/인터뷰 목적에 맞는 튜터예요.'
+                        : selectedGoal.description}
                   </p>
 
                   {storageError && (
@@ -258,38 +305,34 @@ export default function HomePage() {
                     </p>
                   )}
 
-                  {error && (
-                    <div role="alert" className="py-12 text-center">
-                      <p>{error}</p>
-                      <button className="mt-3 text-primary" onClick={reload}>
-                        다시 시도
+                  {!loading && (
+                    <div className="home-tutor-row">
+                      <div className="home-tutor-grid" ref={homeTutorGridRef}>
+                        {recommended.map(({ tutor, recommendation }) => (
+                          <HomeTutorCard
+                            key={tutor.id}
+                            tutor={tutor}
+                            recommendation={recommendation}
+                            bookmarked={isSaved(tutor)}
+                            bookmarkDisabled={isPending(tutor)}
+                            onBookmark={() => void bookmark(tutor)}
+                            onDetails={() =>
+                              setDialog({ type: 'tutor', tutor })
+                            }
+                          />
+                        ))}
+                      </div>
+
+                      <button
+                        type="button"
+                        className="home-tutor-next"
+                        aria-label="다음 추천 튜터"
+                        onClick={showNextHomeTutor}
+                      >
+                        <img src={nextButtonRight} alt="" />
                       </button>
                     </div>
                   )}
-
-                  <div className="home-tutor-row">
-                    <div className="home-tutor-grid" ref={homeTutorGridRef}>
-                      {recommended.map((tutor) => (
-                        <HomeTutorCard
-                          key={tutor.name}
-                          tutor={tutor}
-                          recommendation={homeTutorRecommendations[tutor.name]}
-                          bookmarked={saved.includes(tutor.name)}
-                          onBookmark={() => bookmark(tutor.name)}
-                          onDetails={() => setDialog({ type: 'tutor', tutor })}
-                        />
-                      ))}
-                    </div>
-
-                    <button
-                      type="button"
-                      className="home-tutor-next"
-                      aria-label="다음 추천 튜터"
-                      onClick={showNextHomeTutor}
-                    >
-                      <img src={nextButtonRight} alt="" />
-                    </button>
-                  </div>
 
                   {!loading && !error && recommended.length === 0 && (
                     <p className="py-12 text-center text-muted">
@@ -321,7 +364,7 @@ export default function HomePage() {
                   )}
                 </div>
               </section>
-            )}
+            ) : null}
 
             <section className="home-curriculum">
               <button
@@ -652,27 +695,34 @@ export default function HomePage() {
 
       {dialog && (
         <Modal labelledBy="home-dialog-title" onClose={() => setDialog(null)}>
-          {dialog.type === 'tutor' ? (
+          {selectedTutor ? (
             <>
-              <img src={`/tutor-${dialog.tutor.image}.png`} alt="" />
-              <h2 id="home-dialog-title">{dialog.tutor.name}</h2>
+              <TutorImage tutor={selectedTutor} />
+              <h2 id="home-dialog-title">{selectedTutor.name}</h2>
               <p className="modal-school">
-                {dialog.tutor.major} · {dialog.tutor.university}
+                {selectedTutor.major} · {selectedTutor.university}
               </p>
-              <p>{dialog.tutor.intro}</p>
+              <p>{selectedTutor.intro}</p>
               <p className="modal-rating">
-                ★ {dialog.tutor.rating} · 수업 후기 {dialog.tutor.reviews}개
+                ★ {selectedTutor.rating} · 수업 후기 {selectedTutor.reviews}개
               </p>
+              {selectedTutor.isMyTutor === undefined && tutorsError && (
+                <p role="status">{tutorsError}</p>
+              )}
+              {storageError && <p role="status">{storageError}</p>}
               <button
                 className="primary"
-                onClick={() => bookmark(dialog.tutor.name)}
+                disabled={
+                  isPending(selectedTutor) ||
+                  selectedTutor.isMyTutor === undefined ||
+                  (tutorsLoading && dialogTutor?.isMyTutor === undefined)
+                }
+                onClick={() => void bookmark(selectedTutor)}
               >
-                {saved.includes(dialog.tutor.name)
-                  ? '북마크 해제'
-                  : '튜터 북마크하기'}
+                {isSaved(selectedTutor) ? '북마크 해제' : '튜터 북마크하기'}
               </button>
             </>
-          ) : (
+          ) : dialog.type === 'information' ? (
             <>
               <h2 id="home-dialog-title">{dialog.title}</h2>
               <p>{dialog.description}</p>
@@ -683,7 +733,7 @@ export default function HomePage() {
                 튜터 둘러보기
               </Link>
             </>
-          )}
+          ) : null}
         </Modal>
       )}
     </AppShell>

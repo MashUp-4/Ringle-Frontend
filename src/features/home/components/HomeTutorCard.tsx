@@ -6,10 +6,12 @@ import {
 import type { Tutor } from '../../tutors/types/tutor'
 import homeTutorDivider from '../../../assets/icons/home-tutor-divider.svg'
 import type { HomeTutorRecommendation } from '../types/home'
+import { TutorImage } from '../../tutors/components/TutorImage'
 interface HomeTutorCardProps {
   tutor: Tutor
   recommendation?: HomeTutorRecommendation
   bookmarked: boolean
+  bookmarkDisabled?: boolean
   onBookmark: () => void
   onDetails: () => void
 }
@@ -18,6 +20,7 @@ export function HomeTutorCard({
   tutor,
   recommendation,
   bookmarked,
+  bookmarkDisabled,
   onBookmark,
   onDetails,
 }: HomeTutorCardProps) {
@@ -29,15 +32,13 @@ export function HomeTutorCard({
           onClick={onDetails}
           aria-label={`${tutor.name} 튜터 자세히 보기`}
         >
-          <img
-            src={`/tutor-${tutor.image}.png`}
-            alt={`${tutor.name} 튜터 캐릭터`}
-          />
+          <TutorImage tutor={tutor} alt={`${tutor.name} 튜터 캐릭터`} />
         </button>
         <button
           className={`bookmark ${bookmarked ? 'saved' : ''}`}
           aria-label={`${tutor.name} 찜하기`}
           aria-pressed={bookmarked}
+          disabled={bookmarkDisabled}
           onClick={onBookmark}
         >
           <img
