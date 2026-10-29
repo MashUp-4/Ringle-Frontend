@@ -178,29 +178,31 @@ function TutorPage() {
               </Link>
             </p>
           )}
-          <div className="tutor-card-row">
-            <div className="tutor-grid" ref={tutorGridRef}>
-              {visible.map((t) => (
-                <TutorCard
-                  key={t.id}
-                  tutor={t}
-                  bookmarked={isSaved(t)}
-                  bookmarkDisabled={isPending(t)}
-                  onBookmark={() => bookmark(t)}
-                  onDetails={() => setSelected(t)}
-                />
-              ))}
-            </div>
+          {!loading && !error && visible.length > 0 && (
+            <div className="tutor-card-row">
+              <div className="tutor-grid" ref={tutorGridRef}>
+                {visible.map((t) => (
+                  <TutorCard
+                    key={t.id}
+                    tutor={t}
+                    bookmarked={isSaved(t)}
+                    bookmarkDisabled={isPending(t)}
+                    onBookmark={() => bookmark(t)}
+                    onDetails={() => setSelected(t)}
+                  />
+                ))}
+              </div>
 
-            <button
-              type="button"
-              className="tutor-card-next"
-              aria-label="다음 튜터"
-              onClick={showNextTutor}
-            >
-              <img src={nextButtonRight} alt="" />
-            </button>
-          </div>
+              <button
+                type="button"
+                className="tutor-card-next"
+                aria-label="다음 튜터"
+                onClick={showNextTutor}
+              >
+                <img src={nextButtonRight} alt="" />
+              </button>
+            </div>
+          )}
           {!loading && !error && visible.length === 0 && (
             <div className="empty">
               <Icon name="search" />
