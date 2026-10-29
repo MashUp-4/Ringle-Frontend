@@ -305,7 +305,7 @@ export default function HomePage() {
                     </p>
                   )}
 
-                  {!loading && (
+                  {!loading && !error && recommended.length > 0 && (
                     <div className="home-tutor-row">
                       <div className="home-tutor-grid" ref={homeTutorGridRef}>
                         {recommended.map(({ tutor, recommendation }) => (
