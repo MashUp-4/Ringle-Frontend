@@ -1,3 +1,5 @@
+import { LoadingState } from '../components/ui/LoadingState'
+import { slowLoadingMessage } from '../hooks/useSlowLoading'
 import { useEffect, useRef, useState } from 'react'
 import {
   Link,
@@ -55,7 +57,7 @@ function TutorPage() {
 
     setSearchParams({})
   }
-  const { tutors, loading, error, reload } = useTutors(
+  const { tutors, loading, slow, error, reload } = useTutors(
     tutorId ? '' : buildTutorQuery(query, false, undefined, true),
   )
   const { isSaved, isPending, toggleBookmark, storageError } =
@@ -158,9 +160,9 @@ function TutorPage() {
             </p>
           )}
           {loading && (
-            <p role="status" className="py-12 text-center text-muted">
-              튜터를 불러오고 있어요.
-            </p>
+            <LoadingState
+              label={slow ? slowLoadingMessage : '튜터를 불러오고 있어요.'}
+            />
           )}
           {error && (
             <div role="alert" className="rounded-lg bg-red-50 p-5 text-center">

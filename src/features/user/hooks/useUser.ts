@@ -1,20 +1,22 @@
 import { useEffect, useState } from 'react'
+import {
+  getApiErrorMessage,
+  invalidateApiCache,
+  getCachedApiData,
+} from '../../../lib/api'
+import { useSlowLoading } from '../../../hooks/useSlowLoading'
 import { getClassCounts, getProfileImage, getUserSummary } from '../api/user'
 import type { UserSummary } from '../api/user'
 
-// Share concurrent requests across StrictMode and the common navigation.
-let summaryRequest: Promise<UserSummary> | null = null
-let imageRequest: ReturnType<typeof getProfileImage> | null = null
-let classCountRequest: ReturnType<typeof getClassCounts> | null = null
-
 export function useClassCount() {
-  const [classCount, setClassCount] = useState<number | null>(null)
+  const [classCount, setClassCount] = useState<number | null>(
+    () =>
+      getCachedApiData<{ classCount: number }>('/users/me/class-counts')
+        ?.classCount ?? null,
+  )
   useEffect(() => {
     let active = true
-    classCountRequest ??= getClassCounts().finally(() => {
-      classCountRequest = null
-    })
-    classCountRequest
+    getClassCounts()
       .then((value) => {
         if (active) setClassCount(value.classCount)
       })
@@ -29,22 +31,28 @@ export function useClassCount() {
 }
 
 export function useUserSummary() {
-  const [summary, setSummary] = useState<UserSummary | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [summary, setSummary] = useState<UserSummary | null>(
+    () => getCachedApiData<UserSummary>('/users/me/summary') ?? null,
+  )
+  const [loading, setLoading] = useState(
+    () => !getCachedApiData<UserSummary>('/users/me/summary'),
+  )
   const [error, setError] = useState('')
   const [attempt, setAttempt] = useState(0)
   useEffect(() => {
     let active = true
-    summaryRequest ??= getUserSummary().finally(() => {
-      summaryRequest = null
-    })
-    summaryRequest
+    getUserSummary()
       .then((value) => {
         if (active) setSummary(value)
       })
-      .catch(() => {
+      .catch((cause) => {
         if (active)
-          setError('회원 정보를 불러오지 못했어요. 다시 시도해 주세요.')
+          setError(
+            getApiErrorMessage(
+              cause,
+              '회원 정보를 불러오지 못했어요. 다시 시도해 주세요.',
+            ),
+          )
       })
       .finally(() => {
         if (active) setLoading(false)
@@ -55,21 +63,24 @@ export function useUserSummary() {
   }, [attempt])
   function reload() {
     if (loading) return
+    invalidateApiCache()
     setLoading(true)
     setError('')
     setAttempt((value) => value + 1)
   }
-  return { summary, loading, error, reload }
+  const slow = useSlowLoading(loading, String(attempt))
+  return { summary, loading, slow, error, reload }
 }
 
 export function useProfileImage() {
-  const [imageUrl, setImageUrl] = useState<string | null>(null)
+  const [imageUrl, setImageUrl] = useState<string | null>(
+    () =>
+      getCachedApiData<{ imageUrl: string | null }>('/users/me/profile-image')
+        ?.imageUrl ?? null,
+  )
   useEffect(() => {
     let active = true
-    imageRequest ??= getProfileImage().finally(() => {
-      imageRequest = null
-    })
-    imageRequest
+    getProfileImage()
       .then((value) => {
         if (active) setImageUrl(value.imageUrl)
       })

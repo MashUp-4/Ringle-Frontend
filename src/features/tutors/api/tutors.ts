@@ -1,4 +1,4 @@
-import { apiGet } from '../../../lib/api'
+import { apiGet, getCachedApiData } from '../../../lib/api'
 import type { Tutor } from '../types/tutor'
 import type { TutorResponse } from '../types/tutorApi'
 import { toTutor } from './tutorAdapter'
@@ -12,4 +12,11 @@ export async function getTutors(query = ''): Promise<Tutor[]> {
     `/tutors${query ? `?${query}` : ''}`,
   )
   return response.tutors.map(toTutor)
+}
+
+export function getCachedTutors(query = ''): Tutor[] | undefined {
+  const response = getCachedApiData<TutorListResponse>(
+    `/tutors${query ? `?${query}` : ''}`,
+  )
+  return response?.tutors.map(toTutor)
 }
