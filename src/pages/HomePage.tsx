@@ -1,3 +1,5 @@
+import { LoadingState } from '../components/ui/LoadingState'
+import { slowLoadingMessage } from '../hooks/useSlowLoading'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { AppShell } from '../components/layout/AppShell'
@@ -43,6 +45,7 @@ export default function HomePage() {
   const {
     summary,
     loading: userLoading,
+    slow: userSlow,
     error: userError,
     reload: reloadUser,
   } = useUserSummary()
@@ -55,7 +58,7 @@ export default function HomePage() {
     timezone: summary?.timeZone ?? '',
   }
   const [selectedGoalId, setGoal] = useState<LearningGoal | null>(null)
-  const { home, recommendedTutors, loading, error, reload } = useHome(
+  const { home, recommendedTutors, loading, slow, error, reload } = useHome(
     selectedGoalId ? homeCategories[selectedGoalId] : undefined,
   )
   const recommendationData =
@@ -177,9 +180,9 @@ export default function HomePage() {
         <div className="home-columns">
           <div className="home-primary">
             {loading && !home && (
-              <p role="status" className="py-12 text-center">
-                홈 정보를 불러오고 있어요.
-              </p>
+              <LoadingState
+                label={slow ? slowLoadingMessage : '홈 정보를 불러오고 있어요.'}
+              />
             )}
             {error && (
               <div role="alert" className="py-12 text-center">
@@ -301,7 +304,9 @@ export default function HomePage() {
 
                   {loading && (
                     <p role="status" className="py-16 text-center text-muted">
-                      추천 튜터를 불러오고 있어요.
+                      {slow
+                        ? slowLoadingMessage
+                        : '추천 튜터를 불러오고 있어요.'}
                     </p>
                   )}
 
@@ -545,7 +550,14 @@ export default function HomePage() {
           <aside className="home-secondary" aria-label="내 정보와 추천 이벤트">
             <section className="home-profile" aria-busy={userLoading}>
               {userLoading ? (
-                <p role="status">회원 정보를 불러오는 중이에요.</p>
+                <LoadingState
+                  compact
+                  label={
+                    userSlow
+                      ? slowLoadingMessage
+                      : '회원 정보를 불러오는 중이에요.'
+                  }
+                />
               ) : userError ? (
                 <div role="alert">
                   <p>{userError}</p>

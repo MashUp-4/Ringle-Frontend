@@ -1,3 +1,5 @@
+import { LoadingState } from '../components/ui/LoadingState'
+import { slowLoadingMessage } from '../hooks/useSlowLoading'
 import { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import tutorEmptyIcon from '../assets/icons/tutor-empty.svg'
@@ -33,6 +35,7 @@ export default function AllTutorsPage() {
   const {
     tutors: visibleTutors,
     loading,
+    slow,
     error,
     reload,
   } = useTutors(buildTutorQuery(query, savedOnly, filters))
@@ -119,7 +122,11 @@ export default function AllTutorsPage() {
               </div>
             )}
 
-            {loading && <p role="status">튜터를 불러오고 있어요.</p>}
+            {loading && (
+              <LoadingState
+                label={slow ? slowLoadingMessage : '튜터를 불러오고 있어요.'}
+              />
+            )}
 
             {error && (
               <div role="alert">

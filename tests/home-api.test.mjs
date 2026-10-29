@@ -100,6 +100,7 @@ test('offsetless backend timestamps are KST regardless of the browser timezone',
 const apiUrl = await moduleUrl('../src/lib/api.ts', [
   ['import.meta.env.VITE_API_BASE_URL', 'undefined'],
 ])
+const { invalidateApiCache } = await import(apiUrl)
 const { getUserHome } = await import(
   await moduleUrl('../src/features/home/api/home.ts', [
     ["'../../../lib/api'", JSON.stringify(apiUrl)],
@@ -153,6 +154,7 @@ test('home rejects unknown types and missing branch arrays instead of displaying
       { type: 'RECOMMENDED_TUTORS' },
       { type: 'RECOMMENDED_TUTORS', recommendedTutors: { tutors: {} } },
     ]) {
+      invalidateApiCache()
       globalThis.fetch = async () =>
         new Response(JSON.stringify({ success: true, data }))
       await assert.rejects(getUserHome(), /홈 응답 데이터/)
