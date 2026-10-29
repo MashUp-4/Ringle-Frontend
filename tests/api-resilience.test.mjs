@@ -183,3 +183,37 @@ test('a read predating a mutation cannot repopulate cache or be reused by a fres
   assert.deepEqual(await client.get('/tutors'), { saved: true })
   assert.equal(reads, 2)
 })
+
+test('recent data remains available during background refresh, but is bounded and invalidated by writes', async () => {
+  let clock = 0
+  let resolveRefresh
+  let calls = 0
+  const client = createApiClient({
+    ...instant,
+    now: () => clock,
+    fetch: async (_url, options) => {
+      if (options?.method) return ok(null)
+      calls++
+      if (calls === 2)
+        return new Promise((resolve) => {
+          resolveRefresh = resolve
+        })
+      return ok({ count: calls })
+    },
+  })
+  await client.get('/tutors')
+  clock = 30000
+  assert.equal(client.peek('/tutors'), undefined)
+  assert.deepEqual(client.peek('/tutors', true), { count: 1 })
+  const refresh = client.get('/tutors')
+  assert.equal(calls, 2)
+  assert.deepEqual(client.peek('/tutors', true), { count: 1 })
+  resolveRefresh(ok({ count: 2 }))
+  await refresh
+  assert.deepEqual(client.peek('/tutors', true), { count: 2 })
+  clock += 300000
+  assert.equal(client.peek('/tutors', true), undefined)
+  await client.get('/tutors')
+  await client.write('/users/me/favorite-tutors/1', 'POST')
+  assert.equal(client.peek('/tutors', true), undefined)
+})

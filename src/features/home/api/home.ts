@@ -19,7 +19,10 @@ export function getCachedHome(
   category?: HomeCategory,
 ): UserHomeResponse | undefined {
   const query = category ? `?${new URLSearchParams({ category })}` : ''
-  const home = getCachedApiData<UserHomeResponse>(`/users/me/home${query}`)
+  const home = getCachedApiData<UserHomeResponse>(
+    `/users/me/home${query}`,
+    true,
+  )
   return (home?.type === 'UPCOMING_CLASS' &&
     Array.isArray(home.upcomingClasses?.classes)) ||
     (home?.type === 'RECOMMENDED_TUTORS' &&
