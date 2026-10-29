@@ -17,6 +17,7 @@ export async function getTutors(query = ''): Promise<Tutor[]> {
 export function getCachedTutors(query = ''): Tutor[] | undefined {
   const response = getCachedApiData<TutorListResponse>(
     `/tutors${query ? `?${query}` : ''}`,
+    true,
   )
   return response?.tutors.map(toTutor)
 }

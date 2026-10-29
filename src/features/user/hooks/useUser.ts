@@ -11,7 +11,7 @@ import type { UserSummary } from '../api/user'
 export function useClassCount() {
   const [classCount, setClassCount] = useState<number | null>(
     () =>
-      getCachedApiData<{ classCount: number }>('/users/me/class-counts')
+      getCachedApiData<{ classCount: number }>('/users/me/class-counts', true)
         ?.classCount ?? null,
   )
   useEffect(() => {
@@ -32,10 +32,10 @@ export function useClassCount() {
 
 export function useUserSummary() {
   const [summary, setSummary] = useState<UserSummary | null>(
-    () => getCachedApiData<UserSummary>('/users/me/summary') ?? null,
+    () => getCachedApiData<UserSummary>('/users/me/summary', true) ?? null,
   )
   const [loading, setLoading] = useState(
-    () => !getCachedApiData<UserSummary>('/users/me/summary'),
+    () => !getCachedApiData<UserSummary>('/users/me/summary', true),
   )
   const [error, setError] = useState('')
   const [attempt, setAttempt] = useState(0)
@@ -75,8 +75,10 @@ export function useUserSummary() {
 export function useProfileImage() {
   const [imageUrl, setImageUrl] = useState<string | null>(
     () =>
-      getCachedApiData<{ imageUrl: string | null }>('/users/me/profile-image')
-        ?.imageUrl ?? null,
+      getCachedApiData<{ imageUrl: string | null }>(
+        '/users/me/profile-image',
+        true,
+      )?.imageUrl ?? null,
   )
   useEffect(() => {
     let active = true

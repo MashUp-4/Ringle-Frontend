@@ -26,6 +26,7 @@ const baseUrl = (import.meta.env.VITE_API_BASE_URL ?? '/backend').replace(
 const READ_BUDGET_MS = 75000
 const READ_ATTEMPT_MS = 45000
 const CACHE_MS = 30000
+const STALE_DISPLAY_MS = 5 * 60 * 1000
 const MAX_CACHE_ENTRIES = 100
 
 export function createApiClient(
@@ -43,7 +44,10 @@ export function createApiClient(
     options.delay ??
     ((ms) => new Promise<void>((resolve) => setTimeout(resolve, ms)))
   const timeout = options.timeout ?? ((ms) => AbortSignal.timeout(ms))
-  const cache = new Map<string, { data: unknown; expires: number }>()
+  const cache = new Map<
+    string,
+    { data: unknown; expires: number; displayUntil: number }
+  >()
   const pending = new Map<string, Promise<unknown>>()
   let generation = 0
 
@@ -105,7 +109,7 @@ export function createApiClient(
     const cached = cache.get(path)
     if (cached && cached.expires > now())
       return Promise.resolve(cached.data as T)
-    cache.delete(path)
+    if (cached && cached.displayUntil <= now()) cache.delete(path)
     const epoch = generation
     const key = `${epoch}:${path}`
     const existing = pending.get(key)
@@ -114,7 +118,11 @@ export function createApiClient(
       .then((data) => {
         // A read started before a mutation must never repopulate the cache.
         if (generation === epoch) {
-          cache.set(path, { data, expires: now() + CACHE_MS })
+          cache.set(path, {
+            data,
+            expires: now() + CACHE_MS,
+            displayUntil: now() + STALE_DISPLAY_MS,
+          })
           if (cache.size > MAX_CACHE_ENTRIES)
             cache.delete(cache.keys().next().value!)
         }
@@ -148,9 +156,12 @@ export function createApiClient(
       invalidate()
     }
   }
-  function peek<T>(path: string): T | undefined {
+  function peek<T>(path: string, allowStale = false): T | undefined {
     const entry = cache.get(path)
-    return entry && entry.expires > now() ? (entry.data as T) : undefined
+    const expiry = allowStale ? entry?.displayUntil : entry?.expires
+    return entry && expiry !== undefined && expiry > now()
+      ? (entry.data as T)
+      : undefined
   }
   return { get, write, invalidate, peek }
 }

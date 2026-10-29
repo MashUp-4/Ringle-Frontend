@@ -1,3 +1,4 @@
+import { preloadPageData } from '../../lib/preload'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { Icon } from '../ui/Icon'
 import {
@@ -38,6 +39,15 @@ export function AppNavigation({ onNotice }: AppNavigationProps) {
                 <NavLink
                   key={item.label}
                   to={item.to}
+                  onPointerEnter={() => {
+                    void preloadPageData(item.to!).catch(() => {})
+                  }}
+                  onFocus={() => {
+                    void preloadPageData(item.to!).catch(() => {})
+                  }}
+                  onTouchStart={() => {
+                    void preloadPageData(item.to!).catch(() => {})
+                  }}
                   end={item.to === '/'}
                   className={({ isActive }) =>
                     `nav-item${isActive ? ' active' : ''}`
