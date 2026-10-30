@@ -10,7 +10,15 @@ export const dayOptions: { value: TutorDay; label: string }[] = [
   { value: 'sat', label: '토' },
 ]
 
-export const timeOptions = [
+interface TimeFilterOption {
+  value: string
+  label: string
+  startMinute: number
+  endMinute: number
+  disabled?: boolean
+}
+
+export const timeOptions: TimeFilterOption[] = [
   {
     value: '0-180',
     label: '새벽 0:00 - 3:00',
@@ -40,6 +48,13 @@ export const timeOptions = [
     label: '오후 12:00 - 15:00',
     startMinute: 720,
     endMinute: 900,
+  },
+  {
+    value: '900-1020',
+    label: '오후 15:00 - 17:00',
+    startMinute: 900,
+    endMinute: 1020,
+    disabled: true,
   },
   {
     value: '1140-1260',
