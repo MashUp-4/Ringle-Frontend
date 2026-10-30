@@ -31,6 +31,7 @@ export function TutorCard({
             className={`bookmark ${bookmarked ? 'saved' : ''}`}
             aria-label={`${tutor.name} 북마크`}
             aria-pressed={bookmarked}
+            aria-busy={bookmarkDisabled || undefined}
             disabled={bookmarkDisabled}
             onClick={onBookmark}
           >
