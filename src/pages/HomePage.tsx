@@ -30,7 +30,12 @@ import {
 
 type HomeDialog =
   | { type: 'tutor'; tutor: Tutor }
-  | { type: 'information'; title: string; description: string }
+  | {
+      type: 'information'
+      title: string
+      description: string
+      action?: 'close'
+    }
   | null
 
 const shortcuts = [
@@ -141,6 +146,17 @@ export default function HomePage() {
 
   function information(title: string, description: string) {
     setDialog({ type: 'information', title, description })
+  }
+
+  function reservation() {
+    setDialog({
+      type: 'information',
+      title: hasPass ? '수업 예약 안내' : '수업권 구매 및 예약 안내',
+      description: hasPass
+        ? '수업 예약 기능은 준비 중이에요. 추후 튜터와 날짜·시간을 선택하는 예약 화면으로 연결될 예정입니다.'
+        : '수업권 구매 및 예약 기능은 준비 중이에요. 추후 수업권 구매 후 튜터와 날짜·시간을 선택하는 예약 화면으로 연결될 예정입니다.',
+      action: 'close',
+    })
   }
 
   function purchase() {
@@ -348,14 +364,17 @@ export default function HomePage() {
 
                 <div className="home-reserve">
                   {hasPass ? (
-                    <Link className="home-primary-button" to="/tutors">
+                    <button
+                      className="home-primary-button"
+                      onClick={reservation}
+                    >
                       바로 예약하기
-                    </Link>
+                    </button>
                   ) : (
                     <>
                       <button
                         className="home-primary-button"
-                        onClick={purchase}
+                        onClick={reservation}
                       >
                         수업권 구매하고 예약하기
                       </button>
@@ -738,12 +757,18 @@ export default function HomePage() {
             <>
               <h2 id="home-dialog-title">{dialog.title}</h2>
               <p>{dialog.description}</p>
-              <Link
-                className="home-primary-button mt-6 block text-center"
-                to="/tutors"
-              >
-                튜터 둘러보기
-              </Link>
+              {dialog.action === 'close' ? (
+                <button className="primary" onClick={() => setDialog(null)}>
+                  확인
+                </button>
+              ) : (
+                <Link
+                  className="home-primary-button mt-6 block text-center"
+                  to="/tutors"
+                >
+                  튜터 둘러보기
+                </Link>
+              )}
             </>
           ) : null}
         </Modal>
