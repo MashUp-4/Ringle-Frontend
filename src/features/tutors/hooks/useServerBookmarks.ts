@@ -20,8 +20,8 @@ function subscribe(listener: () => void) {
 
 export function useServerBookmarks(_tutors: Tutor[]) {
   void _tutors
-  // Only successful writes create overrides. A late list/home response must not
-  // replace a newer write, and DTOs without a bookmark field must not clear it.
+  // Local updates take precedence while a write is pending and after success.
+  // Late list/home responses must not replace them; failures restore the prior value.
   const snapshot = useSyncExternalStore(subscribe, () => state)
   function isSaved(tutor: Tutor) {
     return tutor.id !== undefined
@@ -32,18 +32,23 @@ export function useServerBookmarks(_tutors: Tutor[]) {
     const id = tutor.id
     if (id === undefined || state.pending.has(id)) return false
     const previous = state.values.get(id) ?? tutor.isMyTutor ?? false
-    state = { ...state, pending: new Set(state.pending).add(id), error: '' }
+    state = {
+      ...state,
+      values: new Map(state.values).set(id, !previous),
+      pending: new Set(state.pending).add(id),
+      error: '',
+    }
     emit()
     try {
       await apiWrite(
         `/users/me/favorite-tutors/${id}`,
         previous ? 'DELETE' : 'POST',
       )
-      state = { ...state, values: new Map(state.values).set(id, !previous) }
       return true
     } catch {
       state = {
         ...state,
+        values: new Map(state.values).set(id, previous),
         error: '찜하기를 저장하지 못했어요. 다시 시도해 주세요.',
       }
       return false

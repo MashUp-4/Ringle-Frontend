@@ -80,6 +80,8 @@ test('concurrent clicks for the same tutor send one write and clear pending on s
   const tutor = { id: 42, name: 'Rina', isMyTutor: false }
   const first = render([tutor]).toggleBookmark(tutor)
   assert.equal(render([tutor]).isPending(tutor), true)
+  assert.equal(render([tutor]).isSaved(tutor), true)
+  assert.equal(render([{ ...tutor, isMyTutor: false }]).isSaved(tutor), true)
   assert.equal(await render([tutor]).toggleBookmark(tutor), false)
   assert.equal(writes.length, 1)
 
@@ -113,4 +115,56 @@ test('failed writes retain the saved state, expose an error and allow retry', as
   assert.equal(afterRetry.isPending(tutor), false)
   assert.equal(afterRetry.storageError, '')
   assert.deepEqual(methods, ['POST', 'DELETE', 'DELETE'])
+})
+
+test('failed optimistic removal rolls back only its tutor while another save succeeds', async () => {
+  let failRemoval
+  let finishSave
+  const render = await loadBookmarks(
+    (path) =>
+      new Promise((resolve, reject) => {
+        if (path.endsWith('/1')) failRemoval = reject
+        else finishSave = resolve
+      }),
+  )
+  const saved = { id: 1, name: 'A', isMyTutor: true }
+  const unsaved = { id: 2, name: 'B', isMyTutor: false }
+  const removal = render([saved]).toggleBookmark(saved)
+  const save = render([unsaved]).toggleBookmark(unsaved)
+  assert.equal(render([]).isSaved(saved), false)
+  assert.equal(render([]).isSaved(unsaved), true)
+  finishSave()
+  assert.equal(await save, true)
+  failRemoval(new Error('offline'))
+  assert.equal(await removal, false)
+  const result = render([])
+  assert.equal(result.isSaved(saved), true)
+  assert.equal(result.isSaved(unsaved), true)
+  assert.equal(result.isPending(saved), false)
+  assert.equal(result.isPending(unsaved), false)
+  assert.match(result.storageError, /저장하지 못했어요/)
+})
+
+test('failed first save immediately reverts the optimistic icon and permits another POST', async () => {
+  let rejectSave
+  let calls = 0
+  const methods = []
+  const render = await loadBookmarks((_, method) => {
+    methods.push(method)
+    calls++
+    if (calls === 1)
+      return new Promise((_, reject) => {
+        rejectSave = reject
+      })
+    return Promise.resolve()
+  })
+  const tutor = { id: 7, name: 'C', isMyTutor: false }
+  const save = render([tutor]).toggleBookmark(tutor)
+  assert.equal(render([]).isSaved(tutor), true)
+  rejectSave(new Error('timeout'))
+  assert.equal(await save, false)
+  assert.equal(render([]).isSaved(tutor), false)
+  assert.equal(await render([]).toggleBookmark(tutor), true)
+  assert.equal(render([]).isSaved(tutor), true)
+  assert.deepEqual(methods, ['POST', 'POST'])
 })
