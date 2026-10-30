@@ -150,10 +150,6 @@
   text-align: left;
 }
 
-.tutor-filter-times button:disabled {
-  opacity: 1;
-}
-
 .tutor-filter-panel button[aria-pressed='true'] {
   border-color: #663db8;
   background: #f5f0ff;

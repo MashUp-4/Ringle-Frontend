@@ -60,6 +60,7 @@ const mappings: Record<string, Record<string, string>> = {
     '420-540': 'TIME_07_09',
     '540-720': 'TIME_09_12',
     '720-900': 'TIME_12_15',
+    '900-1020': 'TIME_15_17',
     '1140-1260': 'TIME_19_21',
     '1260-1440': 'TIME_21_24',
   },
