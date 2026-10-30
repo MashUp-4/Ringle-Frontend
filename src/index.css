@@ -187,3 +187,8 @@ button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+/* Keep page width stable while dialogs lock background scrolling. */
+html {
+  scrollbar-gutter: stable;
+}

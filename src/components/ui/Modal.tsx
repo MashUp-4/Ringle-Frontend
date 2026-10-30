@@ -9,14 +9,18 @@ export function Modal({ children, onClose, labelledBy }: ModalProps) {
   useEffect(() => {
     const dialog = ref.current
     const previous = document.activeElement
-    dialog?.showModal()
+    const scrollPosition = { left: window.scrollX, top: window.scrollY }
     const oldOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
+    dialog?.showModal()
+    // Native dialog focus must not move the page, including under desktop zoom.
+    window.scrollTo({ ...scrollPosition, behavior: 'instant' })
     return () => {
       dialog?.close()
       document.body.style.overflow = oldOverflow
       if (previous instanceof HTMLElement && previous.isConnected)
-        previous.focus()
+        previous.focus({ preventScroll: true })
+      window.scrollTo({ ...scrollPosition, behavior: 'instant' })
     }
   }, [])
   return (
