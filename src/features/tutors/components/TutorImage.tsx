@@ -8,10 +8,7 @@ export function TutorImage({
   alt?: string
 }) {
   const fallback = '/tutor-placeholder.svg'
-  const src =
-    tutor.id !== undefined
-      ? tutor.imageUrl || fallback
-      : `/tutor-${tutor.image}.png`
+  const src = tutor.imageUrl || fallback
   return (
     <img
       src={src}

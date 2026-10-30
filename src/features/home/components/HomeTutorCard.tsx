@@ -25,14 +25,14 @@ export function HomeTutorCard({
   onDetails,
 }: HomeTutorCardProps) {
   return (
-    <article className="home-tutor-card" data-state={recommendation?.state}>
+    <article className="home-tutor-card">
       <div className="home-tutor-portrait">
         <button
           className="home-tutor-photo-details"
           onClick={onDetails}
           aria-label={`${tutor.name} 튜터 자세히 보기`}
         >
-          <TutorImage tutor={tutor} alt={`${tutor.name} 튜터 캐릭터`} />
+          <TutorImage tutor={tutor} alt={`${tutor.name} 튜터 사진`} />
         </button>
         <button
           className={`bookmark ${bookmarked ? 'saved' : ''}`}
@@ -58,7 +58,7 @@ export function HomeTutorCard({
             <span className="rating-star" aria-hidden="true">
               <img src={ratingStar} alt="" width={13.1411} height={12.5474} />
             </span>
-            {recommendation?.rating ?? tutor.rating} <em>({tutor.reviews})</em>
+            {tutor.rating} <em>({tutor.reviews})</em>
           </span>
         </div>
         <p className="major">{tutor.major}</p>

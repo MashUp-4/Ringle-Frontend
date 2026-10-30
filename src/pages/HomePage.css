@@ -446,19 +446,6 @@
   height: 14px;
   color: var(--color-muted);
 }
-.home-form-label {
-  display: block;
-  margin: var(--spacing-unit-20) 0 var(--spacing-unit-8);
-  font-weight: 600;
-}
-.home-form-input {
-  display: block;
-  width: 100%;
-  border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-medium);
-  padding: var(--spacing-unit-12);
-  background: var(--color-white);
-}
 .bookmark-notice a {
   @apply flex items-center text-muted text-label-16-medium;
   gap: 10px;
@@ -950,14 +937,6 @@
   overflow: visible;
   opacity: 1;
   box-shadow: none;
-}
-
-.home-recommendations .home-tutor-card[data-state='selected'] {
-  box-shadow: var(--shadow-card-selected);
-}
-
-.home-recommendations .home-tutor-card[data-state='disabled'] {
-  opacity: 0.7;
 }
 
 .home-recommendations .home-tutor-portrait {
