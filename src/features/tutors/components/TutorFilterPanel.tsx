@@ -179,7 +179,6 @@ export function TutorFilterPanel({
         <summary>시간대</summary>
 
         <div className="tutor-filter-availability">
-          <p className="tutor-filter-caption">한국 시간(Asia/Seoul) 기준</p>
           <p className="tutor-filter-caption">요일</p>
 
           <div className="tutor-filter-days">
@@ -202,6 +201,7 @@ export function TutorFilterPanel({
               <button
                 key={option.value}
                 type="button"
+                disabled={option.disabled}
                 aria-pressed={filters.times.includes(option.value)}
                 onClick={() => onToggleFilter('times', option.value)}
               >
