@@ -18,7 +18,7 @@ export function toTutor(dto: TutorResponse): Tutor {
     id: dto.id,
     name: dto.name,
     imageUrl: dto.imageUrl,
-    image: 0,
+
     major: dto.major ?? '',
     university: dto.school ?? '',
     category: dto.primaryKeyword
@@ -28,7 +28,7 @@ export function toTutor(dto: TutorResponse): Tutor {
     reviews: dto.reviewCount,
     acceptanceRate: dto.acceptRate ?? undefined,
     subjects: dto.interests ?? [],
-    interests: dto.interests ?? [],
+
     isMyTutor: dto.isMyTutor,
     intro: '튜터 상세 소개는 상세 조회 API 연동 후 제공됩니다.',
   }

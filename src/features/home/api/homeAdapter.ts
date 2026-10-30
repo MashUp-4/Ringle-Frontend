@@ -45,7 +45,7 @@ export function toHomeRecommendations(tutors: RecommendedTutorResponse[]) {
     const tutor: Tutor = {
       id: dto.tutorId,
       name: dto.name,
-      image: 0,
+
       imageUrl: dto.imageUrl,
       major: dto.major ?? '',
       university: dto.university ?? '',
@@ -53,7 +53,7 @@ export function toHomeRecommendations(tutors: RecommendedTutorResponse[]) {
       rating: dto.averageRating == null ? '—' : dto.averageRating.toFixed(1),
       reviews: dto.reviewCount ?? 0,
       subjects: dto.tags ?? [],
-      interests: dto.tags ?? [],
+
       intro: dto.introduction ?? '',
       isMyTutor: dto.isMyTutor,
     }
@@ -79,7 +79,7 @@ export function toScheduledLessons(
     tutor: {
       id: lesson.tutor.tutorId,
       name: lesson.tutor.name,
-      image: 0,
+
       imageUrl: lesson.tutor.imageUrl,
       major: lesson.tutor.major ?? '',
       university: lesson.tutor.university ?? '',
@@ -87,7 +87,7 @@ export function toScheduledLessons(
       rating: '—',
       reviews: 0,
       subjects: [],
-      interests: [],
+
       intro: '',
     },
   }))
