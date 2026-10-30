@@ -201,7 +201,6 @@ export function TutorFilterPanel({
               <button
                 key={option.value}
                 type="button"
-                disabled={option.disabled}
                 aria-pressed={filters.times.includes(option.value)}
                 onClick={() => onToggleFilter('times', option.value)}
               >

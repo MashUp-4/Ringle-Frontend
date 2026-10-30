@@ -43,7 +43,7 @@ test('documented compound filters repeat keys and encode search safely', () => {
   const filters = {
     ...empty(),
     days: ['mon', 'tue'],
-    times: ['540-720'],
+    times: ['540-720', '900-1020'],
     strengths: ['인터뷰', 'Writing/에세이/이력서'],
     interests: ['여행'],
     genders: ['female'],
@@ -55,7 +55,7 @@ test('documented compound filters repeat keys and encode search safely', () => {
   assert.deepEqual(params.getAll('strengthTags'), ['INTERVIEW', 'WRITING'])
   assert.equal(params.get('search'), 'Computer Science %_')
   assert.equal(params.get('isMyTutor'), 'true')
-  assert.equal(params.get('timeSlots'), 'TIME_09_12')
+  assert.deepEqual(params.getAll('timeSlots'), ['TIME_09_12', 'TIME_15_17'])
   assert.equal(params.get('personalInterestTags'), 'TRAVEL')
   assert.equal(params.get('genders'), 'FEMALE')
   assert.equal(params.has('page'), false)
@@ -82,7 +82,7 @@ test('unsupported time range and unknown values never reach the API', () => {
   const params = new URLSearchParams(
     buildTutorQuery('', false, {
       ...empty(),
-      times: ['900-1020'],
+      times: ['1020-1140'],
       days: ['invalid'],
     }),
   )

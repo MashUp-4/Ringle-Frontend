@@ -39,7 +39,7 @@ const filterOptions: Record<TutorFilterKey, FilterOption[]> = {
     { value: 'pointback', label: '50% 포인트백' },
   ],
   days: dayOptions,
-  times: timeOptions.filter((option) => !option.disabled),
+  times: timeOptions,
   strengths: toOptions(strengthOptions),
   experiences: toOptions(experienceOptions),
   majors: toOptions(majorOptions),
