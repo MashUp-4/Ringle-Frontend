@@ -851,6 +851,7 @@
 
 .home-tutor-reason {
   @apply text-label-16-semibold;
+  line-height: 24px;
   color: var(--color-ink);
 }
 
